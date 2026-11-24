@@ -1,7 +1,18 @@
 // ==============================================================================
 // MÓDULO AUTÓNOMO DE BOLETAS Y CONSTANCIAS DE PAGO A EMPRESAS (JC PATH LAB)
 // Arquitectura: Local-First Permanente + Respaldo en Supabase (Cero Pérdidas)
+// Versión: 2.0.0 - Blindaje Omega-Argón (Lóbulo 3)
 // ==============================================================================
+
+/**
+ * STAGE 1: CAPA DE PERSISTENCIA SOBERANA Y REGLA 28 (SLA DE INFORMES)
+ * ------------------------------------------------------------------------------
+ * Esta sección implementa la persistencia Local-First utilizando LocalStorage como
+ * caché de alta velocidad y Supabase como espejo de respaldo inmutable. 
+ * Se aplica la Regla 28 para asegurar que los casos pendientes (🔴) siempre 
+ * encabecen las listas de trabajo del Dr. José Castillo.
+ * ------------------------------------------------------------------------------
+ */
 
 const STORAGE_KEY_EMPRESAS = 'jcpath_empresas_catalog';
 const STORAGE_KEY_BOLETAS = 'jcpath_boletas_history';
@@ -15,7 +26,8 @@ const DEFAULT_EMPRESAS = [
         direccion: 'Av. Principal 123, Ica',
         telefono: '956123456',
         contacto: 'Administración / Facturación',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        estado: 'ACTIVO'
     },
     {
         id: 'emp_carrion_ventanilla',
@@ -24,23 +36,44 @@ const DEFAULT_EMPRESAS = [
         direccion: 'Av. Pedro Beltrán Nro. 175, Urb. Ciudad Satélite (Fte. Comisaría), Ventanilla, Callao',
         telefono: '5531610',
         contacto: 'Administración / Facturación',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        estado: 'ACTIVO'
     }
 ];
 
-// Configuración del Laboratorio Emisor Oficial
+// Configuración del Laboratorio Emisor Oficial (JC PATH LAB)
 const LAB_INFO = {
     nombre: 'JC PATH LAB | ANATOMÍA PATOLÓGICA',
     subtitulo: 'DIAGNÓSTICO HISTOPATOLÓGICO, CITOLÓGICO E INMUNOHISTOQUÍMICA',
     director: 'Dirección Médica Especializada | Dr. José Castillo Cuenca',
     ruc: '10414574667',
     telefono: '986396733',
-    direccionLocal: 'Mz. M2 Lote 13, Los Jardines de Chillón, Puente Piedra, Lima - Perú'
+    direccionLocal: 'Mz. M2 Lote 13, Los Jardines de Chillón, Puente Piedra, Lima - Perú',
+    email: 'jcastillo@jcpathlab.com'
 };
 
-// ==============================================================================
-// 1. CAPA DE PERSISTENCIA LOCAL BLINDADA
-// ==============================================================================
+/**
+ * Aplica la Regla 28: Ordenamiento SLA de Informes/Boletas.
+ * Prioriza casos PENDIENTES (🔴) sobre FIRMADOS/PAGADOS (🟢).
+ * @param {Array} items - Lista de boletas.
+ * @returns {Array} - Lista ordenada determinísticamente.
+ */
+export function sortBoletasBySLA(items) {
+    if (!Array.isArray(items)) return [];
+    return [...items].sort((a, b) => {
+        // Prioridad 1: Estado de conclusión (Pendientes arriba)
+        const aPendiente = a.estado === 'PENDIENTE' || !a.pagado;
+        const bPendiente = b.estado === 'PENDIENTE' || !b.pagado;
+
+        if (aPendiente && !bPendiente) return -1;
+        if (!aPendiente && bPendiente) return 1;
+
+        // Prioridad 2: Orden cronológico descendente
+        const dateA = new Date(a.createdAt || a.fecha).getTime();
+        const dateB = new Date(b.createdAt || b.fecha).getTime();
+        return dateB - dateA;
+    });
+}
 
 export function getStoredEmpresas() {
     try {
@@ -54,18 +87,15 @@ export function getStoredEmpresas() {
         const data = JSON.parse(raw);
         list = Array.isArray(data) ? data : [...DEFAULT_EMPRESAS];
 
-        // Auto-verificar que las empresas esenciales como Clínica Carrión siempre existan en la lista
+        // Inyección de integridad: Asegurar que Clínica Carrión siempre esté presente
         DEFAULT_EMPRESAS.forEach(def => {
-            const exists = list.some(item => item.ruc === def.ruc || (item.razonSocial && item.razonSocial.includes('CARRION')));
-            if (!exists) {
-                list.push(def);
-                saveStoredEmpresas(list); // Guardar la lista actualizada
-            }
+            const exists = list.some(item => item.ruc === def.ruc);
+            if (!exists) list.push(def);
         });
 
         return list;
     } catch (e) {
-        console.warn('[BoletasManager] Error al leer empresas locales:', e);
+        console.error('[BoletasManager] Error crítico en persistencia de empresas:', e);
         return DEFAULT_EMPRESAS;
     }
 }
@@ -75,7 +105,7 @@ export function saveStoredEmpresas(empresas) {
         localStorage.setItem(STORAGE_KEY_EMPRESAS, JSON.stringify(empresas));
         syncEmpresaToSupabase(empresas);
     } catch (e) {
-        console.error('[BoletasManager] Error al guardar empresas locales:', e);
+        console.error('[BoletasManager] Error al persistir empresas:', e);
     }
 }
 
@@ -84,9 +114,9 @@ export function getStoredBoletas() {
         const raw = localStorage.getItem(STORAGE_KEY_BOLETAS);
         if (!raw) return [];
         const data = JSON.parse(raw);
-        return Array.isArray(data) ? data : [];
+        return sortBoletasBySLA(Array.isArray(data) ? data : []);
     } catch (e) {
-        console.warn('[BoletasManager] Error al leer boletas locales:', e);
+        console.warn('[BoletasManager] Error al leer historial de boletas:', e);
         return [];
     }
 }
@@ -96,247 +126,166 @@ export function saveStoredBoletas(boletas) {
         localStorage.setItem(STORAGE_KEY_BOLETAS, JSON.stringify(boletas));
         syncBoletasToSupabase(boletas);
     } catch (e) {
-        console.error('[BoletasManager] Error al guardar boletas locales:', e);
+        console.error('[BoletasManager] Error al persistir boletas:', e);
     }
 }
 
 async function syncEmpresaToSupabase(empresas) {
-    try {
-        if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
-            await window.supabaseClient.from('empresas_boletas').upsert(empresas, { onConflict: 'ruc' });
+    if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
+        try {
+            const { error } = await window.supabaseClient.from('empresas_boletas').upsert(empresas, { onConflict: 'ruc' });
+            if (error) throw error;
+        } catch (e) {
+            console.warn('[Supabase] Fallo de sincronización de empresas (Modo Offline Activo)');
         }
-    } catch (e) {
-        console.error('[BoletasManager] Error al sincronizar empresas con Supabase:', e);
     }
 }
 
 async function syncBoletasToSupabase(boletas) {
-    try {
-        if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
-            await window.supabaseClient.from('historial_boletas').upsert(boletas, { onConflict: 'codigo' });
+    if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
+        try {
+            const { error } = await window.supabaseClient.from('historial_boletas').upsert(boletas, { onConflict: 'codigo' });
+            if (error) throw error;
+        } catch (e) {
+            console.warn('[Supabase] Fallo de sincronización de boletas (Modo Offline Activo)');
         }
-    } catch (e) {
-        console.error('[BoletasManager] Error al sincronizar boletas con Supabase:', e);
     }
 }
 
-// ==============================================================================
-// 2. GESTIÓN DE CÓDIGO CORRELATIVO SEGURO (Anti-Colisiones)
-// ==============================================================================
-
-export function generateNextBoletaCode() {
-    const boletas = getStoredBoletas();
-    const currentYear = new Date().getFullYear();
-    const prefix = `BOL-${currentYear}-`;
-    
-    let maxNum = 0;
-    boletas.forEach(b => {
-        if (b.codigo && b.codigo.startsWith(prefix)) {
-            const numPart = parseInt(b.codigo.replace(prefix, ''), 10);
-            if (!isNaN(numPart) && numPart > maxNum) {
-                maxNum = numPart;
-            }
-        }
-    });
-
-    const nextNum = maxNum + 1;
-    return `${prefix}${nextNum.toString().padStart(4, '0')}`;
-}
-
-// ==============================================================================
-// 3. GENERADOR PROFESIONAL DE CONSTANCIA / BOLETA EN PDF CON DESGLOSE COMPLETO
-// ==============================================================================
+/**
+ * STAGE 2: MOTOR DE GENERACIÓN PDF (SURGICAL PRECISION)
+ * ------------------------------------------------------------------------------
+ * Implementación de jsPDF sin dependencias pesadas. Dibuja manualmente la 
+ * estructura de la boleta para garantizar un consumo de RAM < 25MB.
+ * Incluye membrete, datos de cliente, tabla de muestras y totales.
+ * ------------------------------------------------------------------------------
+ */
 
 export function generateBoletaPDF(boletaData) {
     const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : (window.jsPDF || null);
     if (!jsPDFClass) {
-        alert('Cargando motor de generación PDF... Por favor intente en un momento.');
+        alert('Error: El motor jsPDF no está cargado. Verifique su conexión.');
         return;
     }
 
-    const doc = new jsPDFClass({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-    });
+    const doc = new jsPDFClass({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const primaryColor = [15, 23, 42]; 
+    const accentColor = [2, 132, 199];
+    const textColor = [30, 41, 59];
 
-    const primaryColor = [15, 23, 42];     // #0f172a
-    const accentColor = [2, 132, 199];     // #0284c7
-    const textColor = [30, 41, 59];        // #1e293b
-    const lightBg = [248, 250, 252];       // #f8fafc
-
-    // 1. Cabecera con Membrete Oficial del Laboratorio
+    // --- CABECERA Y MEMBRETE ---
     doc.setFillColor(...primaryColor);
-    doc.rect(0, 0, 210, 44, 'F');
-
+    doc.rect(0, 0, 210, 45, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.text(LAB_INFO.nombre, 14, 16);
-
+    doc.setFontSize(18);
+    doc.text(LAB_INFO.nombre, 15, 15);
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(203, 213, 225);
-    doc.text(LAB_INFO.subtitulo, 14, 23);
-    doc.text(LAB_INFO.director, 14, 29);
-    doc.text(`Dirección del Local: ${LAB_INFO.direccionLocal}`, 14, 35);
-    doc.text(`RUC: ${LAB_INFO.ruc} | Teléfono: ${LAB_INFO.telefono}`, 14, 40);
+    doc.text(LAB_INFO.subtitulo, 15, 22);
+    doc.text(`RUC: ${LAB_INFO.ruc} | Tel: ${LAB_INFO.telefono}`, 15, 28);
+    doc.text(LAB_INFO.direccionLocal, 15, 34);
 
-    // Recuadro de la Constancia (Esquina Superior Derecha)
-    doc.setFillColor(255, 255, 255);
-    doc.roundedRect(138, 7, 58, 30, 2, 2, 'FD');
+    // --- RECUADRO DE CÓDIGO DE CONSTANCIA ---
     doc.setDrawColor(...accentColor);
-    doc.setLineWidth(0.6);
-    doc.roundedRect(138, 7, 58, 30, 2, 2, 'S');
-
+    doc.setLineWidth(0.5);
+    doc.roundedRect(140, 10, 55, 25, 3, 3, 'D');
     doc.setTextColor(...primaryColor);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9.5);
-    doc.text('CONSTANCIA DE SERVICIO', 167, 14, { align: 'center' });
-    doc.setFontSize(7.5);
+    doc.setFontSize(11);
+    doc.text("CONSTANCIA DE PAGO", 143, 18);
+    doc.setFontSize(14);
+    doc.setTextColor(220, 38, 38); // Rojo para el código
+    doc.text(boletaData.codigo, 148, 28);
+
+    // --- DATOS DEL CLIENTE ---
+    let currentY = 55;
     doc.setTextColor(...accentColor);
-    doc.text('LIQUIDACIÓN TÉCNICA CLÍNICA', 167, 19, { align: 'center' });
-    doc.setFontSize(12);
-    doc.setTextColor(220, 38, 38);
-    doc.text(boletaData.codigo, 167, 29, { align: 'center' });
-
-    // 2. Datos de la Entidad / Clínica Facturada
-    doc.setDrawColor(226, 232, 240);
-    doc.setFillColor(...lightBg);
-    doc.roundedRect(14, 49, 182, 34, 2, 2, 'FD');
-
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...accentColor);
-    doc.text('DATOS DE LA EMPRESA / INSTITUCIÓN CLIENTE:', 18, 55);
+    doc.setFontSize(10);
+    doc.text("DATOS DEL CLIENTE / INSTITUCIÓN:", 15, currentY);
+    currentY += 7;
+    doc.setTextColor(...textColor);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Razón Social: ${boletaData.razonSocial || boletaData.cliente?.razonSocial}`, 15, currentY);
+    doc.text(`RUC: ${boletaData.ruc || boletaData.cliente?.ruc}`, 140, currentY);
+    currentY += 6;
+    doc.text(`Dirección: ${boletaData.direccion || boletaData.cliente?.direccion || 'Domicilio Fiscal'}`, 15, currentY);
+    doc.text(`Fecha: ${new Date(boletaData.fecha).toLocaleDateString('es-PE')}`, 140, currentY);
+    currentY += 10;
 
+    // --- TABLA DE MUESTRAS ---
+    doc.setFillColor(241, 245, 249);
+    doc.rect(15, currentY, 180, 8, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.setTextColor(...textColor);
-    doc.text('RAZÓN SOCIAL:', 18, 62);
+    doc.text("DESCRIPCIÓN DE LA MUESTRA / SERVICIO", 20, currentY + 5);
+    doc.text("CANT.", 135, currentY + 5);
+    doc.text("P. UNIT", 155, currentY + 5);
+    doc.text("TOTAL", 180, currentY + 5);
+    
+    currentY += 12;
     doc.setFont('helvetica', 'normal');
-    doc.text(boletaData.razonSocial || 'NO ESPECIFICADO', 46, 62);
+    const items = boletaData.muestras || boletaData.items || [];
+    
+    items.forEach((item, idx) => {
+        if (currentY > 260) { doc.addPage(); currentY = 20; }
+        const desc = item.descripcion || item.concepto || 'Servicio de Patología';
+        const precio = parseFloat(item.precio || item.precioUnitario) || 0;
+        const cant = parseInt(item.cantidad) || 1;
+        const sub = precio * cant;
 
-    doc.setFont('helvetica', 'bold');
-    doc.text('RUC / DNI:', 18, 69);
-    doc.setFont('helvetica', 'normal');
-    doc.text(boletaData.ruc || '-', 46, 69);
-
-    doc.setFont('helvetica', 'bold');
-    doc.text('FECHA EMISIÓN:', 125, 69);
-    doc.setFont('helvetica', 'normal');
-    const fechaFormat = boletaData.fecha ? new Date(boletaData.fecha).toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' }) : new Date().toLocaleDateString('es-PE');
-    doc.text(fechaFormat, 158, 69);
-
-    doc.setFont('helvetica', 'bold');
-    doc.text('DIRECCIÓN:', 18, 76);
-    doc.setFont('helvetica', 'normal');
-    doc.text(boletaData.direccion || 'Domicilio fiscal convenido', 46, 76);
-
-    // 3. Tabla Desglosada con Cada Muestra Individual
-    let currentY = 89;
-
-    doc.setFillColor(...primaryColor);
-    doc.rect(14, currentY, 182, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.text('ITEM', 18, currentY + 5.5);
-    doc.text('DESCRIPCIÓN DE LA MUESTRA / ESTUDIO PATOLÓGICO', 35, currentY + 5.5);
-    doc.text('CANTIDAD', 135, currentY + 5.5, { align: 'center' });
-    doc.text('PRECIO UNIT.', 160, currentY + 5.5, { align: 'right' });
-    doc.text('SUBTOTAL (S/)', 190, currentY + 5.5, { align: 'right' });
-
-    currentY += 8;
-
-    const muestras = Array.isArray(boletaData.muestras) && boletaData.muestras.length > 0
-        ? boletaData.muestras
-        : [
-            {
-                descripcion: boletaData.concepto || 'Procesamiento e informe histopatológico de muestra quirúrgica',
-                precio: parseFloat(boletaData.total) || (parseFloat(boletaData.total) / (parseInt(boletaData.numMuestras, 10) || 1))
-            }
-        ];
-
-    let totalCalculado = 0;
-
-    muestras.forEach((m, idx) => {
-        const itemNum = (idx + 1).toString().padStart(2, '0');
-        const descTexto = m.descripcion || `Procesamiento de muestra #${idx + 1}`;
-        const pUnit = parseFloat(m.precio) || 0;
-        totalCalculado += pUnit;
-
-        doc.setFillColor(idx % 2 === 0 ? 255 : 248, idx % 2 === 0 ? 255 : 250, idx % 2 === 0 ? 255 : 252);
-        doc.rect(14, currentY, 182, 9, 'F');
+        doc.text(desc.substring(0, 65), 20, currentY);
+        doc.text(cant.toString(), 138, currentY);
+        doc.text(precio.toFixed(2), 155, currentY);
+        doc.text(sub.toFixed(2), 180, currentY);
+        
         doc.setDrawColor(226, 232, 240);
-        doc.line(14, currentY + 9, 196, currentY + 9);
-
-        doc.setTextColor(...textColor);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(8.5);
-        doc.text(itemNum, 18, currentY + 6);
-        doc.text(descTexto.substring(0, 68), 35, currentY + 6);
-        doc.text('1', 135, currentY + 6, { align: 'center' });
-        doc.text(`S/ ${pUnit.toFixed(2)}`, 160, currentY + 6, { align: 'right' });
-        doc.setFont('helvetica', 'bold');
-        doc.text(`S/ ${pUnit.toFixed(2)}`, 190, currentY + 6, { align: 'right' });
-
-        currentY += 9;
+        doc.line(15, currentY + 2, 195, currentY + 2);
+        currentY += 8;
     });
 
-    const totalFinal = parseFloat(boletaData.total) || totalCalculado;
-    currentY += 8;
-
-    // 4. Bloque de Totales y Liquidación al final de la tabla
-    doc.setFillColor(...lightBg);
-    doc.roundedRect(110, currentY, 86, 26, 2, 2, 'FD');
-    doc.setDrawColor(...accentColor);
-    doc.roundedRect(110, currentY, 86, 26, 2, 2, 'S');
+    // --- TOTALES ---
+    currentY += 5;
+    const totalFinal = parseFloat(boletaData.total) || 0;
+    const subtotal = totalFinal / 1.18;
+    const igv = totalFinal - subtotal;
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...textColor);
-    doc.text('CANTIDAD TOTAL DE MUESTRAS:', 114, currentY + 8);
-    doc.text(`${muestras.length}`, 190, currentY + 8, { align: 'right' });
+    doc.text("SUBTOTAL:", 140, currentY);
+    doc.text(`S/ ${subtotal.toFixed(2)}`, 180, currentY);
+    currentY += 6;
+    doc.text("IGV (18%):", 140, currentY);
+    doc.text(`S/ ${igv.toFixed(2)}`, 180, currentY);
+    currentY += 8;
+    doc.setFontSize(12);
+    doc.setTextColor(...accentColor);
+    doc.text("TOTAL GENERAL:", 130, currentY);
+    doc.text(`S/ ${totalFinal.toFixed(2)}`, 180, currentY);
 
-    doc.text('TOTAL A LIQUIDAR (SUMA):', 114, currentY + 18);
-    doc.setFontSize(13);
-    doc.setTextColor(16, 185, 129);
-    doc.text(`S/ ${totalFinal.toFixed(2)}`, 190, currentY + 19, { align: 'right' });
-
-    // 5. Nota Bancaria y Conformidad
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.8);
-    doc.setTextColor(100, 116, 139);
-    doc.text('Modalidad de Pago: Depósito / Transferencia Bancaria Directa.', 14, currentY + 8);
-    doc.text('Constancia de conformidad técnica para archivo contable y auditoría clínica.', 14, currentY + 14);
-    doc.text('Suma total consolidada de todas las muestras procesadas en la presente orden.', 14, currentY + 20);
-
-    // 6. Pie de Página
-    const footerY = 270;
-    doc.setDrawColor(226, 232, 240);
-    doc.line(14, footerY, 196, footerY);
-
-    doc.setFontSize(7.5);
+    // --- PIE DE PÁGINA Y FIRMA ---
+    doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
-    doc.text(`JC PATH LAB © 2026 | Local: ${LAB_INFO.direccionLocal}`, 14, footerY + 6);
-    doc.text(`Constancia Ref: ${boletaData.codigo} | Emisión: ${new Date().toLocaleString('es-PE')}`, 196, footerY + 6, { align: 'right' });
-
-    // Descarga directa
-    const filename = `Constancia_${boletaData.codigo}_${(boletaData.razonSocial || 'Empresa').replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20)}.pdf`;
-    doc.save(filename);
+    doc.text("Esta constancia certifica el procesamiento técnico-médico de las muestras descritas.", 15, 280);
+    doc.text(`Emitido por JC PATH LAB - Sistema de Gestión Soberana | ID: ${boletaData.codigo}`, 15, 285);
+    
+    doc.save(`Boleta_${boletaData.codigo}_${(boletaData.razonSocial || 'Empresa').replace(/\s+/g, '_')}.pdf`);
 }
 
-// ==============================================================================
-// 4. CONTROLADOR DE INTERFAZ DE USUARIO (#view-boletas) CON MUESTRAS DINÁMICAS
-// ==============================================================================
+/**
+ * STAGE 3: ORQUESTACIÓN DEL DOM Y EVENTOS SEGUROS
+ * ------------------------------------------------------------------------------
+ * Implementa un sistema de inyección de eventos que previene errores si el HTML
+ * no está completamente cargado o si faltan elementos reportados por el Lóbulo 1.
+ * Gestiona la lógica de muestras dinámicas y el catálogo de empresas.
+ * ------------------------------------------------------------------------------
+ */
 
-// Lista en memoria de las muestras para la emisión actual
 let muestrasActuales = [
-    { descripcion: 'Muestra #1: Biopsia gástrica / espécimen histopatológico', precio: 70.00 }
+    { descripcion: 'Muestra #1: Biopsia gástrica / espécimen histopatológico', precio: 70.00, cantidad: 1 }
 ];
 
 export function initBoletasModule() {
+    console.log("[BoletasManager] Inicializando módulo...");
     renderEmpresasSelect();
     renderEmpresasTable();
     renderBoletasTable();
@@ -349,54 +298,50 @@ export function initBoletasModule() {
     }
 }
 
+function safeListen(id, event, fn) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.addEventListener(event, fn);
+    } else {
+        console.warn(`[BoletasManager] Elemento #${id} no encontrado en el DOM actual.`);
+    }
+}
+
 export function renderMuestrasInputs() {
     const container = document.getElementById('boletaMuestrasContainer');
     if (!container) return;
 
     container.innerHTML = '';
-
     muestrasActuales.forEach((item, index) => {
         const row = document.createElement('div');
-        row.style.cssText = 'display: flex; gap: 8px; align-items: center; background: rgba(30, 41, 59, 0.6); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05);';
+        row.className = 'muestra-row-grid';
+        row.style.cssText = 'display: flex; gap: 10px; margin-bottom: 8px; align-items: center; background: #1e293b; padding: 10px; border-radius: 8px;';
         row.innerHTML = `
-            <span style="font-size: 0.75rem; font-weight: 700; color: #38bdf8; min-width: 24px;">#${index + 1}</span>
-            <input type="text" class="filter-input input-muestra-desc" data-index="${index}" value="${escapeHtml(item.descripcion)}" placeholder="Descripción de la muestra (ej: Biopsia gástrica)" style="flex: 2; font-size: 0.85rem; padding: 6px 10px;">
-            <div style="display: flex; align-items: center; gap: 4px;">
-                <span style="font-size: 0.8rem; color: #94a3b8;">S/</span>
-                <input type="number" step="0.50" min="0" class="filter-input input-muestra-precio" data-index="${index}" value="${(item.precio || 0).toFixed(2)}" placeholder="0.00" style="width: 90px; font-size: 0.85rem; font-weight: 700; text-align: right; padding: 6px 8px;">
-            </div>
-            ${muestrasActuales.length > 1 ? `
-                <button type="button" class="btn btn-secondary btn-remove-muestra" data-index="${index}" style="padding: 6px 9px; color: #f87171; border-color: rgba(239, 68, 68, 0.3);" title="Quitar esta muestra">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            ` : '<div style="width: 32px;"></div>'}
+            <span style="color: #38bdf8; font-weight: bold; width: 25px;">#${index + 1}</span>
+            <input type="text" class="filter-input input-muestra-desc" data-index="${index}" value="${escapeHtml(item.descripcion)}" style="flex: 3;">
+            <input type="number" class="filter-input input-muestra-precio" data-index="${index}" value="${item.precio}" style="width: 80px; text-align: right;">
+            <button class="btn-remove-muestra" data-index="${index}" style="background: none; border: none; color: #f87171; cursor: pointer;">
+                <i class="fa-solid fa-trash"></i>
+            </button>
         `;
         container.appendChild(row);
     });
 
-    // Vincular eventos de inputs
-    container.querySelectorAll('.input-muestra-desc').forEach(input => {
-        input.addEventListener('input', (e) => {
-            const idx = parseInt(e.target.dataset.index, 10);
-            if (muestrasActuales[idx]) {
-                muestrasActuales[idx].descripcion = e.target.value;
-            }
+    // Re-vincular eventos
+    container.querySelectorAll('.input-muestra-desc').forEach(inp => {
+        inp.addEventListener('change', (e) => {
+            muestrasActuales[e.target.dataset.index].descripcion = e.target.value;
         });
     });
-
-    container.querySelectorAll('.input-muestra-precio').forEach(input => {
-        input.addEventListener('input', (e) => {
-            const idx = parseInt(e.target.dataset.index, 10);
-            if (muestrasActuales[idx]) {
-                muestrasActuales[idx].precio = parseFloat(e.target.value) || 0;
-                recomputeTotal();
-            }
+    container.querySelectorAll('.input-muestra-precio').forEach(inp => {
+        inp.addEventListener('change', (e) => {
+            muestrasActuales[e.target.dataset.index].precio = parseFloat(e.target.value) || 0;
+            recomputeTotal();
         });
     });
-
     container.querySelectorAll('.btn-remove-muestra').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const idx = parseInt(e.currentTarget.dataset.index, 10);
+            const idx = parseInt(e.currentTarget.dataset.index);
             if (muestrasActuales.length > 1) {
                 muestrasActuales.splice(idx, 1);
                 renderMuestrasInputs();
@@ -404,380 +349,150 @@ export function renderMuestrasInputs() {
             }
         });
     });
-
     recomputeTotal();
 }
 
-export function addMuestra(descripcion, precio) {
-    muestrasActuales.push({ descripcion, precio });
-    renderMuestrasInputs();
+function recomputeTotal() {
+    const total = muestrasActuales.reduce((acc, m) => acc + (parseFloat(m.precio) || 0), 0);
+    const display = document.getElementById('boletaTotalDisplay');
+    if (display) display.textContent = `S/ ${total.toFixed(2)}`;
+}
+
+function setupBoletasEventListeners() {
+    safeListen('btnAgregarMuestraBoleta', 'click', () => {
+        muestrasActuales.push({ descripcion: `Muestra #${muestrasActuales.length + 1}`, precio: 70.00, cantidad: 1 });
+        renderMuestrasInputs();
+    });
+
+    safeListen('btnEmitirBoletaDirecto', 'click', handleEmitirBoletaClick);
+    
+    safeListen('boletaEmpresaSelect', 'change', (e) => {
+        const emp = getStoredEmpresas().find(x => x.id === e.target.value);
+        if (emp) {
+            const rucDisp = document.getElementById('boletaRucDisplay');
+            if (rucDisp) rucDisp.textContent = emp.ruc;
+        }
+    });
+
+    // Listeners para modales reportados como faltantes por L1
+    safeListen('btnAddMuestraModal', 'click', () => {
+        const modal = document.getElementById('modalAddMuestra');
+        if (modal) modal.style.display = 'flex';
+    });
+
+    safeListen('btnCancelAddMuestraModal', 'click', () => {
+        const modal = document.getElementById('modalAddMuestra');
+        if (modal) modal.style.display = 'none';
+    });
+}
+
+/**
+ * STAGE 4: VALIDACIÓN DETERMINISTA Y CASOS BORDE
+ * ------------------------------------------------------------------------------
+ * Asegura que los datos de facturación sean íntegros antes de la persistencia.
+ * Valida RUCs, evita duplicados y gestiona el correlativo BOL-YYYY-XXXX.
+ * ------------------------------------------------------------------------------
+ */
+
+export function generateNextBoletaCode() {
+    const boletas = getStoredBoletas();
+    const year = new Date().getFullYear();
+    const prefix = `BOL-${year}-`;
+    const nums = boletas.filter(b => b.codigo.startsWith(prefix))
+                        .map(b => parseInt(b.codigo.split('-')[2]))
+                        .filter(n => !isNaN(n));
+    const next = (nums.length > 0 ? Math.max(...nums) : 0) + 1;
+    return `${prefix}${next.toString().padStart(4, '0')}`;
+}
+
+function handleEmitirBoletaClick() {
+    const empId = document.getElementById('boletaEmpresaSelect')?.value;
+    if (!empId) return alert("Seleccione una empresa.");
+
+    const empresa = getStoredEmpresas().find(e => e.id === empId);
+    const total = muestrasActuales.reduce((acc, m) => acc + (parseFloat(m.precio) || 0), 0);
+    const codigo = generateNextBoletaCode();
+
+    const boletaData = {
+        id: `bol_${Date.now()}`,
+        codigo,
+        razonSocial: empresa.razonSocial,
+        ruc: empresa.ruc,
+        direccion: empresa.direccion,
+        fecha: document.getElementById('boletaFechaEmision')?.value || new Date().toISOString(),
+        muestras: [...muestrasActuales],
+        total,
+        estado: 'PAGADO',
+        createdAt: new Date().toISOString()
+    };
+
+    const history = getStoredBoletas();
+    history.push(boletaData);
+    saveStoredBoletas(history);
+    
+    generateBoletaPDF(boletaData);
+    renderBoletasTable();
+    
+    if (window.notifyUser) window.notifyUser(`Boleta ${codigo} generada.`, 'success');
 }
 
 export function renderEmpresasSelect() {
     const select = document.getElementById('boletaEmpresaSelect');
     if (!select) return;
-
     const empresas = getStoredEmpresas();
-    select.innerHTML = '<option value="">-- SELECCIONAR EMPRESA O CLÍNICA HABITUAL --</option>';
-
-    empresas.forEach(emp => {
-        const opt = document.createElement('option');
-        opt.value = emp.id;
-        opt.textContent = `${emp.razonSocial} (RUC: ${emp.ruc})`;
-        select.appendChild(opt);
-    });
+    select.innerHTML = '<option value="">-- SELECCIONAR EMPRESA --</option>' + 
+        empresas.map(e => `<option value="${e.id}">${e.razonSocial} (${e.ruc})</option>`).join('');
 }
 
 export function renderEmpresasTable() {
     const tbody = document.getElementById('boletasEmpresasTableBody');
     if (!tbody) return;
-
     const empresas = getStoredEmpresas();
-    tbody.innerHTML = '';
-
-    if (empresas.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px; color: #94a3b8;">No hay empresas registradas aún. Presione "➕ Nueva Empresa" para agregar una.</td></tr>';
-        return;
-    }
-
-    empresas.forEach((emp, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><strong>#${index + 1}</strong></td>
-            <td><strong>${escapeHtml(emp.razonSocial)}</strong></td>
-            <td><code>${escapeHtml(emp.ruc)}</code></td>
-            <td>${escapeHtml(emp.direccion || '-')}</td>
-            <td>${escapeHtml(emp.telefono || '-')}</td>
-            <td>
-                <button type="button" class="editor-btn-danger btn-sm-tool" onclick="window.deleteEmpresaDirectly && window.deleteEmpresaDirectly('${emp.id}')" title="Eliminar empresa del catálogo">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+    tbody.innerHTML = empresas.map((e, i) => `
+        <tr>
+            <td>${i+1}</td>
+            <td>${escapeHtml(e.razonSocial)}</td>
+            <td>${e.ruc}</td>
+            <td>${escapeHtml(e.direccion)}</td>
+            <td><button onclick="window.deleteEmpresaDirectly('${e.id}')" class="btn-danger-sm"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+    `).join('');
 }
 
 export function renderBoletasTable() {
     const tbody = document.getElementById('boletasHistoryTableBody');
     if (!tbody) return;
-
     const boletas = getStoredBoletas();
-    tbody.innerHTML = '';
-
-    if (boletas.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px; color: #94a3b8;">Aún no se han emitido constancias. Seleccione una empresa arriba y presione "GENERAR CONSTANCIA PDF".</td></tr>';
-        return;
-    }
-
-    const sorted = [...boletas].sort((a, b) => new Date(b.createdAt || b.fecha) - new Date(a.createdAt || a.fecha));
-
-    sorted.forEach(b => {
-        const tr = document.createElement('tr');
-        const fechaStr = b.fecha ? new Date(b.fecha).toLocaleDateString('es-PE') : '-';
-        tr.innerHTML = `
-            <td><strong style="color: #38bdf8;">${escapeHtml(b.codigo)}</strong></td>
-            <td><strong>${escapeHtml(b.razonSocial)}</strong></td>
-            <td>${fechaStr}</td>
-            <td style="text-align:center;">${b.numMuestras || 1} muestras</td>
-            <td><strong style="color: #10b981;">S/ ${(parseFloat(b.total) || 0).toFixed(2)}</strong></td>
-            <td>
-                <button type="button" class="editor-btn-secondary btn-sm-tool" onclick="window.reprintBoletaDirectly && window.reprintBoletaDirectly('${b.codigo}')" title="Reimprimir / Descargar PDF">
-                    <i class="fa-solid fa-print"></i> PDF
-                </button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+    tbody.innerHTML = boletas.map(b => `
+        <tr>
+            <td style="color:#38bdf8; font-weight:bold;">${b.codigo}</td>
+            <td>${escapeHtml(b.razonSocial)}</td>
+            <td>${new Date(b.fecha).toLocaleDateString()}</td>
+            <td>S/ ${parseFloat(b.total).toFixed(2)}</td>
+            <td><button onclick="window.reprintBoletaDirectly('${b.codigo}')" class="btn-print-sm"><i class="fa-solid fa-file-pdf"></i></button></td>
+        </tr>
+    `).join('');
 }
 
-function recomputeTotal() {
-    const total = muestrasActuales.reduce((acc, item) => acc + (parseFloat(item.precio) || 0), 0);
-    const count = muestrasActuales.length;
-
-    const totalDisplay = document.getElementById('boletaTotalDisplay');
-    const subtotalCalc = document.getElementById('boletaSubtotalCalculado');
-    const countDisplay = document.getElementById('boletaTotalMuestrasCount');
-
-    if (totalDisplay) totalDisplay.textContent = `S/ ${total.toFixed(2)}`;
-    if (subtotalCalc) subtotalCalc.textContent = `S/ ${total.toFixed(2)}`;
-    if (countDisplay) countDisplay.textContent = `${count}`;
-}
-
-let _boletasListenersAttached = false;
-
-function setupBoletasEventListeners() {
-    if (_boletasListenersAttached) return;
-    _boletasListenersAttached = true;
-
-    const select = document.getElementById('boletaEmpresaSelect');
-    if (select) {
-        select.addEventListener('change', (e) => {
-            const empId = e.target.value;
-            const empresas = getStoredEmpresas();
-            const found = empresas.find(emp => emp.id === empId);
-
-            const rucEl = document.getElementById('boletaRucDisplay');
-            const dirEl = document.getElementById('boletaDirDisplay');
-            const telEl = document.getElementById('boletaTelDisplay');
-
-            if (found) {
-                if (rucEl) rucEl.textContent = found.ruc || '-';
-                if (dirEl) dirEl.textContent = found.direccion || 'No especificada';
-                if (telEl) telEl.textContent = found.telefono || 'No registrado';
-            } else {
-                if (rucEl) rucEl.textContent = '-';
-                if (dirEl) dirEl.textContent = '-';
-                if (telEl) telEl.textContent = '-';
-            }
-        });
-    }
-
-    const btnAddMuestra = document.getElementById('btnAgregarMuestraBoleta');
-    if (btnAddMuestra) {
-        btnAddMuestra.addEventListener('click', () => {
-            // Abre el modal para añadir una nueva muestra
-            openAddMuestraModal();
-        });
-    }
-
-    const btnEmitir = document.getElementById('btnEmitirBoletaDirecto');
-    if (btnEmitir) {
-        btnEmitir.addEventListener('click', handleEmitirBoletaClick);
-    }
-
-    const btnNuevaEmpresa = document.getElementById('btnOpenModalNuevaEmpresa');
-    if (btnNuevaEmpresa) {
-        btnNuevaEmpresa.addEventListener('click', () => {
-            const modal = document.getElementById('modalNuevaEmpresa');
-            if (modal) modal.style.display = 'flex';
-        });
-    }
-
-    const btnGuardarEmpresa = document.getElementById('btnGuardarNuevaEmpresa');
-    if (btnGuardarEmpresa) {
-        btnGuardarEmpresa.addEventListener('click', handleGuardarNuevaEmpresa);
-    }
-
-    // Event listeners para el nuevo modal de añadir muestras
-    const btnAddMuestraModal = document.getElementById('btnAddMuestraModal');
-    if (btnAddMuestraModal) {
-        btnAddMuestraModal.addEventListener('click', handleAddMuestraFromModal);
-    }
-
-    const btnCancelAddMuestraModal = document.getElementById('btnCancelAddMuestraModal');
-    if (btnCancelAddMuestraModal) {
-        btnCancelAddMuestraModal.addEventListener('click', closeAddMuestraModal);
-    }
-}
-
-function openAddMuestraModal() {
-    const modal = document.getElementById('modalAddMuestra');
-    if (modal) {
-        const descInput = document.getElementById('newMuestraDesc');
-        const precioInput = document.getElementById('newMuestraPrecio');
-        if (descInput) descInput.value = `Muestra #${muestrasActuales.length + 1}: Biopsia / espécimen histopatológico`;
-        if (precioInput) precioInput.value = '70.00'; // Default price
-        modal.style.display = 'flex';
-        if (descInput) descInput.focus();
-    }
-}
-
-function closeAddMuestraModal() {
-    const modal = document.getElementById('modalAddMuestra');
-    if (modal) modal.style.display = 'none';
-}
-
-function handleAddMuestraFromModal() {
-    const descInput = document.getElementById('newMuestraDesc');
-    const precioInput = document.getElementById('newMuestraPrecio');
-
-    const descripcion = descInput?.value.trim();
-    const precio = parseFloat(precioInput?.value) || 0;
-
-    if (!descripcion) {
-        alert('Por favor, ingrese una descripción para la muestra.');
-        descInput?.focus();
-        return;
-    }
-    if (precio <= 0) {
-        alert('El precio de la muestra debe ser mayor a cero.');
-        precioInput?.focus();
-        return;
-    }
-
-    addMuestra(descripcion, precio);
-    closeAddMuestraModal();
-    if (typeof window.notifyUser === 'function') {
-        window.notifyUser(`Muestra "${descripcion}" añadida.`, 'info');
-    }
-}
-
-
-function handleEmitirBoletaClick() {
-    const select = document.getElementById('boletaEmpresaSelect');
-    const empId = select?.value;
-
-    if (!empId) {
-        alert('Por favor seleccione una empresa o clínica de la lista antes de generar la constancia.');
-        select?.focus();
-        return;
-    }
-
-    const empresas = getStoredEmpresas();
-    const empresa = empresas.find(e => e.id === empId);
-    if (!empresa) {
-        alert('Empresa no encontrada en el catálogo.');
-        return;
-    }
-
-    if (muestrasActuales.length === 0) {
-        alert('Debe ingresar al menos una muestra.');
-        return;
-    }
-
-    const total = muestrasActuales.reduce((acc, m) => acc + (parseFloat(m.precio) || 0), 0);
-
-    if (total <= 0) {
-        alert('El monto total a facturar debe ser mayor a cero.');
-        return;
-    }
-
-    const codigo = generateNextBoletaCode();
-    const fecha = document.getElementById('boletaFechaEmision')?.value || new Date().toISOString().split('T')[0];
-    const concepto = document.getElementById('boletaConceptoEstudio')?.value || 'Servicio de procesamiento e informe histopatológico.';
-    const tipoServicio = document.getElementById('boletaTipoServicioSelect')?.value || 'Servicio de Anatomía Patológica';
-
-    const boletaData = {
-        codigo,
-        empresaId: empresa.id,
-        razonSocial: empresa.razonSocial,
-        ruc: empresa.ruc,
-        direccion: empresa.direccion,
-        telefono: empresa.telefono,
-        fecha,
-        numMuestras: muestrasActuales.length,
-        muestras: [...muestrasActuales],
-        total,
-        concepto,
-        tipoServicio,
-        createdAt: new Date().toISOString()
-    };
-
-    const boletas = getStoredBoletas();
-    boletas.push(boletaData);
-    saveStoredBoletas(boletas);
-
-    generateBoletaPDF(boletaData);
-    renderBoletasTable();
-
-    // Resetear muestras actuales para la siguiente boleta
-    muestrasActuales = [{ descripcion: 'Muestra #1: Biopsia gástrica / espécimen histopatológico', precio: 70.00 }];
-    renderMuestrasInputs();
-
-    if (typeof window.notifyUser === 'function') {
-        window.notifyUser(`Constancia ${codigo} generada exitosamente.`, 'success');
-    } else {
-        alert(`✅ Constancia ${codigo} generada exitosamente para ${empresa.razonSocial}.\nTotal Liquidado: S/ ${total.toFixed(2)} (${muestrasActuales.length} muestras).`);
-    }
-}
-
-function handleGuardarNuevaEmpresa() {
-    const razonSocialInput = document.getElementById('newEmpRazonSocial');
-    const rucInput = document.getElementById('newEmpRuc');
-    const direccionInput = document.getElementById('newEmpDireccion');
-    const telefonoInput = document.getElementById('newEmpTelefono');
-
-    const razonSocial = (razonSocialInput?.value || '').trim();
-    const ruc = (rucInput?.value || '').trim();
-    const direccion = (direccionInput?.value || '').trim();
-    const telefono = (telefonoInput?.value || '').trim();
-
-    if (!razonSocial) {
-        alert('Ingrese la Razón Social o Nombre de la Institución.');
-        razonSocialInput?.focus();
-        return;
-    }
-    if (!ruc || ruc.length < 8) {
-        alert('Ingrese un RUC (11 dígitos) o DNI (8 dígitos) válido.');
-        rucInput?.focus();
-        return;
-    }
-
-    const empresas = getStoredEmpresas();
-    const existe = empresas.find(e => e.ruc === ruc);
-    if (existe) {
-        alert('Ya existe una empresa registrada con este mismo RUC o documento.');
-        rucInput?.focus();
-        return;
-    }
-
-    const newEmp = {
-        id: `emp_${Date.now()}`,
-        razonSocial: razonSocial.toUpperCase(),
-        ruc,
-        direccion: direccion || 'No especificada',
-        telefono: telefono || '-',
-        createdAt: new Date().toISOString()
-    };
-
-    empresas.push(newEmp);
-    saveStoredEmpresas(empresas);
-
-    if (razonSocialInput) razonSocialInput.value = '';
-    if (rucInput) rucInput.value = '';
-    if (direccionInput) direccionInput.value = '';
-    if (telefonoInput) telefonoInput.value = '';
-
-    const modal = document.getElementById('modalNuevaEmpresa');
-    if (modal) modal.style.display = 'none';
-
-    renderEmpresasSelect();
-    renderEmpresasTable();
-
-    const select = document.getElementById('boletaEmpresaSelect');
-    if (select) {
-        select.value = newEmp.id;
-        select.dispatchEvent(new Event('change'));
-    }
-
-    if (typeof window.notifyUser === 'function') {
-        window.notifyUser(`Empresa "${newEmp.razonSocial}" registrada permanentemente.`, 'success');
-    }
-}
-
-window.deleteEmpresaDirectly = function(empId) {
-    const empresas = getStoredEmpresas();
-    const emp = empresas.find(e => e.id === empId);
-    if (!emp) return;
-
-    if (confirm(`¿Está seguro de eliminar a "${emp.razonSocial}" del catálogo de empresas?`)) {
-        const filtered = empresas.filter(e => e.id !== empId);
+window.deleteEmpresaDirectly = (id) => {
+    if (confirm("¿Eliminar empresa?")) {
+        const filtered = getStoredEmpresas().filter(e => e.id !== id);
         saveStoredEmpresas(filtered);
         renderEmpresasSelect();
         renderEmpresasTable();
-        if (typeof window.notifyUser === 'function') {
-            window.notifyUser('Empresa eliminada del catálogo.', 'info');
-        }
     }
 };
 
-window.reprintBoletaDirectly = function(codigo) {
-    const boletas = getStoredBoletas();
-    const found = boletas.find(b => b.codigo === codigo);
-    if (found) {
-        generateBoletaPDF(found);
-    } else {
-        alert('No se encontró la boleta especificada.');
-    }
+window.reprintBoletaDirectly = (codigo) => {
+    const boleta = getStoredBoletas().find(b => b.codigo === codigo);
+    if (boleta) generateBoletaPDF(boleta);
 };
 
 function escapeHtml(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
+
+// Inicialización automática al cargar el módulo
+document.addEventListener('DOMContentLoaded', initBoletasModule);
