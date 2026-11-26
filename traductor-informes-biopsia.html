@@ -3,23 +3,144 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Traductor de Informes de Biopsia</title>
+    <title>Traductor de Informes de Biopsia | JC PATH LAB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Re‑uso de estilos globales -->
     <link rel="stylesheet" href="client_simulator.css">
     <link rel="stylesheet" href="cortana_chat.css">
     <style>
-        body{font-family:Arial,sans-serif;margin:0;padding:1rem;background:#f9f9f9}
-        .container{max-width:960px;margin:auto;background:#fff;padding:1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-        h1{margin-top:0;color:#2c3e50}
-        textarea{width:100%;height:120px;padding:.5rem;font-size:1rem;resize:vertical}
-        select,button{padding:.5rem 1rem;font-size:1rem;margin-top:.5rem}
-        #output{white-space:pre-wrap;background:#eef;border-radius:4px;padding:.75rem;margin-top:.5rem;min-height:80px}
-        table{width:100%;border-collapse:collapse;margin-top:1rem}
-        th,td{border:1px solid #ddd;padding:.5rem;text-align:left}
-        th{background:#2c3e50;color:#fff}
-        .red{color:#c0392b;font-weight:bold}
-        .green{color:#27ae60;font-weight:bold}
+        :root {
+            --primary: #1a365d;
+            --primary-hover: #2b6cb0;
+            --bg-body: #f7fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #2d3748;
+            --red: #c0392b;
+            --green: #27ae60;
+        }
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 1.5rem;
+            background: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 960px;
+            margin: auto;
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+        h1 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.75rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: .75rem;
+        }
+        h2 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-top: 2rem;
+        }
+        .form-group {
+            margin-top: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: .35rem;
+            font-size: .95rem;
+        }
+        textarea {
+            width: 100%;
+            height: 130px;
+            padding: .75rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            resize: vertical;
+            background: #fff;
+            transition: border-color .2s;
+        }
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+        }
+        select, button {
+            padding: .65rem 1.2rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            cursor: pointer;
+        }
+        button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background .2s, opacity .2s;
+        }
+        button:hover {
+            background: var(--primary-hover);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        #output {
+            white-space: pre-wrap;
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+            min-height: 80px;
+            font-size: .95rem;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            text-align: left;
+            font-size: .92rem;
+        }
+        th, td {
+            padding: .75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: #f8fafc;
+        }
+        .red {
+            color: var(--red);
+            font-weight: bold;
+        }
+        .green {
+            color: var(--green);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -27,11 +148,13 @@
     <h1>Traductor de Informes de Biopsia</h1>
 
     <!-- Entrada del informe original -->
-    <label for="sourceText"><strong>Informe original</strong> (texto libre):</label>
-    <textarea id="sourceText" placeholder="Pegue aquí el informe de biopsia..."></textarea>
+    <div class="form-group">
+        <label for="sourceText"><strong>Informe original</strong> (texto libre):</label>
+        <textarea id="sourceText" placeholder="Pegue aquí el informe de biopsia anatomo-patológica..."></textarea>
+    </div>
 
     <!-- Selección de idioma de destino -->
-    <div>
+    <div class="form-group">
         <label for="targetLang"><strong>Idioma de salida</strong>:</label>
         <select id="targetLang">
             <option value="es">Español (original)</option>
@@ -42,24 +165,26 @@
     </div>
 
     <!-- Botón de traducción -->
-    <button id="translateBtn">Traducir</button>
+    <button id="translateBtn">Traducir Informe</button>
 
     <!-- Área de resultado -->
-    <div id="output" aria-live="polite"></div>
+    <div id="output" aria-live="polite">Resultado de la traducción aparecerá aquí...</div>
 
     <!-- Historial de traducciones (SLA: 🔴 inconclusos arriba, 🟢 firmados abajo) -->
-    <h2>Historial de traducciones</h2>
-    <table id="historyTable">
-        <thead>
-            <tr>
-                <th>Fecha‑Hora</th>
-                <th>Estado</th>
-                <th>Idioma</th>
-                <th>Resumen</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <h2>Historial de Traducciones y SLA</h2>
+    <div class="table-responsive">
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>Fecha‑Hora</th>
+                    <th>Estado</th>
+                    <th>Idioma</th>
+                    <th>Resumen</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
 
 <script>
@@ -84,7 +209,7 @@ function saveHistory(hist) {
 function addHistory(entry) {
     const hist = loadHistory();
 
-    // 0 = inconcluso (error), 1 = firmado (éxito)
+    // 0 = inconcluso (error/proceso), 1 = firmado (éxito)
     if (entry.status === 0) {
         // inconclusos al inicio (preservando orden cronológico descendente)
         hist.unshift(entry);
@@ -99,7 +224,7 @@ function addHistory(entry) {
     renderHistory();
 }
 
-// Renderiza tabla respetando SLA
+// Renderiza tabla respetando SLA con DocumentFragment (O(1) reflows)
 function renderHistory() {
     const tbody = document.querySelector('#historyTable tbody');
     tbody.innerHTML = '';
@@ -111,6 +236,8 @@ function renderHistory() {
         ...hist.filter(e => e.status === 0),
         ...hist.filter(e => e.status === 1)
     ];
+
+    const fragment = document.createDocumentFragment();
 
     for (const e of sorted) {
         const tr = document.createElement('tr');
@@ -126,21 +253,32 @@ function renderHistory() {
         tdSummary.textContent = e.summary;
 
         tr.append(tdDate, tdStatus, tdLang, tdSummary);
-        tbody.appendChild(tr);
+        fragment.appendChild(tr);
     }
+
+    tbody.appendChild(fragment);
 }
 
 /* -------------------------------------------------------------
    Lógica de traducción (fetch → FastAPI → respuesta)
    ------------------------------------------------------------- */
 async function translate() {
-    const source = document.getElementById('sourceText').value.trim();
+    const sourceTextEl = document.getElementById('sourceText');
+    const translateBtn = document.getElementById('translateBtn');
+    const outputEl = document.getElementById('output');
+    
+    const source = sourceTextEl.value.trim();
     const target = document.getElementById('targetLang').value;
 
     if (!source) {
         alert('Debe ingresar el informe a traducir.');
+        sourceTextEl.focus();
         return;
     }
+
+    translateBtn.disabled = true;
+    translateBtn.textContent = 'Traduciendo...';
+    outputEl.textContent = 'Procesando traducción con motor neuronal...';
 
     const payload = {
         prompt: `Traduce el siguiente informe de biopsia al ${target} manteniendo terminología médica exacta:\n\n${source}`
@@ -166,15 +304,18 @@ async function translate() {
         const data = await resp.json();   // { answer: "texto traducido" }
         const translated = data.answer || 'Sin respuesta del motor.';
 
-        document.getElementById('output').textContent = translated;
+        outputEl.textContent = translated;
 
         // Actualiza historial como éxito
         entry.status = 1;
         entry.summary = translated.slice(0, 60) + (translated.length > 60 ? '...' : '');
         addHistory(entry);
     } catch (err) {
-        document.getElementById('output').textContent = `Error: ${err.message}`;
-        // El registro ya está como inconcluso; nada más que hacer.
+        outputEl.textContent = `Error de conexión o motor: ${err.message}`;
+        // El registro se mantiene como inconcluso (status 0).
+    } finally {
+        translateBtn.disabled = false;
+        translateBtn.textContent = 'Traducir Informe';
     }
 }
 
