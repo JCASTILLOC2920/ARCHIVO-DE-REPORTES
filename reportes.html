@@ -13075,6 +13075,7 @@ html body .report-editor-container {
   /* Ocultar botones solicitados (Reporte de Boletas, Actualizar, Copiloto IA, Chat Cortana) */
   #btnHeaderReporteBoletas, #btnHeaderGroqAI, #btnSidebarGroqAI, #btnSidebarBoletas,
   #cortanaInlinePanel, .cortana-inline-wrapper, .cortana-search-bar, #cortanaChatBtn,
+  #cortanaSearchInput, .cortana-search-field, .cortana-assistant-bar, .cortana-header-bar,
   button[title*="Actualizar"], button[onclick*="refreshData"], button[onclick*="recargar"] {
     display: none !important;
   }
@@ -27936,7 +27937,21 @@ html body .report-editor-container {
 
 
 
-                  var displaySet = cleanPts.slice(0, 30);
+                  var pageSize = 30;
+                  var totalPages = Math.max(1, Math.ceil(cleanPts.length / pageSize));
+                  if (!window._lastDirectFilterKey) window._lastDirectFilterKey = '';
+                  var filterKey = String(sTab) + '||' + String(q || '');
+                  if (filterKey !== window._lastDirectFilterKey) {
+                      window.currentDirectPage = 1;
+                      window._lastDirectFilterKey = filterKey;
+                  }
+                  var curPage = parseInt(window.currentDirectPage || 1, 10);
+                  if (isNaN(curPage) || curPage < 1) curPage = 1;
+                  if (curPage > totalPages) curPage = totalPages;
+                  window.currentDirectPage = curPage;
+                  var startIdx = (curPage - 1) * pageSize;
+                  var endIdx = Math.min(startIdx + pageSize, cleanPts.length);
+                  var displaySet = cleanPts.slice(startIdx, endIdx);
 
 
                   var tbody = document.getElementById('tableBody');
@@ -28095,7 +28110,44 @@ html body .report-editor-container {
                       var info = document.getElementById('patientsTableInfo');
 
 
-                      if (info) info.textContent = 'Mostrando 1 - ' + displaySet.length + ' de ' + cleanPts.length + ' registros';
+                      if (info) info.textContent = 'Mostrando ' + (cleanPts.length ? (startIdx + 1) : 0) + ' - ' + endIdx + ' de ' + cleanPts.length + ' registros';
+                      var pagEl = document.getElementById('patientsPagination');
+                      if (pagEl) {
+                          if (totalPages <= 1) {
+                              pagEl.innerHTML = '';
+                          } else {
+                              var pHtml = '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">';
+                              var btnStyle = 'padding:6px 11px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;cursor:pointer;font-size:0.82rem;font-weight:600;';
+                              var activeStyle = 'padding:6px 11px;border-radius:8px;border:1px solid #38bdf8;background:#0284c7;color:#ffffff;cursor:pointer;font-size:0.82rem;font-weight:700;';
+                              var disStyle = 'padding:6px 11px;border-radius:8px;border:1px solid #1e293b;background:#0f172a;color:#475569;cursor:not-allowed;font-size:0.82rem;font-weight:600;';
+                              pHtml += '<button type="button" ' + (curPage <= 1 ? 'disabled style="' + disStyle + '"' : 'style="' + btnStyle + '" onclick="window.goToDirectPage(1)"') + ' title="Primera página">«</button>';
+                              pHtml += '<button type="button" ' + (curPage <= 1 ? 'disabled style="' + disStyle + '"' : 'style="' + btnStyle + '" onclick="window.goToDirectPage(' + (curPage - 1) + ')"') + ' title="Anterior">‹ Anterior</button>';
+                              var winStart = Math.max(1, curPage - 2);
+                              var winEnd = Math.min(totalPages, curPage + 2);
+                              if (winStart > 1) {
+                                  pHtml += '<button type="button" style="' + btnStyle + '" onclick="window.goToDirectPage(1)">1</button>';
+                                  if (winStart > 2) pHtml += '<span style="color:#64748b;padding:0 4px;">...</span>';
+                              }
+                              for (var p = winStart; p <= winEnd; p++) {
+                                  pHtml += '<button type="button" style="' + (p === curPage ? activeStyle : btnStyle) + '" onclick="window.goToDirectPage(' + p + ')">' + p + '</button>';
+                              }
+                              if (winEnd < totalPages) {
+                                  if (winEnd < totalPages - 1) pHtml += '<span style="color:#64748b;padding:0 4px;">...</span>';
+                                  pHtml += '<button type="button" style="' + btnStyle + '" onclick="window.goToDirectPage(' + totalPages + ')">' + totalPages + '</button>';
+                              }
+                              pHtml += '<button type="button" ' + (curPage >= totalPages ? 'disabled style="' + disStyle + '"' : 'style="' + btnStyle + '" onclick="window.goToDirectPage(' + (curPage + 1) + ')"') + ' title="Siguiente">Siguiente ›</button>';
+                              pHtml += '<button type="button" ' + (curPage >= totalPages ? 'disabled style="' + disStyle + '"' : 'style="' + btnStyle + '" onclick="window.goToDirectPage(' + totalPages + ')"') + ' title="Última página">»</button>';
+                              pHtml += '</div>';
+                              pagEl.innerHTML = pHtml;
+                          }
+                      }
+                      if (!window.goToDirectPage) {
+                          window.goToDirectPage = function(p) {
+                              window.currentDirectPage = p;
+                              var si = document.getElementById('searchInput') || document.getElementById('searchPatientsInput');
+                              window.renderTableDirecto(window.currentServiceTab || 'Q', si ? si.value : '');
+                          };
+                      }
 
 
                   }
@@ -38841,7 +38893,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-        <button type="button" class="mobile-dock-btn" id="btnInstallApp" onclick="if(window.deferredInstallPrompt){window.deferredInstallPrompt.prompt();} else { alert('Para instalar en tu celular Android:\n1. Toca el menú del navegador (tres puntos ⋮)\n2. Selecciona «Instalar aplicación» o «Agregar a la pantalla principal»\n\nQuedará como una app nativa con acceso offline y cámara.'); }">
+        <button type="button" class="mobile-dock-btn" id="btnInstallAppMobile" onclick="if(window.deferredInstallPrompt){window.deferredInstallPrompt.prompt();} else { alert('Para instalar en tu celular Android:\n1. Toca el menú del navegador (tres puntos ⋮)\n2. Selecciona «Instalar aplicación» o «Agregar a la pantalla principal»\n\nQuedará como una app nativa con acceso offline y cámara.'); }">
 
 
 

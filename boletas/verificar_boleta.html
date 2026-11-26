@@ -6,7 +6,7 @@
     <title>JC PATH LAB - Verificación Criptográfica Zero-Trust de Boletas</title>
     <link rel="stylesheet" href="css/all.min.css">
     <script src="dexie.min.js"></script>
-    <script>window.Dexie || document.write('<script src="https://unpkg.com/dexie@3.2.2/dist/dexie.js"><\/script>')</script>
+    <script>window.Dexie || document.write('<scr' + 'ipt src="https://unpkg.com/dexie@3.2.2/dist/dexie.js"><\/script>')</script>
     <script src="qrcode.min.js"></script>
     <style>
         :root {
@@ -658,7 +658,7 @@
 
         // Clave secreta soberana utilizada para la generación del HMAC.
         // REEMPLAZAR 'REPLACE_WITH_REAL_SECRET' por la clave real del entorno de producción.
-        const SOBERANA_SECRET_KEY = 'REPLACE_WITH_REAL_SECRET';
+        // Usa SOBERANA_SECRET_KEY declarada en linea 615
 
         async function calcularSHA256(cadena) {
             // Utiliza la API Web Crypto si está disponible; de lo contrario, devuelve una cadena vacía.

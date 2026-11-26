@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Re‑uso de estilos globales -->
     <link rel="stylesheet" href="client_simulator.css">
-    <link rel="stylesheet" href="cortana_chat.css">
+
     <style>
         :root {
             --primary: #1a365d;
@@ -194,63 +194,44 @@
 const API_ENDPOINT = '/cortana/ask';          // FastAPI endpoint existente
 const STORAGE_KEY   = 'biopsyTranslatorHistory';
 
-/* Carga historial desde localStorage (si existe) */
+// Carga historial desde localStorage (si existe)
 function loadHistory() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    try {
-        return JSON.parse(raw);
-    } catch {
-        // Si el JSON está corrupto, lo reiniciamos
-        localStorage.removeItem(STORAGE_KEY);
-        return [];
-    }
+    return raw ? JSON.parse(raw) : [];
 }
 
-/* Guarda historial completo en localStorage */
+// Guarda historial completo en localStorage
 function saveHistory(hist) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(hist));
 }
 
-/* Añade una entrada al historial manteniendo SLA */
+// Añade una entrada al historial manteniendo SLA:
 function addHistory(entry) {
     const hist = loadHistory();
 
-    // Evitar duplicados por timestamp (caso de re‑intento)
-    if (!hist.some(e => e.timestamp === entry.timestamp)) {
-        if (entry.status === 0) {
-            // inconclusos al inicio
-            hist.unshift(entry);
-        } else {
-            // firmados al final
-            hist.push(entry);
-        }
-
-        // Limitar a 200 registros
-        if (hist.length > 200) hist.length = 200;
-        saveHistory(hist);
-        renderHistory();
+    // 0 = inconcluso (error/proceso), 1 = firmado (éxito)
+    if (entry.status === 0) {
+        // inconclusos al inicio (preservando orden cronológico descendente)
+        hist.unshift(entry);
+    } else {
+        // firmados al final (orden cronológico descendente)
+        hist.push(entry);
     }
+
+    // Limitar a 200 registros para evitar overflow de memoria
+    if (hist.length > 200) hist.length = 200;
+    saveHistory(hist);
+    renderHistory();
 }
 
-/* Actualiza una entrada existente (por timestamp) */
-function updateHistory(entry) {
-    const hist = loadHistory();
-    const idx = hist.findIndex(e => e.timestamp === entry.timestamp);
-    if (idx !== -1) {
-        hist[idx] = entry;
-        saveHistory(hist);
-        renderHistory();
-    }
-}
-
-/* Renderiza tabla respetando SLA con DocumentFragment (O(1) reflows) */
+// Renderiza tabla respetando SLA con DocumentFragment (O(1) reflows)
 function renderHistory() {
     const tbody = document.querySelector('#historyTable tbody');
     tbody.innerHTML = '';
 
     const hist = loadHistory();
 
+    // Inconclusos (status 0) primero, luego firmados (status 1)
     const sorted = [
         ...hist.filter(e => e.status === 0),
         ...hist.filter(e => e.status === 1)
@@ -260,18 +241,15 @@ function renderHistory() {
 
     for (const e of sorted) {
         const tr = document.createElement('tr');
-
         const tdDate = document.createElement('td');
-        tdDate.textContent = new Date(e.timestamp).toLocaleString();
-
         const tdStatus = document.createElement('td');
+        const tdLang = document.createElement('td');
+        const tdSummary = document.createElement('td');
+
+        tdDate.textContent = new Date(e.timestamp).toLocaleString();
         tdStatus.textContent = e.status === 1 ? '🟢 Firmado' : '🔴 Inconcluso';
         tdStatus.className = e.status === 1 ? 'green' : 'red';
-
-        const tdLang = document.createElement('td');
         tdLang.textContent = e.lang.toUpperCase();
-
-        const tdSummary = document.createElement('td');
         tdSummary.textContent = e.summary;
 
         tr.append(tdDate, tdStatus, tdLang, tdSummary);
@@ -285,21 +263,21 @@ function renderHistory() {
    Lógica de traducción (fetch → FastAPI → respuesta)
    ------------------------------------------------------------- */
 async function translate() {
-    const sourceEl   = document.getElementById('sourceText');
-    const btn        = document.getElementById('translateBtn');
-    const outputEl   = document.getElementById('output');
-
-    const source = sourceEl.value.trim();
+    const sourceTextEl = document.getElementById('sourceText');
+    const translateBtn = document.getElementById('translateBtn');
+    const outputEl = document.getElementById('output');
+    
+    const source = sourceTextEl.value.trim();
     const target = document.getElementById('targetLang').value;
 
     if (!source) {
         alert('Debe ingresar el informe a traducir.');
-        sourceEl.focus();
+        sourceTextEl.focus();
         return;
     }
 
-    btn.disabled = true;
-    btn.textContent = 'Traduciendo...';
+    translateBtn.disabled = true;
+    translateBtn.textContent = 'Traduciendo...';
     outputEl.textContent = 'Procesando traducción con motor neuronal...';
 
     const payload = {
@@ -331,13 +309,13 @@ async function translate() {
         // Actualiza historial como éxito
         entry.status = 1;
         entry.summary = translated.slice(0, 60) + (translated.length > 60 ? '...' : '');
-        updateHistory(entry);
+        addHistory(entry);
     } catch (err) {
         outputEl.textContent = `Error de conexión o motor: ${err.message}`;
-        // El registro permanece como inconcluso (status 0)
+        // El registro se mantiene como inconcluso (status 0).
     } finally {
-        btn.disabled = false;
-        btn.textContent = 'Traducir Informe';
+        translateBtn.disabled = false;
+        translateBtn.textContent = 'Traducir Informe';
     }
 }
 
