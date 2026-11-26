@@ -18,7 +18,7 @@
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
             cacheNames.forEach(function(name) {
-                if (name !== 'jcpathlab-informes-v20261124' && (name.startsWith('jcpathlab-informes-') || name.startsWith('jcpathlab-soberano-') || name.startsWith('reportes-cache-'))) {
+                if (name !== 'jcpathlab-informes-v20261126_1269' && (name.startsWith('jcpathlab-informes-') || name.startsWith('jcpathlab-soberano-') || name.startsWith('reportes-cache-'))) {
                     console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
                     caches.delete(name);
                 }
@@ -26,7 +26,7 @@
         });
     }
 
-    ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB', 'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3', 'activePatientDb'].forEach(function(k){  var val = localStorage.getItem(k);  if (val && (val.indexOf('SIN NOMBRE') !== -1 || val.indexOf('18974') !== -1 || val.indexOf('26Q-189') !== -1)) {    localStorage.removeItem(k);  }});
+    ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB', 'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3', 'activePatientDb'].forEach(function(k){  var val = localStorage.getItem(k);  if (val && (val.indexOf('SIN NOMBRE') !== -1 || val.indexOf('26Q-18974') !== -1)) {    localStorage.removeItem(k);  }});
 
     // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
     if ('serviceWorker' in navigator) {
