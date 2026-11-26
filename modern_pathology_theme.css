@@ -1071,14 +1071,24 @@ html body #reportEditorModalOverlay .report-editor-footer .editor-btn-footer {
 }
 
 /* 2. BENTO CARDS CON DESENFOQUE CINEMATOGRÁFICO Y BORDES ULTRAFINOS */
-.card, .panel, .editor-panel, .cockpit-card, .patient-card, .table-container, .modal-content {
+/* Optimización: Se aplica blur solo en contenedores modales y cabeceras para no saturar GPU en listados largos */
+.modal-content, .editor-panel, .cockpit-card {
   background: var(--sovereign-card-glass) !important;
   backdrop-filter: blur(16px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
   border: 1px solid var(--sovereign-border-subtle) !important;
   border-radius: 12px !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45) !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Cards estándar (sin blur para rendimiento en tablas/listados) */
+.card, .patient-card, .table-container {
+  background: var(--sovereign-card-glass) !important;
+  border: 1px solid var(--sovereign-border-subtle) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45) !important;
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .card:hover, .cockpit-card:hover, .patient-card:hover {
@@ -1094,7 +1104,8 @@ html body #reportEditorModalOverlay .report-editor-footer .editor-btn-footer {
   font-weight: 600 !important;
   letter-spacing: 0.02em !important;
   border-radius: 8px !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  /* Optimización: Transición específica para evitar recálculo de layout */
+  transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .pill-sky, .tb-action-pill.pill-sky {
@@ -1143,9 +1154,15 @@ select.cockpit-select:focus, select.editor-select:focus, select.form-control:foc
 }
 
 /* 5. TABLAS CLÍNICAS Y REGISTROS CON BORDES DE CRISTAL */
-table, .table {
+/* Aislamiento: Se aplica espaciado solo a tablas de dashboard, NO al editor de reportes */
+.dashboard-table, .table:not(.report-table) {
   border-collapse: separate !important;
   border-spacing: 0 4px !important;
+}
+
+/* El editor de reportes mantiene bordes unidos para estética médica limpia */
+.report-table {
+  border-collapse: collapse !important;
 }
 
 tr {

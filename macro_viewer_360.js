@@ -1176,10 +1176,14 @@ export class Macro360Viewer {
         const canvas = this.canvas;
         if (!canvas) return;
 
-        // Pointer Events para ratón y soporte base táctil
+        // Pointer Events para ratón y soporte base táctil (Protegido contra excepciones de puntero)
         canvas.addEventListener('pointerdown', (e) => {
             if (e.pointerType === 'touch') return; // Delegamos toques a Touch Events nativos para fluidez máxima
-            canvas.setPointerCapture(e.pointerId);
+            try {
+                canvas.setPointerCapture(e.pointerId);
+            } catch (captureErr) {
+                // Prevenir fallo si el navegador rechaza setPointerCapture
+            }
             this.isDragging = true;
             this.dragStartX = e.clientX;
             this.lastPointerX = e.clientX;
@@ -1208,7 +1212,11 @@ export class Macro360Viewer {
         const endPointerDrag = (e) => {
             if (e.pointerType === 'touch' || !this.isDragging) return;
             this.isDragging = false;
-            try { canvas.releasePointerCapture(e.pointerId); } catch(err){}
+            try { 
+                if (canvas.hasPointerCapture && canvas.hasPointerCapture(e.pointerId)) {
+                    canvas.releasePointerCapture(e.pointerId);
+                }
+            } catch(err){}
             if (!this.rafId && (Math.abs(this.velocity) > this.options.minInertiaVelocity || this.isAutoSpinning)) {
                 this._startRenderLoop();
             }

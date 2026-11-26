@@ -4017,16 +4017,81 @@
 
 
     <!-- Visor Quirúrgico 3D con Three.js?v=v628 y WebGL -->
-    <script type="module">
-        import { SurgicalViewer3D } from './surgical_viewer_3d.js?v=v628';
+    <!-- Modal dinámico de Visor 3D (se crea si falta en el HTML) -->
+    <script>
+        // Definiciones seguras para funciones globales usadas en los atributos onclick.
+        // Cada una verifica su existencia antes de ejecutarse, evitando errores de referencia.
+        window.closeMicroscopeCameraModal = window.closeMicroscopeCameraModal || function(){ console.warn('closeMicroscopeCameraModal no implementado'); };
+        window.closeQrConnectModal = window.closeQrConnectModal || function(){ console.warn('closeQrConnectModal no implementado'); };
+        window.openQrConnectModal = window.openQrConnectModal || function(mode, target){
+            console.warn('openQrConnectModal no implementado. Mode:', mode, 'Target:', target);
+        };
+        window.rotarImagenSolicitud = window.rotarImagenSolicitud || function(){
+            const img = document.getElementById('imgVisorSolicitud');
+            if (img) {
+                const current = img.style.transform || 'rotate(0deg)';
+                const angle = (parseInt(current.replace(/[^\d]/g,'')) + 90) % 360;
+                img.style.transform = `rotate(${angle}deg)`;
+            }
+        };
+        window.descargarImagenSolicitud = window.descargarImagenSolicitud || function(){
+            const img = document.getElementById('imgVisorSolicitud');
+            if (img && img.src) {
+                const a = document.createElement('a');
+                a.href = img.src;
+                a.download = 'solicitud_informe_' + Date.now() + '.png';
+                a.click();
+            } else {
+                console.warn('Imagen de solicitud no disponible para descarga.');
+            }
+        };
+        window.cerrarModalVerSolicitud = window.cerrarModalVerSolicitud || function(){
+            const modal = document.getElementById('modalVerSolicitud');
+            if (modal) modal.style.display = 'none';
+        };
+    </script>
+        // Importación segura del visor 3D. Si el módulo falla, se captura el error y se muestra
+        // una notificación no intrusiva al usuario.
+        let SurgicalViewer3D;
+        import('./surgical_viewer_3d.js?v=v628')
+            .then(mod => { SurgicalViewer3D = mod.SurgicalViewer3D; })
+            .catch(err => {
+                console.error('Error al cargar SurgicalViewer3D:', err);
+                const toast = document.createElement('div');
+                toast.textContent = 'Visor 3D no disponible.';
+                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#b91c1c;color:#fff;padding:8px 12px;border-radius:4px;z-index:10000;';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 4000);
+            });
 
+        /**
+         * Abre el visor 3D de cirugía.
+         * - Si el modal no existe, lo crea dinámicamente.
+         * - Instancia SurgicalViewer3D una sola vez (singleton) para evitar cuellos de botella.
+         */
         window.abrirVisorSurgical3D = function() {
-            const modal = document.getElementById('modalSurgical3D');
-            if (!modal) return;
-            modal.classList.add('active');
+            let modal = document.getElementById('modalSurgical3D');
+            if (!modal) {
+                // Creación dinámica del modal si falta en el HTML (fallback resiliente)
+                modal = document.createElement('div');
+                modal.id = 'modalSurgical3D';
+                modal.className = 'report-editor-overlay';
+                modal.style.cssText = 'display:none;z-index:2000400;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);';
+                modal.innerHTML = `
+                    <div class="report-editor-container" style="background:#0f172a;padding:1rem;border-radius:1rem;max-width:90vw;max-height:90vh;overflow:auto;">
+                        <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                            <h3 style="color:#f8fafc;margin:0;">Visor 3D Quirúrgico</h3>
+                            <button type="button" onclick="document.getElementById('modalSurgical3D').style.display='none'" style="background:none;border:none;color:#f87171;font-size:1.2rem;">✕</button>
+                        </header>
+                        <div id="surgical3dMountPoint" style="width:100%;height:70vh;"></div>
+                    </div>`;
+                document.body.appendChild(modal);
+            }
+
+            modal.style.display = 'flex';
 
             const mount = document.getElementById('surgical3dMountPoint');
-            if (mount && !window._activeSurgicalViewer3D) {
+            if (mount && SurgicalViewer3D && !window._activeSurgicalViewer3D) {
                 window._activeSurgicalViewer3D = new SurgicalViewer3D(mount, {
                     specimenTextureUrl: 'macro360_clean/frame_00.webp',
                     defaultMicroscopeImg: 'morfologia_he_original.jpg'

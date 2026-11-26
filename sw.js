@@ -1,6 +1,6 @@
 // sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
-// Versión Médico-Quirúrgica 655.0 Futuristic
-const CACHE_NAME = 'jcpathlab-informes-v20261126_1269';
+// Versión Médico-Quirúrgica 655.1 Futuristic - Sintonizado por Goliath Omega-Argón
+const CACHE_NAME = 'jcpathlab-informes-v20261126_1270';
 
 const STATIC_ASSETS = [
     './',
@@ -39,18 +39,17 @@ const STATIC_ASSETS = [
     './responsive_scaler.js',
     './utils.js',
     './db_service.js',
-  './sovereign_integrity_guard.js',
+    './sovereign_integrity_guard.js',
     './main.js',
     './ui_tables.js',
     './ui_report_editor.js',
     './ui_admin.js',
     './ui_editor.js',
     './dictaphone_core.js',
-    './LISTA DE PLANTILLAS/plantillas_data.js',
+    './plantillas_data.js',
     './pdf_engine.js',
     './users_db.js',
     './supabase_config.js',
-    // real_supabase_backup.js eliminado por Ley 29733
     './help_guide.js',
     './boletas_manager.js',
     './synoptic_schemas.js',
@@ -102,6 +101,7 @@ self.addEventListener('activate', (event) => {
                     if (cacheName !== CACHE_NAME && (cacheName.startsWith('jcpathlab-informes-') || cacheName.startsWith('jcpathlab-soberano-') || cacheName.startsWith('reportes-cache-'))) {
                         return caches.delete(cacheName);
                     }
+                    return Promise.resolve();
                 })
             );
         }).then(() => self.clients.claim())
@@ -120,18 +120,18 @@ self.addEventListener('fetch', (event) => {
     const request = event.request;
     const url = new URL(request.url);
 
-    // Bypass estricto para métodos no-GET, WebSockets, APIs externas y streams
+    // Bypass estricto para métodos no-GET, WebSockets, APIs externas y extensiones
     if (
         request.method !== 'GET' ||
         url.protocol === 'ws:' ||
         url.protocol === 'wss:' ||
+        url.protocol === 'chrome-extension:' ||
         url.hostname.includes('supabase.co') ||
         url.hostname.includes('groq.com') ||
         url.hostname.includes('resend.com') ||
         url.hostname.includes('resend.dev') ||
         url.pathname.includes('/stream') ||
-        url.pathname.includes('/video_feed') ||
-        url.protocol.startsWith('chrome-extension')
+        url.pathname.includes('/video_feed')
     ) {
         return;
     }
@@ -146,7 +146,7 @@ self.addEventListener('fetch', (event) => {
                 const timer = setTimeout(async () => {
                     if (!resolved) {
                         resolved = true;
-                        const cached = await caches.match(request) || await caches.match('./reportes.html') || await caches.match('./index.html');
+                        const cached = await caches.match(request) || await caches.match('./reportes.html') || await caches.match('./index.html') || await caches.match('./');
                         if (cached) resolve(cached);
                         else resolve(new Response('<h1>Modo Offline - JC Path Lab</h1><p>Conéctese a la red para cargar esta página por primera vez.</p>', { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
                     }
@@ -164,7 +164,7 @@ self.addEventListener('fetch', (event) => {
                     if (!resolved) {
                         resolved = true;
                         clearTimeout(timer);
-                        const cached = await caches.match(request) || await caches.match('./reportes.html') || await caches.match('./index.html');
+                        const cached = await caches.match(request) || await caches.match('./reportes.html') || await caches.match('./index.html') || await caches.match('./');
                         if (cached) resolve(cached);
                         else resolve(new Response('<h1>Modo Offline - JC Path Lab</h1><p>Conéctese a la red para cargar esta página por primera vez.</p>', { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
                     }
@@ -174,7 +174,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // B. Assets, Scripts y Base de Datos (real_supabase_backup.js): Stale-While-Revalidate Ultrarrápido (<3ms)
+    // B. Assets, Scripts y Base de Datos: Stale-While-Revalidate Ultrarrápido (<3ms)
     event.respondWith(
         caches.open(CACHE_NAME).then(async (cache) => {
             const cachedResponse = await cache.match(request);
@@ -184,17 +184,15 @@ self.addEventListener('fetch', (event) => {
                     cache.put(request, networkResponse.clone()).catch(() => {});
                 }
                 return networkResponse;
-            }).catch(() => {});
+            }).catch(() => null);
 
             if (cachedResponse) {
                 event.waitUntil(fetchPromise);
                 return cachedResponse;
             }
 
-            try {
-                const networkResponse = await fetchPromise;
-                if (networkResponse) return networkResponse;
-            } catch (err) {}
+            const networkResponse = await fetchPromise;
+            if (networkResponse) return networkResponse;
 
             return new Response('Offline - Recurso no disponible en caché local', { status: 503, statusText: 'Service Unavailable (Offline)', headers: { 'Content-Type': 'text/plain' } });
         })

@@ -18,7 +18,8 @@ export function getRealSupabasePatients() {
 }
 
 const REAL_SUPABASE_PATIENTS = new Proxy([], {
-    get(target, prop) {
+    get(target, prop, receiver) {
+        if (typeof prop === 'symbol') return Reflect.get(target, prop, receiver);
         const list = getRealSupabasePatients();
         const source = list.length > 0 ? list : target;
         const val = source[prop];
@@ -63,10 +64,11 @@ if (typeof window !== 'undefined') {
         const master = getRealSupabasePatients();
         const targetCount = Math.max(1252, master.length);
         if ((savedVer !== CURRENT_SSOT_VER || parsedCount < targetCount || hasGhostData) && master.length >= 1250) {
-            console.log(`[Auto-Heal LocalStorage] Sincronizando almacenamiento local (${parsedCount} -> ${master.length} pacientes SSOT v1252 + RENIEC)...`);
-            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(master));
-            try { localStorage.setItem('patientDatabase', JSON.stringify(master)); } catch(e) {}
-            try { localStorage.setItem('pacientesDB', JSON.stringify(master)); } catch(e) {}
+            console.log(`[Auto-Heal LocalStorage] Sincronizando almacenamiento local (${parsedCount} -> ${master.length} pacientes SSOT v1269)...`);
+            const serializedMaster = JSON.stringify(master);
+            if (serializedMaster.length < 4500000) {
+                safeSetLocalStorage('patientDatabaseLocal', serializedMaster);
+            }
             try { localStorage.setItem('jcpathlab_ssot_version', CURRENT_SSOT_VER); } catch(e) {}
         }
     } catch (e) {

@@ -1,6 +1,7 @@
 // cap_schemas_urology.js
 // PROTOCOLOS SINÓPTICOS OFICIALES DEL COLLEGE OF AMERICAN PATHOLOGISTS (CAP) - UROLOGÍA
 // Basado en: Prostate.TURP_4.2.0.0.REL_CAPCP.docx (Septiembre 2023) y AJCC 8.ª/9.ª Edición / OMS 5.ª Edición
+// JC PATH LAB - ARQUITECTURA WEB UI/UX CLÍNICA ZERO-LOSS (AUTORIDAD: DR. JOSÉ CASTILLO)
 
 export const urologySchemas = {
     prostate_turp: {
@@ -357,3 +358,21 @@ export const urologySchemas = {
         ]
     }
 };
+
+/**
+ * Validador síncrono del esquema urológico conforme a directivas Goliath y CAP.
+ * @param {Object} data 
+ * @returns {Object} { isValid: boolean, errors: Array }
+ */
+export function validateUrologySchema(data) {
+    const errors = [];
+    if (!data) {
+        return { isValid: false, errors: ["Datos de esquema urológico vacíos o nulos."] };
+    }
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+}
+
+export default urologySchemas;

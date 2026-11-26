@@ -1242,9 +1242,9 @@
                     </div>
                     <div class="footer-action-buttons">
                         <!-- [WhatsApp Removed by HCI Protocol] -->
-                        <a href="#" class="btn-cta-portal">
-                            <i class="fa-solid fa-file-invoice"></i> Ver Reporte
-                        </a>
+<a href="javascript:void(0)" class="btn-cta-portal" onclick="/* Acción de abrir reporte */">
+    <i class="fa-solid fa-file-invoice"></i> Ver Reporte
+</a>
                     </div>
                 </footer>
 
@@ -1401,9 +1401,9 @@
                     </div>
                     <div class="footer-action-buttons">
                         <!-- [WhatsApp Removed by HCI Protocol] -->
-                        <a href="#" class="btn-cta-portal">
-                            <i class="fa-solid fa-phone"></i> Central Telefónica
-                        </a>
+<a href="javascript:void(0)" class="btn-cta-portal" onclick="/* Acción de llamada o chat */">
+    <i class="fa-solid fa-phone"></i> Central Telefónica
+</a>
                     </div>
                 </footer>
 
@@ -1414,26 +1414,38 @@
 
     <!-- SCRIPT DE CONTROL DE VISTA Y EXPERIENCIA INTERACTIVA -->
     <script>
+        /**
+         * Cambia el modo de escala de la vista.
+         * Si los botones de control no existen en el DOM, la función sigue operando
+         * sin lanzar errores (evita cuellos de botella en navegadores sin dichos
+         * elementos).
+         *
+         * @param {'desktop'|'mobile'|'full'} mode - Modo deseado.
+         */
         function setScaleMode(mode) {
             const body = document.body;
             const btnFull = document.getElementById('btn-scale-full');
             const btnDesktop = document.getElementById('btn-scale-desktop');
             const btnMobile = document.getElementById('btn-scale-mobile');
 
-            // Quitar clases previas
+            // Quitar clases previas de escala
             body.classList.remove('mode-scaled', 'mode-scaled-mobile');
-            btnFull.classList.remove('active');
-            btnDesktop.classList.remove('active');
-            btnMobile.classList.remove('active');
 
+            // Desactivar botones solo si existen
+            if (btnFull) btnFull.classList.remove('active');
+            if (btnDesktop) btnDesktop.classList.remove('active');
+            if (btnMobile) btnMobile.classList.remove('active');
+
+            // Aplicar modo solicitado
             if (mode === 'desktop') {
                 body.classList.add('mode-scaled');
-                btnDesktop.classList.add('active');
+                if (btnDesktop) btnDesktop.classList.add('active');
             } else if (mode === 'mobile') {
                 body.classList.add('mode-scaled-mobile');
-                btnMobile.classList.add('active');
+                if (btnMobile) btnMobile.classList.add('active');
             } else {
-                btnFull.classList.add('active');
+                // modo 'full' o cualquier otro valor
+                if (btnFull) btnFull.classList.add('active');
             }
         }
     </script>

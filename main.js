@@ -531,11 +531,19 @@ try {
 
             };
 
-            displaySet.sort(function(a, b) {
-                var kA = parseKey(a.codAtencion || a.cod_atencion || a.codigo);
-                var kB = parseKey(b.codAtencion || b.cod_atencion || b.codigo);
-                return kB - kA; // ORDEN CORRELATIVO NUMÉRICO ESTRICTO DESCENDENTE
-            });
+        displaySet.sort(function(a, b) {
+            // REGLA INVIOLABLE SLA: 🔴 Inconclusos/Pendientes arriba, 🟢 Firmados abajo
+            var aFirm = a.firmado === true || a.firmado === 1 || String(a.firmado).toLowerCase() === 'true' || String(a.estado_firma || '').toLowerCase() === 'firmado' || String(a.estado_firma || '').toLowerCase() === 'validado' || String(a.estado || '').toLowerCase() === 'completado' || String(a.estado || '').toLowerCase() === 'listo';
+            var bFirm = b.firmado === true || b.firmado === 1 || String(b.firmado).toLowerCase() === 'true' || String(b.estado_firma || '').toLowerCase() === 'firmado' || String(b.estado_firma || '').toLowerCase() === 'validado' || String(b.estado || '').toLowerCase() === 'completado' || String(b.estado || '').toLowerCase() === 'listo';
+            
+            if (aFirm !== bFirm) {
+                return aFirm ? 1 : -1; // Los no firmados (false) van arriba (-1), los firmados (true) abajo (1)
+            }
+            
+            var kA = parseKey(a.codAtencion || a.cod_atencion || a.codigo);
+            var kB = parseKey(b.codAtencion || b.cod_atencion || b.codigo);
+            return kB - kA; // Orden correlativo descendente secundario
+        });
 
         }
 

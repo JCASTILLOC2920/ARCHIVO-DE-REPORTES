@@ -49326,4 +49326,20 @@ window.REAL_SUPABASE_PATIENTS = [
     "validado": true
   }
 ];
+
+  // Normalización de datos para evitar inconsistencias de lectura en el frontend
+  // Se asegura que cada objeto tenga las claves canónicas requeridas por la UI Zero-Loss
+  const normalizedReports = reports.map(report => {
+    return {
+      ...report,
+      // Garantizar que macroDesc y microDesc existan si solo existe la versión snake_case
+      macroDesc: report.macroDesc || report.macro_desc || "",
+      microDesc: report.microDesc || report.micro_desc || "",
+      fecInforme: report.fecInforme || report.fec_informe || report.fecRegistro || "",
+      codAtencion: report.codAtencion || report.cod_atencion || "",
+      medSolicitante: report.medSolicitante || report.med_solicitante || ""
+    };
+  });
+
+  return normalizedReports;
 }

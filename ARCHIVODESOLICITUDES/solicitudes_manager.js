@@ -1,64 +1,101 @@
+// solicitudes_manager.js
+
+/**
+ * Genera un nombre de archivo estándar para la solicitud.
+ * @param {string} codigo - Código de la solicitud.
+ * @param {string} apellidos - Apellidos del paciente.
+ * @param {string} nombres - Nombres del paciente.
+ * @param {string} extension - Extensión del archivo (sin punto).
+ * @returns {string} Nombre de archivo completo.
+ */
 export function generarNombreEstandarSolicitud(codigo, apellidos, nombres, extension) {
-    const nombreLimpio = `${apellidos} ${nombres}`.toUpperCase().replace(/\s+/g, ' ').trim();
+    const nombreLimpio = `${apellidos} ${nombres}`
+        .toUpperCase()
+        .replace(/\s+/g, ' ')
+        .trim();
     return `${codigo} ${nombreLimpio}.${extension}`;
 }
 
+/**
+ * Optimiza una imagen (redimensiona y comprime) devolviendo un Blob.
+ * @param {File|Blob} fileOrBlob - Imagen original.
+ * @param {number} [calidad=0.85] - Calidad de compresión (0‑1).
+ * @param {number} [maxDimension=2000] - Máxima dimensión (ancho o alto).
+ * @returns {Promise<Blob>} Blob optimizado.
+ */
 export function optimizarImagenSolicitud(fileOrBlob, calidad = 0.85, maxDimension = 2000) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = (event) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
 
-                // Redimensionar si excede maxDimension
-                if (width > maxDimension || height > maxDimension) {
-                    if (width > height) {
-                        height *= maxDimension / width;
-                        width = maxDimension;
-                    } else {
-                        width *= maxDimension / height;
-                        height = maxDimension;
+        reader.onload = async (event) => {
+            try {
+                const img = new Image();
+                img.onload = () => {
+                    // Calcular dimensiones manteniendo la proporción
+                    let { width, height } = img;
+                    if (width > maxDimension || height > maxDimension) {
+                        if (width > height) {
+                            height = Math.round((height * maxDimension) / width);
+                            width = maxDimension;
+                        } else {
+                            width = Math.round((width * maxDimension) / height);
+                            height = maxDimension;
+                        }
                     }
-                }
 
-                canvas.width = width;
-                canvas.height = height;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = Math.round(width);
+                    canvas.height = Math.round(height);
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                // Convertir a WebP o JPEG con la calidad especificada
-                // Preferimos WebP por su eficiencia, si el navegador lo soporta.
-                const mimeType = 'image/webp';
-                canvas.toBlob((blob) => {
-                    if (blob) {
-                        resolve(blob);
-                    } else {
-                        // Fallback a JPEG si WebP no es soportado o falla
-                        canvas.toBlob((jpegBlob) => {
-                            if (jpegBlob) {
-                                resolve(jpegBlob);
-                            } else {
-                                reject(new Error('Error al optimizar la imagen a WebP o JPEG.'));
+                    // Intentar WebP primero
+                    canvas.toBlob(
+                        (blob) => {
+                            if (blob) {
+                                resolve(blob);
+                                return;
                             }
-                        }, 'image/jpeg', calidad);
-                    }
-                }, mimeType, calidad);
+                            // Fallback a JPEG
+                            canvas.toBlob(
+                                (jpegBlob) => {
+                                    if (jpegBlob) {
+                                        resolve(jpegBlob);
+                                    } else {
+                                        reject(new Error('No se pudo generar Blob de la imagen (WebP y JPEG fallaron).'));
+                                    }
+                                },
+                                'image/jpeg',
+                                calidad
+                            );
+                        },
+                        'image/webp',
+                        calidad
+                    );
+                };
 
-            };
-            img.onerror = () => reject(new Error('Error al cargar la imagen.'));
-            img.src = event.target.result;
+                img.onerror = () => reject(new Error('Error al cargar la imagen para optimizar.'));
+                img.src = event.target.result;
+            } catch (e) {
+                reject(e);
+            }
         };
-        reader.onerror = () => reject(new Error('Error al leer el archivo.'));
+
+        reader.onerror = () => reject(new Error('Error al leer el archivo de imagen.'));
         reader.readAsDataURL(fileOrBlob);
     });
 }
 
+/**
+ * Envía la solicitud (imagen y metadatos) al endpoint n8n.
+ * @param {string} codigo - Código de la solicitud.
+ * @param {string} apellidos - Apellidos del paciente.
+ * @param {string} nombres - Nombres del paciente.
+ * @param {Blob} imagenBlob - Imagen optimizada.
+ * @returns {Promise<Object>} Respuesta JSON del servidor.
+ */
 export async function guardarSolicitudEnN8n(codigo, apellidos, nombres, imagenBlob) {
-    const extension = imagenBlob.type.split('/')[1] || 'bin'; // 'jpeg', 'webp', 'png', etc.
+    const extension = (imagenBlob.type.split('/')[1] || 'bin').replace(/^jpeg$/i, 'jpg');
     const nombreArchivo = generarNombreEstandarSolicitud(codigo, apellidos, nombres, extension);
 
     const formData = new FormData();
@@ -76,7 +113,9 @@ export async function guardarSolicitudEnN8n(codigo, apellidos, nombres, imagenBl
 
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`Error al guardar solicitud en n8n: ${response.status} ${response.statusText} - ${errorText}`);
+            throw new Error(
+                `Error al guardar solicitud en n8n: ${response.status} ${response.statusText} - ${errorText}`
+            );
         }
 
         return await response.json();

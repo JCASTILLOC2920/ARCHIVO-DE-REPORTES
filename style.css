@@ -1446,6 +1446,24 @@ body.role-clinic .app-container {
 
 /* ==========================================================
    BLINDAJE DE SEGURIDAD Y PRIVACIDAD (PROTOCOLO ELENA)
-   Eliminación definitiva y bloqueo por CSS de Boletas y Copiloto IA
+   Integración de Clases CSS y Control Visual para Boletas y Copiloto IA
    ========================================================== */
-/* Boletas habilitadas */
+.boletas-module-active {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.copiloto-ai-active {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.sla-inconcluso {
+    border-left: 4px solid #ef4444 !important;
+}
+
+.sla-firmado {
+    border-left: 4px solid #10b981 !important;
+}

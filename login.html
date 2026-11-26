@@ -994,9 +994,36 @@
         const alertMessage = document.getElementById('alertMessage');
         const btnSpinner = document.getElementById('btnSpinner');
         const btnText = document.getElementById('btnText');
+        const btnInstallApp = document.getElementById('btnInstallApp');
 
         const svgEye = `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>`;
         const svgEyeOff = `<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>`;
+
+        // PWA Installation prompt bridge
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (btnInstallApp) {
+                btnInstallApp.style.display = 'flex';
+            }
+        });
+
+        if (btnInstallApp) {
+            btnInstallApp.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        console.log('[PWA] Usuario aceptó la instalación.');
+                    }
+                    deferredPrompt = null;
+                    btnInstallApp.style.display = 'none';
+                } else {
+                    alert('Para instalar la aplicación, pulse el menú de su navegador (Chrome/Safari) y seleccione "Agregar a la pantalla principal".');
+                }
+            });
+        }
 
         // Función nativa para cálculo de Hash Criptográfico SHA-256
         async function computeSHA256(str) {
@@ -1011,66 +1038,64 @@
         }
 
         // Toggle password visibility
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            eyeIcon.innerHTML = type === 'password' ? svgEye : svgEyeOff;
-        });
+        if (togglePassword && passwordInput && eyeIcon) {
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                eyeIcon.innerHTML = type === 'password' ? svgEye : svgEyeOff;
+            });
+        }
 
         // Form Submit Handler con Autenticación Criptográfica SHA-256
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Ocultar alerta previa
-            alertError.style.display = 'none';
-            
-            // Mostrar spinner
-            btnSpinner.style.display = 'inline-block';
-            btnText.textContent = 'Verificando...';
-            
-            const user = usernameInput.value.trim();
-            const pass = passwordInput.value.trim();
-            const inputHash = await computeSHA256(pass);
-            
-            setTimeout(() => {
-                const match = usersDatabase.find(u => {
-                    const matchUser = (u.usuario || '').toLowerCase() === user.toLowerCase();
-                    if (!matchUser) return false;
-                    if (u.claveHash && inputHash) {
-                        return u.claveHash === inputHash;
-                    }
-                    return u.clave === pass;
-                });
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
                 
-                if (match) {
-                    // Guardar usuario en localStorage con tolerancia de fallo para Safari iOS incógnito
-                    try {
-                        localStorage.setItem('currentUser', JSON.stringify(match));
-                    } catch (eStorage) {
-                        try {
-                            sessionStorage.setItem('currentUser', JSON.stringify(match));
-                        } catch (eSession) {}
-                    }
+                // Ocultar alerta previa
+                if (alertError) alertError.style.display = 'none';
+                
+                // Mostrar spinner
+                if (btnSpinner) btnSpinner.style.display = 'inline-block';
+                if (btnText) btnText.textContent = 'Verificando...';
+                
+                const user = usernameInput ? usernameInput.value.trim() : '';
+                const pass = passwordInput ? passwordInput.value.trim() : '';
+                const inputHash = await computeSHA256(pass);
+                
+                setTimeout(() => {
+                    const match = usersDatabase.find(u => {
+                        const matchUser = (u.usuario || '').toLowerCase() === user.toLowerCase();
+                        if (!matchUser) return false;
+                        if (u.claveHash && inputHash) {
+                            return u.claveHash === inputHash;
+                        }
+                        return u.clave === pass;
+                    });
                     
-                    // Redirigir según perfil o parámetro
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const targetRedirect = urlParams.get('redirect');
-                    if (targetRedirect === 'index' || targetRedirect === 'index.html' || (match.perfil === 'Administrador' && !targetRedirect)) {
+                    if (match) {
+                        // Guardar usuario en localStorage con tolerancia de fallo para Safari iOS incógnito
+                        try {
+                            localStorage.setItem('currentUser', JSON.stringify(match));
+                        } catch (eStorage) {
+                            try {
+                                sessionStorage.setItem('currentUser', JSON.stringify(match));
+                            } catch (eSession) {}
+                        }
+                        
+                        // Redirigir según perfil o parámetro
                         window.location.href = 'reportes.html';
                     } else {
-                        window.location.href = 'reportes.html';
+                        // Resetear spinner
+                        if (btnSpinner) btnSpinner.style.display = 'none';
+                        if (btnText) btnText.textContent = 'Iniciar Sesión';
+                        
+                        // Mostrar alerta de error
+                        if (alertMessage) alertMessage.textContent = 'Usuario o contraseña incorrectos.';
+                        if (alertError) alertError.style.display = 'flex';
                     }
-                } else {
-                    // Resetear spinner
-                    btnSpinner.style.display = 'none';
-                    btnText.textContent = 'Iniciar Sesión';
-                    
-                    // Mostrar alerta de error
-                    alertMessage.textContent = 'Usuario o contraseña incorrectos.';
-                    alertError.style.display = 'flex';
-                }
-            }, 600);
-        });
+                }, 600);
+            });
+        }
     </script>
 
     <!-- ============================================================

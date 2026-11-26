@@ -1,6 +1,7 @@
 // help_guide.js
 // Sistema de Burbujas de Ayuda Visual / Onboarding Premium para Personal Técnico
 // Garantiza no-sobreposición e interactividad exclusiva.
+// GOLIATH OMEGA-ARGÓN - JC PATH LAB (AUTORIDAD: DR. JOSÉ CASTILLO)
 
 (function() {
     // Inyectar triggers visuales (?) al lado de los componentes claves
@@ -96,6 +97,7 @@
         // Eliminar TODAS las burbujas existentes para que NUNCA se sobrepongan
         hideHelpBubbles();
 
+        if (!targetElement) return;
         const rect = targetElement.getBoundingClientRect();
         
         // Si el elemento no está visible, no renderizar la burbuja
@@ -152,10 +154,13 @@
         bubble.classList.add(arrowClass);
 
         // Configurar botón cerrar
-        bubble.querySelector('.btn-bubble-close').addEventListener('click', (e) => {
-            e.stopPropagation();
-            bubble.remove();
-        });
+        const closeBtn = bubble.querySelector('.btn-bubble-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                bubble.remove();
+            });
+        }
     }
 
     function showSearchBubble() {

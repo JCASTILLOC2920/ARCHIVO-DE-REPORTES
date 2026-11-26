@@ -2,6 +2,7 @@
 // DEFINICIÓN DE ESQUEMAS SINÓPTICOS CAP (MAMA, ENDOCRINO, TIROIDES, PÁNCREAS Y GINECOLÓGICO)
 // Basado en protocolos oficiales del College of American Pathologists (CAP), AJCC 8va/9na Ed. y Sistema Bethesda 2014
 // Traducido al español médico con Notas Explicativas ('helpText') integradas para apoyo diagnóstico.
+// Cumple con la Arquitectura Web UI/UX Clínica Zero-Loss de JC Path Lab (Autoridad: Dr. José Castillo).
 
 export const capSchemasGynEndocrine = {
     // -------------------------------------------------------------------------
@@ -2623,7 +2624,7 @@ export const capSchemasGynEndocrine = {
 export function compileSynopticReport(schema, state) {
     if (!schema || !state) return "";
 
-    let text = `<b>RESUMEN DE CASO: ${schema.title.toUpperCase()}</b>\n\n`;
+    let text = `<b>RESUMEN DE CASO: ${schema.title ? schema.title.toUpperCase() : "PROTOCOLO CAP"}</b>\n\n`;
 
     schema.sections.forEach(section => {
         let sectionHasData = false;

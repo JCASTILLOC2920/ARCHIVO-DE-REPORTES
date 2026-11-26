@@ -77,7 +77,10 @@ window.MEDIA_BLOBS_SEED = {
 
 (function initMediaBlobsAutoHydration() {
     function runSeed() {
-        if (typeof indexedDB === 'undefined') return;
+        if (typeof indexedDB === 'undefined') {
+        console.warn('[MediaBlobs] indexedDB not available');
+        return;
+    }
         try {
             // 1. Sembrar en base de datos dedicada 'media_blobs'
             const reqDedicated = indexedDB.open('media_blobs', 1);
@@ -87,15 +90,16 @@ window.MEDIA_BLOBS_SEED = {
                     db.createObjectStore('blobs', { keyPath: 'codAtencion' });
                 }
             };
-            reqDedicated.onsuccess = function(e) {
-                const db = e.target.result;
-                const tx = db.transaction('blobs', 'readwrite');
-                const store = tx.objectStore('blobs');
-                for (const cod in window.MEDIA_BLOBS_SEED) {
-                    const item = window.MEDIA_BLOBS_SEED[cod];
-                    store.put(Object.assign({ codAtencion: cod }, item));
-                }
-            };
+    reqDedicated.onsuccess = function(e) {
+        const db = e.target.result;
+        const tx = db.transaction('blobs', 'readwrite');
+        const store = tx.objectStore('blobs');
+        Object.entries(window.MEDIA_BLOBS_SEED).forEach(([cod, item]) => {
+            store.put(Object.assign({ codAtencion: cod }, item));
+        });
+        tx.oncomplete = function() { db.close(); };
+        tx.onerror = function(err) { console.warn('[MediaBlobs] Transaction error on dedicated DB:', err); };
+    };
 
             // 2. Sembrar en ClinicaReportesDB (versión 3 con almacén 'media_blobs')
             const reqClinic = indexedDB.open('ClinicaReportesDB', 3);
@@ -112,28 +116,29 @@ window.MEDIA_BLOBS_SEED = {
                     db.createObjectStore('media_blobs', { keyPath: 'codAtencion' });
                 }
             };
-            reqClinic.onsuccess = function(e) {
-                const db = e.target.result;
-                if (db.objectStoreNames.contains('media_blobs')) {
-                    const tx = db.transaction('media_blobs', 'readwrite');
-                    const store = tx.objectStore('media_blobs');
-                    for (const cod in window.MEDIA_BLOBS_SEED) {
-                        const item = window.MEDIA_BLOBS_SEED[cod];
-                        store.put(Object.assign({ codAtencion: cod }, item));
-                    }
-                }
-            };
+    reqClinic.onsuccess = function(e) {
+        const db = e.target.result;
+        if (db.objectStoreNames.contains('media_blobs')) {
+            const tx = db.transaction('media_blobs', 'readwrite');
+            const store = tx.objectStore('media_blobs');
+            Object.entries(window.MEDIA_BLOBS_SEED).forEach(([cod, item]) => {
+                store.put(Object.assign({ codAtencion: cod }, item));
+            });
+            tx.oncomplete = function() { db.close(); };
+            tx.onerror = function(err) { console.warn('[MediaBlobs] Transaction error on clinic DB:', err); };
+        }
+    };
         } catch (err) {
             console.warn('[MediaBlobs] Aviso al sembrar IndexedDB:', err);
         }
-        if (typeof window !== 'undefined') {
-            window._mediaBlobsSeeded = true;
-            try {
-                window.dispatchEvent(new CustomEvent('mediaBlobsSeedReady', {
-                    detail: { count: window.MEDIA_BLOBS_SEED ? Object.keys(window.MEDIA_BLOBS_SEED).length : 0 }
-                }));
-            } catch(e) {}
-        }
+    if (typeof window !== 'undefined' && typeof window.MEDIA_BLOBS_SEED === 'object') {
+        window._mediaBlobsSeeded = true;
+        try {
+            window.dispatchEvent(new CustomEvent('mediaBlobsSeedReady', {
+                detail: { count: Object.keys(window.MEDIA_BLOBS_SEED).length }
+            }));
+        } catch(e) {}
+    }
     }
 
     if (typeof window !== 'undefined') {

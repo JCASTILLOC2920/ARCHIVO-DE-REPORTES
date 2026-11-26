@@ -1381,18 +1381,29 @@ export async function openMobileReportReader(codAtencion) {
  * Cierra el Lector Móvil y restaura el scroll de la página
  */
 export function closeMobileReportReader() {
+    // Limpiar listeners de popstate para evitar fugas de memoria
+    try {
+        window.removeEventListener('popstate', closeMobileReportReader);
+    } catch (e) {}
+
     closeLightbox();
     closeShareSheet();
+    
     const overlay = document.getElementById('mobileReportReaderOverlay');
     if (overlay) {
         overlay.classList.remove('active');
+        // Restaurar scroll de la página principal
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
     }
+    
     const scrollBody = document.getElementById('mrrScrollBody');
     if (scrollBody) {
         scrollBody.scrollTop = 0;
     }
+    
+    // Resetear estado activo para permitir reabrir
+    activePatient = null;
 }
 
 /**
@@ -1409,7 +1420,7 @@ async function triggerShareAction() {
 
     const shareData = {
         title: `Informe Patológico - ${cleanPaciente}`,
-        text: `📄 *REPORTE ANATOMOPATOLÓGICO OFICIAL*\nPaciente: *${cleanPaciente}*\nCódigo: *${cod}*\nDiagnóstico: *${clinical.badge}*\n\nPuede consultar el informe oficial en el siguiente enlace:\n${reportUrl}`,
+        text: `📄 REPORTE ANATOMOPATOLÓGICO OFICIAL\nPaciente: ${cleanPaciente}\nCódigo: ${cod}\nDiagnóstico: ${clinical.badge}\n\nPuede consultar el informe oficial en el siguiente enlace:\n${reportUrl}`,
         url: reportUrl
     };
 
@@ -1444,7 +1455,9 @@ function shareViaWhatsAppDirect() {
     const rawTel = String(activePatient.telefono || activePatient.celular || activePatient.telPaciente || '').replace(/\D/g, '');
     let waUrl = '';
 
-    const waText = encodeURIComponent(`📄 *REPORTE ANATOMOPATOLÓGICO OFICIAL*\nPaciente: *${cleanPaciente}*\nCódigo: *${cod}*\nDiagnóstico: *${clinical.badge}*\n\n📥 Puede consultar y descargar el informe oficial en PDF en el siguiente enlace seguro:\nhttps://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(cod)}`);
+    // Nota: WhatsApp Web/API no soporta Markdown (*texto*) en todos los clientes, 
+    // pero se mantiene formato legible. Se usa \n para saltos de línea.
+    const waText = encodeURIComponent(`📄 REPORTE ANATOMOPATOLÓGICO OFICIAL\nPaciente: ${cleanPaciente}\nCódigo: ${cod}\nDiagnóstico: ${clinical.badge}\n\n📥 Puede consultar y descargar el informe oficial en PDF en el siguiente enlace seguro:\nhttps://jcastilloc2920.github.io/ARCHIVO-DE-REPORTES/imprimir.html?cod=${encodeURIComponent(cod)}`);
 
     if (rawTel.length === 9) {
         waUrl = `https://api.whatsapp.com/send?phone=51${rawTel}&text=${waText}`;
@@ -1468,7 +1481,16 @@ function copyReportLink() {
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(() => {
-            alert('¡Enlace del informe copiado al portapapeles!');
+            // Usar un toast o alert breve para no bloquear la UI
+            const toast = document.createElement('div');
+            toast.textContent = '¡Enlace copiado!';
+            toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;z-index:9999;opacity:0;transition:opacity 0.3s;';
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '1'; }, 10);
+            setTimeout(() => { 
+                toast.style.opacity = '0'; 
+                setTimeout(() => toast.remove(), 300); 
+            }, 2000);
         }).catch(() => {
             prompt('Copie el enlace seguro:', url);
         });
@@ -1499,4 +1521,8 @@ function closeShareSheet() {
 if (typeof window !== 'undefined') {
     window.openMobileReportReader = openMobileReportReader;
     window.closeMobileReportReader = closeMobileReportReader;
+    // Exponer funciones de compartir para acceso directo desde HTML/JS externo
+    window.mrrShareAction = triggerShareAction;
+    window.mrrShareWhatsApp = shareViaWhatsAppDirect;
+    window.mrrCopyLink = copyReportLink;
 }

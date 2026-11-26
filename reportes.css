@@ -48472,61 +48472,22 @@ body:has(#reportEditorModalOverlay.active) {
 
 
 /* === BLINDAJE SOBERANO DE BOTONES DE ACCIONES (LA COLMENA 2026) === */
-
-
-
+/* OPTIMIZACIÓN: Se ajusta z-index para evitar conflictos con modales (z-index > 1000).
+   Se usa z-index: 5 para mantener los botones por encima del contenido de la celda
+   pero por debajo de overlays globales. */
 .col-actions,
-
-
-
 .col-actions .action-hybrid-wrapper,
-
-
-
 .col-actions .action-btn,
-
-
-
 .action-btn.edit-btn,
-
-
-
 .action-btn.preview-pdf-btn,
-
-
-
 .action-btn.download-pdf-btn {
-
-
-
     pointer-events: auto !important;
-
-
-
     cursor: pointer !important;
-
-
-
     position: relative !important;
-
-
-
-    z-index: 10 !important;
-
-
-
+    z-index: 5 !important;
 }
-
-
-
 .action-btn i {
-
-
-
     pointer-events: none !important;
-
-
-
 }
 
 
@@ -48592,45 +48553,17 @@ body:has(#reportEditorModalOverlay.active) {
 
 
 /* 2. Paleta Slate Dark Mode (WCAG 2.2 AAA Contrast > 7:1) */
-
-
-
+/* OPTIMIZACIÓN: Se elimina !important en variables CSS para evitar recálculos globales innecesarios.
+   Las variables se definen limpiamente; los componentes las consumen sin forzar overrides. */
 :root {
-
-
-
-    --bg-canvas: #0b1329 !important;
-
-
-
-    --bg-surface: #152238 !important;
-
-
-
-    --bg-card: #1e293b !important;
-
-
-
-    --border-subtle: #334155 !important;
-
-
-
-    --text-primary: #f8fafc !important;
-
-
-
-    --text-muted: #94a3b8 !important;
-
-
-
-    --accent-cyan: #00f0ff !important;
-
-
-
-    --accent-emerald: #10b981 !important;
-
-
-
+    --bg-canvas: #0b1329;
+    --bg-surface: #152238;
+    --bg-card: #1e293b;
+    --border-subtle: #334155;
+    --text-primary: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent-cyan: #00f0ff;
+    --accent-emerald: #10b981;
 }
 
 
@@ -48640,113 +48573,43 @@ body:has(#reportEditorModalOverlay.active) {
 
 
 /* 3. Adaptabilidad Elástica Universal para Celulares y Tablets */
-
-
-
 @media screen and (max-width: 900px) {
-
-
-
     body {
-
-
-
         padding: 4px !important;
-
-
-
         font-size: 14px !important;
-
-
-
     }
-
-
-
     .main-container, .dashboard-wrapper, .table-container {
-
-
-
         width: 100% !important;
-
-
-
         min-width: 100% !important;
-
-
-
         max-width: 100% !important;
-
-
-
         margin: 0 !important;
-
-
-
         padding: 6px !important;
-
-
-
         box-sizing: border-box !important;
-
-
-
     }
-
-
-
-    /* Tabla elástica táctil */
-
-
-
-    table {
-
-
-
-        display: block !important;
-
-
-
-        width: 100% !important;
-
-
-
+    /* FIX CRÍTICO: Se corrige el colapso de layout.
+       Antes: display:block rompía la estructura de filas.
+       Ahora: Se mantiene display:table para integridad de datos,
+       pero se habilita scroll horizontal nativo en el contenedor. */
+    .table-container {
         overflow-x: auto !important;
-
-
-
         -webkit-overflow-scrolling: touch !important;
-
-
-
+        scrollbar-width: thin;
+        scrollbar-color: var(--border-subtle) transparent;
     }
-
-
-
+    
+    table {
+        display: table !important; /* Mantiene estructura de filas/columnas */
+        width: 100% !important;
+        min-width: 600px !important; /* Fuerza scroll horizontal si el contenido es ancho */
+        border-collapse: collapse !important;
+    }
+    
     /* Botones accesibles de 44px para dedos */
-
-
-
     button, .btn, .action-btn {
-
-
-
         min-height: 44px !important;
-
-
-
         padding: 10px 14px !important;
-
-
-
         font-size: 13px !important;
-
-
-
     }
-
-
-
 }
 
 

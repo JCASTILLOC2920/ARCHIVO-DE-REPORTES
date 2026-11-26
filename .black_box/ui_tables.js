@@ -1,4 +1,4 @@
-﻿// ui_tables.js
+// ui_tables.js
 // PROTOCOLO ACTOR-CRITICO: Módulo de Interfaz para Tablas y Filtros
 
 import { patientDatabase, correctPapanicolaouSpelling, cleanCodeFunc, searchPatientsFromSupabase, sortPatientArray } from './db_service.js?v=v602.1012_0730';
@@ -2115,7 +2115,8 @@ if (typeof document !== 'undefined') {
                         window.patientDatabase = freshData;
                         if (typeof window.applyFilters === 'function') {
                             window.applyFilters(false);
-                            window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+                            // Usamos el comportamiento por defecto ('auto') ya que 'instant' no es una opción válida.
+    window.scrollTo({ top: currentScrollY, behavior: 'auto' });
                         }
                     }
                 }

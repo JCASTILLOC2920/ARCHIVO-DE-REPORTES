@@ -2,213 +2,43 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cámara Clínica Móvil - JCPATHLAB</title>
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captura Móvil – JCPATHLAB</title>
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --surface-dark: #1e293b;
-            --accent-emerald: #10b981;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
             --accent-blue: #38bdf8;
-            --text-main: #f8fafc;
+            --accent-emerald: #10b981;
             --text-muted: #94a3b8;
+            --text-primary: #e2e8f0;
         }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-        header {
-            background-color: var(--surface-dark);
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .logo-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: var(--text-main);
-        }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-emerald);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-emerald);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-emerald);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 16px;
-            max-width: 600px;
-            width: 100%;
-            margin: 0 auto;
-            justify-content: space-between;
-        }
-        .viewfinder-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 3/4;
-            background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid rgba(56, 189, 248, 0.3);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        video, canvas, #previewImage {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        #previewContainer {
-            display: none;
-            z-index: 10;
-        }
-        .overlay-guide {
-            position: absolute;
-            inset: 20px;
-            border: 2px dashed rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
-            pointer-events: none;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 10px;
-        }
-        .guide-text {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(4px);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
-        }
-        .controls-area {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-        }
-        .btn-primary:active {
-            transform: scale(0.97);
-        }
-        .btn-secondary {
-            background: var(--surface-dark);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .btn-secondary:active {
-            transform: scale(0.97);
-        }
-        #cameraInput {
-            display: none;
-        }
-        .fallback-notice {
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-        }
-        /* Success Screen */
-        #successScreen {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: var(--bg-dark);
-            z-index: 100;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            text-align: center;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .success-icon {
-            font-size: 4rem;
-            margin-bottom: 16px;
-            animation: bounce 0.6s infinite alternate;
-        }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
-        }
-        .success-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-emerald);
-            margin-bottom: 8px;
-        }
-        .success-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            line-height: 1.4;
-        }
+        body,html{margin:0;padding:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg-primary);color:var(--text-primary);}
+        header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg-secondary);border-bottom:1px solid #334155;}
+        .logo-title{font-weight:700;font-size:1.1rem;}
+        .status-badge{display:flex;align-items:center;gap:6px;font-size:0.9rem;}
+        .status-dot{width:10px;height:10px;border-radius:50%;background:#fbbf24;animation:blink 1.5s infinite;}
+        @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+        main{display:flex;flex-direction:column;align-items:center;padding:16px;gap:20px;}
+        .viewfinder-container{position:relative;width:100%;max-width:480px;height:0;padding-bottom:66.66%;background:#1e293b;border-radius:12px;overflow:hidden;}
+        video, #previewContainer{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+        #previewContainer{display:none;justify-content:center;align-items:center;background:#1e293b;}
+        #previewImage{max-width:100%;max-height:100%;border-radius:8px;}
+        .overlay-guide{position:absolute;top:0;left:0;width:100%;height:100%;border:4px dashed var(--accent-blue);box-sizing:border-box;display:flex;justify-content:center;align-items:center;background:rgba(0,0,0,0.2);}
+        .guide-text{color:#fff;font-size:0.9rem;text-align:center;padding:8px;background:rgba(0,0,0,0.5);border-radius:6px;}
+        .controls-area{width:100%;max-width:480px;display:flex;flex-direction:column;gap:12px;}
+        .btn{padding:10px 16px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:background 0.2s;}
+        .btn-primary{background:var(--accent-blue);color:#fff;}
+        .btn-primary:hover{background:#0ea5e9;}
+        .btn-secondary{background:#334155;color:#e2e8f0;}
+        .btn-secondary:hover{background:#475569;}
+        .fallback-notice{font-size:0.85rem;color:var(--text-muted);text-align:center;}
+        #successScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.95);display:none;flex-direction:column;justify-content:center;align-items:center;color:#fff;gap:20px;padding:20px;box-sizing:border-box;}
+        .success-icon{font-size:3rem;}
+        .success-title{font-size:1.5rem;font-weight:700;color:var(--accent-emerald);}
+        .success-desc{font-size:0.95rem;color:var(--text-muted);text-align:center;max-width:300px;}
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <header>
@@ -221,55 +51,40 @@
 
     <main>
         <div class="viewfinder-container" id="viewfinder">
-            <!-- Lane 1: Live Video Stream -->
             <video id="videoPreview" autoplay playsinline muted></video>
-            
-            <!-- Lane 2: Preview Captured Image -->
             <div id="previewContainer">
                 <img id="previewImage" alt="Vista previa de orden">
             </div>
-
             <div class="overlay-guide" id="overlayGuide">
                 <span class="guide-text">Alinee la orden médica dentro del recuadro</span>
             </div>
         </div>
 
         <div class="controls-area">
-            <!-- Normal Shooting Controls -->
             <div id="shootingControls">
-                <!-- Selector de Modo de Captura -->
-                <div id="modePillContainer" style="display: flex; gap: 8px; margin-bottom: 12px; width: 100%;">
-                    <button type="button" id="btnModeOrden" class="mode-pill active" onclick="switchCaptureMode('orden')" style="flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #38bdf8; background: rgba(56,189,248,0.25); color: #38bdf8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;">
+                <div id="modePillContainer" style="display:flex;gap:8px;margin-bottom:12px;width:100%;">
+                    <button type="button" id="btnModeOrden" class="mode-pill active" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #38bdf8;background:rgba(56,189,248,0.25);color:#38bdf8;font-weight:700;font-size:0.82rem;cursor:pointer;transition:all 0.2s;">
                         📄 Orden / Hoja
                     </button>
-                    <button type="button" id="btnModeFrasco" class="mode-pill" onclick="switchCaptureMode('frasco')" style="flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #475569; background: #1e293b; color: #94a3b8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;">
+                    <button type="button" id="btnModeFrasco" class="mode-pill" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #475569;background:#1e293b;color:#94a3b8;font-weight:700;font-size:0.82rem;cursor:pointer;transition:all 0.2s;">
                         🧪 Frasco (IA 27B)
                     </button>
                 </div>
-                <button class="btn btn-primary" id="btnCapture">
-                    📸 TOMAR FOTO DE LA ORDEN
-                </button>
+                <button class="btn btn-primary" id="btnCapture">📸 TOMAR FOTO DE LA ORDEN</button>
                 <div class="fallback-notice">
-                    ¿La cámara en vivo falla? <a href="#" id="lnkNative" style="color: var(--accent-blue);">Usar cámara nativa del sistema</a>
+                    ¿La cámara en vivo falla? <a href="#" id="lnkNative" style="color:var(--accent-blue);">Usar cámara nativa del sistema</a>
                 </div>
             </div>
 
-            <!-- Review / Confirmation Controls -->
-            <div id="reviewControls" style="display: none; gap: 10px; display: none; flex-direction: column;">
-                <button class="btn btn-primary" id="btnSend">
-                    ⚡ ENVIAR A LA COMPUTADORA
-                </button>
-                <button class="btn btn-secondary" id="btnRetake">
-                    🔄 REPETIR FOTO
-                </button>
+            <div id="reviewControls" style="display:none;flex-direction:column;gap:10px;">
+                <button class="btn btn-primary" id="btnSend">⚡ ENVIAR A LA COMPUTADORA</button>
+                <button class="btn btn-secondary" id="btnRetake">🔄 REPETIR FOTO</button>
             </div>
         </div>
 
-        <!-- Hidden Native File Input (Infallible Fallback) -->
         <input type="file" id="cameraInput" accept="image/*" capture="environment">
     </main>
 
-    <!-- Success Screen Overlay -->
     <div id="successScreen">
         <div class="success-icon">🎉</div>
         <div class="success-title">¡Orden médica enviada con éxito a la PC!</div>
@@ -277,11 +92,10 @@
         <button class="btn btn-primary" id="btnAnother">📸 Tomar otra foto</button>
     </div>
 
-    <!-- Hidden Processing Canvas -->
-    <canvas id="processCanvas" style="display: none;"></canvas>
+    <canvas id="processCanvas" style="display:none;"></canvas>
 
     <script>
-        (function() {
+        (function () {
             const params = new URLSearchParams(window.location.search);
             const token = params.get('token') || 'default-token';
             const mode = params.get('mode') || 'auto';
@@ -302,13 +116,17 @@
             const btnAnother = document.getElementById('btnAnother');
             const processCanvas = document.getElementById('processCanvas');
             const overlayGuide = document.getElementById('overlayGuide');
+            const btnModeOrden = document.getElementById('btnModeOrden');
+            const btnModeFrasco = document.getElementById('btnModeFrasco');
 
             let supabaseClient = null;
             let realtimeChannel = null;
-            let currentBlobUrl = null;
             let mediaStream = null;
+            let selectedMode = 'orden';
 
-            // 1. Initialize Supabase
+            // -----------------------------------------------------------------
+            // Supabase initialization
+            // -----------------------------------------------------------------
             try {
                 supabaseClient = window.supabase.createClient(
                     'https://yyylfrnynlgwaxxocixa.supabase.co',
@@ -318,7 +136,7 @@
                     config: { broadcast: { self: false } }
                 });
 
-                realtimeChannel.subscribe((status) => {
+                realtimeChannel.subscribe(status => {
                     if (status === 'SUBSCRIBED') {
                         statusText.innerText = '🟢 Enlazado con la PC del Doctor';
                     } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
@@ -330,7 +148,9 @@
                 statusText.innerText = '⚠️ Error de enlace';
             }
 
-            // 2. Start Live Camera (Lane 1)
+            // -----------------------------------------------------------------
+            // Camera handling
+            // -----------------------------------------------------------------
             async function startCamera() {
                 try {
                     mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -354,26 +174,28 @@
                     mediaStream = null;
                 }
                 videoEl.style.display = 'none';
+                overlayGuide.style.display = 'none';
                 cameraInput.click();
             }
 
-            lnkNative.addEventListener('click', (e) => {
+            lnkNative.addEventListener('click', e => {
                 e.preventDefault();
                 switchToNativeFallback();
             });
 
             startCamera();
 
-            // 3. Capture Photo Action
-            function handleImageCaptured(imgSource) {
-                // Resize & compress to canvas (max 1600x1200, JPEG 0.85)
+            // -----------------------------------------------------------------
+            // Image processing
+            // -----------------------------------------------------------------
+            function handleImageCaptured(source) {
                 const canvas = processCanvas;
                 const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
                 const maxWidth = 1600;
                 const maxHeight = 1200;
-                let w = imgSource.width || imgSource.videoWidth || 1280;
-                let h = imgSource.height || imgSource.videoHeight || 960;
+                let w = source.width || source.videoWidth || 1280;
+                let h = source.height || source.videoHeight || 960;
 
                 if (w > maxWidth || h > maxHeight) {
                     const ratio = Math.min(maxWidth / w, maxHeight / h);
@@ -383,16 +205,14 @@
 
                 canvas.width = w;
                 canvas.height = h;
-                ctx.drawImage(imgSource, 0, 0, w, h);
+                ctx.drawImage(source, 0, 0, w, h);
 
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-
-                // Show preview
                 previewImage.src = dataUrl;
-                previewContainer.style.display = 'block';
+
+                previewContainer.style.display = 'flex';
                 videoEl.style.display = 'none';
                 overlayGuide.style.display = 'none';
-
                 shootingControls.style.display = 'none';
                 reviewControls.style.display = 'flex';
             }
@@ -405,7 +225,7 @@
                 }
             });
 
-            cameraInput.addEventListener('change', (e) => {
+            cameraInput.addEventListener('change', e => {
                 if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
                     const img = new Image();
@@ -418,7 +238,9 @@
                 }
             });
 
-            // 4. Retake Photo
+            // -----------------------------------------------------------------
+            // Retake handling
+            // -----------------------------------------------------------------
             btnRetake.addEventListener('click', () => {
                 previewContainer.style.display = 'none';
                 videoEl.style.display = 'block';
@@ -426,9 +248,44 @@
                 reviewControls.style.display = 'none';
                 shootingControls.style.display = 'flex';
                 cameraInput.value = '';
+                if (mediaStream) {
+                    // restart video if it was stopped by fallback
+                    videoEl.srcObject = mediaStream;
+                }
             });
 
-            // 5. Send to PC via Realtime Broadcast
+            // -----------------------------------------------------------------
+            // Mode switching
+            // -----------------------------------------------------------------
+            function switchCaptureMode(modeKey) {
+                selectedMode = modeKey;
+                if (modeKey === 'orden') {
+                    btnModeOrden.classList.add('active');
+                    btnModeFrasco.classList.remove('active');
+                    btnModeOrden.style.background = 'rgba(56,189,248,0.25)';
+                    btnModeOrden.style.color = '#38bdf8';
+                    btnModeOrden.style.border = '1.5px solid #38bdf8';
+                    btnModeFrasco.style.background = '#1e293b';
+                    btnModeFrasco.style.color = '#94a3b8';
+                    btnModeFrasco.style.border = '1.5px solid #475569';
+                } else {
+                    btnModeFrasco.classList.add('active');
+                    btnModeOrden.classList.remove('active');
+                    btnModeFrasco.style.background = 'rgba(56,189,248,0.25)';
+                    btnModeFrasco.style.color = '#38bdf8';
+                    btnModeFrasco.style.border = '1.5px solid #38bdf8';
+                    btnModeOrden.style.background = '#1e293b';
+                    btnModeOrden.style.color = '#94a3b8';
+                    btnModeOrden.style.border = '1.5px solid #475569';
+                }
+            }
+
+            btnModeOrden.addEventListener('click', () => switchCaptureMode('orden'));
+            btnModeFrasco.addEventListener('click', () => switchCaptureMode('frasco'));
+
+            // -----------------------------------------------------------------
+            // Send image to PC
+            // -----------------------------------------------------------------
             btnSend.addEventListener('click', async () => {
                 const dataUrl = previewImage.src;
                 if (!dataUrl) return;
@@ -442,10 +299,10 @@
                             type: 'broadcast',
                             event: 'capture',
                             payload: {
-                                dataUrl: dataUrl,
-                                filename: 'orden_celular_' + Date.now() + '.jpg',
+                                dataUrl,
+                                filename: `orden_celular_${Date.now()}.jpg`,
                                 mime: 'image/jpeg',
-                                target: target,
+                                target,
                                 mode: selectedMode
                             }
                         });
@@ -459,6 +316,9 @@
                 }
             });
 
+            // -----------------------------------------------------------------
+            // Success screen handling
+            // -----------------------------------------------------------------
             btnAnother.addEventListener('click', () => {
                 successScreen.style.display = 'none';
                 btnSend.disabled = false;

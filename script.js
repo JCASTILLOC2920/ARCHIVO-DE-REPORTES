@@ -1,21 +1,13 @@
 /**
-
- * Patient Registration Form - Client-side Interactive Script
-
+ * Patient Registration Form - Client-side Interactive Script (JC PATH LAB v12.0 SOBERANO)
  */
-
 function initScriptApp() {
-
     function getFormElement(id) {
-
+        if (!id) return null;
         if (document.getElementById('m_codAtencion')) {
-
             return document.getElementById('m_' + id) || document.getElementById(id);
-
         }
-
         return document.getElementById(id) || document.getElementById('m_' + id);
-
     }
 
     // Form and input elements
@@ -327,13 +319,9 @@ function initScriptApp() {
         // Queda TERMINANTEMENTE PROHIBIDO reiniciar el correlativo en 26Q-001 o saltar números.
 
         const SOBERANO_MIN_CORRELATIVES = {
-
-            'Q': 394, // Max correlativo 2026 es 26Q-394 -> siguiente es 26Q-395
-
-            'C': 141, // Max correlativo legítimo 2026 es 26C-141 -> siguiente es 26C-142 (Salto 301/302 resuelto)
-
-            'I': 40   // Max correlativo 2026 es 26I-040 -> siguiente es 26I-041
-
+            'Q': 394,
+            'C': 141,
+            'I': 40
         };
 
         const minSovereignFloor = SOBERANO_MIN_CORRELATIVES[letter] || 1;
@@ -346,40 +334,22 @@ function initScriptApp() {
 
         }
 
-        // Detección de huecos correlativos faltantes dentro de la secuencia activa
-
         const missing = [];
-
         for (let i = 1; i < maxNum; i++) {
-
             if (!assignedNums.has(i)) {
-
                 missing.push(i);
-
             }
-
         }
-
-        // Si se solicita rellenar hueco pendiente o si el modo fillGap está activo
 
         let targetNum;
-
         if (options && options.fillGap && missing.length > 0) {
-
             targetNum = missing[0];
-
         } else {
-
             targetNum = maxNum > 0 ? maxNum + 1 : minSovereignFloor + 1;
-
         }
 
-        // Blindaje final: NUNCA generar 001 si estamos en 2026 y no se pidió expresamente forzarlo
-
-        if (targetNum === 1 && currentYearTwoDigits === '26' && !options.allowRestart) {
-
+        if (targetNum === 1 && currentYearTwoDigits === '26' && !(options && options.allowRestart)) {
             targetNum = minSovereignFloor + 1;
-
         }
 
         const nextNumStr = targetNum < 10 ? `00${targetNum}` : (targetNum < 100 ? `0${targetNum}` : String(targetNum));
@@ -3187,23 +3157,17 @@ function initScriptApp() {
     });
 
     // Sincronización armónica con el motor modular ES6
-
     if (typeof window.applyFilters === 'function') {
-
         try { window.applyFilters(false); } catch(e) {}
-
     }
-
 }
 
-if (document.readyState === 'loading') {
-
-    document.addEventListener('DOMContentLoaded', initScriptApp);
-
-} else {
-
-    initScriptApp();
-
+if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScriptApp);
+    } else {
+        initScriptApp();
+    }
 }
 
 /* ==========================================================================

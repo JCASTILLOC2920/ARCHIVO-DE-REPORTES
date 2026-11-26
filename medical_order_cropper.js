@@ -284,6 +284,18 @@ export class MedicalOrderCropper {
                 bl: [img.width * 0.05, img.height * 0.95]
             };
 
+            let activeCornerKey = null;
+
+            const getMousePos = (evt, canvasElem) => {
+                const rect = canvasElem.getBoundingClientRect();
+                const scaleX = canvasElem.width / rect.width;
+                const scaleY = canvasElem.height / rect.height;
+                return [
+                    (evt.clientX - rect.left) * scaleX,
+                    (evt.clientY - rect.top) * scaleY
+                ];
+            };
+
             const redraw = () => {
                 cCtx.drawImage(img, 0, 0);
                 cCtx.strokeStyle = '#06b6d4';
@@ -296,10 +308,10 @@ export class MedicalOrderCropper {
                 cCtx.closePath();
                 cCtx.stroke();
 
-                Object.values(corners).forEach(pt => {
-                    cCtx.fillStyle = '#38bdf8';
+                Object.entries(corners).forEach(([key, pt]) => {
+                    cCtx.fillStyle = (activeCornerKey === key) ? '#ef4444' : '#38bdf8';
                     cCtx.beginPath();
-                    cCtx.arc(pt[0], pt[1], 12, 0, Math.PI * 2);
+                    cCtx.arc(pt[0], pt[1], 14, 0, Math.PI * 2);
                     cCtx.fill();
                     cCtx.strokeStyle = '#ffffff';
                     cCtx.lineWidth = 2;
@@ -308,7 +320,40 @@ export class MedicalOrderCropper {
             };
             redraw();
 
+            const onMouseDown = (e) => {
+                const [mx, my] = getMousePos(e, cCanvas);
+                for (const [key, pt] of Object.entries(corners)) {
+                    const dist = Math.hypot(pt[0] - mx, pt[1] - my);
+                    if (dist < 25) {
+                        activeCornerKey = key;
+                        break;
+                    }
+                }
+            };
+
+            const onMouseMove = (e) => {
+                if (!activeCornerKey) return;
+                const [mx, my] = getMousePos(e, cCanvas);
+                corners[activeCornerKey] = [
+                    Math.max(0, Math.min(cCanvas.width, mx)),
+                    Math.max(0, Math.min(cCanvas.height, my))
+                ];
+                redraw();
+            };
+
+            const onMouseUp = () => {
+                activeCornerKey = null;
+                redraw();
+            };
+
+            cCanvas.onmousedown = onMouseDown;
+            cCanvas.onmousemove = onMouseMove;
+            window.addEventListener('mouseup', onMouseUp);
+
             const finish = (croppedCanvas) => {
+                cCanvas.onmousedown = null;
+                cCanvas.onmousemove = null;
+                window.removeEventListener('mouseup', onMouseUp);
                 modal.style.display = 'none';
                 croppedCanvas.toBlob(blob => {
                     resolve({

@@ -1397,7 +1397,11 @@ tbody tr:hover {
     font-size: 0.88rem;
     font-weight: 800;
     font-family: 'JetBrains Mono', monospace;
-    color: var(--accent-secondary);
+    color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
 }
 .detail-value-monto {
     font-size: 0.95rem;
@@ -1509,9 +1513,7 @@ tbody tr:hover {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(15, 23, 42, 0.98);
     border-radius: 12px;
     padding: 14px 16px 16px 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.15);
@@ -1520,6 +1522,7 @@ tbody tr:hover {
     border: 1px solid rgba(148, 163, 184, 0.15);
     animation: toast-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     transition: transform 0.25s ease, opacity 0.25s ease;
+    will-change: transform, opacity;
 }
 
 .ag-toast.toast-hiding {
@@ -1672,11 +1675,12 @@ tbody tr:hover {
     inset: -5px;
     border-radius: 50%;
     border: 1.5px solid rgba(56, 189, 248, 0.5);
-    animation: cortana-pulse 2.6s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    animation: cortana-pulse-optimized 2.6s infinite cubic-bezier(0.4, 0, 0.6, 1);
     pointer-events: none;
+    will-change: opacity, transform;
 }
 
-@keyframes cortana-pulse {
+@keyframes cortana-pulse-optimized {
     0% { transform: scale(0.95); opacity: 0.8; }
     50% { transform: scale(1.22); opacity: 0; }
     100% { transform: scale(0.95); opacity: 0; }
@@ -1686,9 +1690,7 @@ tbody tr:hover {
     pointer-events: auto;
     max-width: 330px;
     width: calc(100vw - 40px);
-    background: rgba(15, 23, 42, 0.96);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(15, 23, 42, 0.98);
     border: 1px solid rgba(56, 189, 248, 0.4);
     border-radius: 16px;
     padding: 14px 16px;
@@ -1699,6 +1701,7 @@ tbody tr:hover {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    will-change: transform, opacity;
 }
 
 @keyframes cortana-pop {
@@ -1749,7 +1752,8 @@ tbody tr:hover {
     line-height: 1.45;
 }
 .cortana-bubble-text strong {
-    color: var(--accent-secondary);
+    color: #7dd3fc;
+    font-weight: 700;
 }
 
 .cortana-bubble-footer {

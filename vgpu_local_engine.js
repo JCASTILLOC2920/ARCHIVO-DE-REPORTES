@@ -610,9 +610,10 @@
         async computeEmbeddingSimilarity(vecA, vecB) {
             await this.init();
 
-            if (!vecA || !vecB || vecA.length !== vecB.length || vecA.length === 0) {
-                return 0.0;
-            }
+            // Validaciones rápidas y seguras
+            if (!Array.isArray(vecA) && !(vecA instanceof Float32Array)) return 0.0;
+            if (!Array.isArray(vecB) && !(vecB instanceof Float32Array)) return 0.0;
+            if (vecA.length !== vecB.length || vecA.length === 0) return 0.0;
 
             return this.enqueueTask(() => {
                 const a = vecA instanceof Float32Array ? vecA : new Float32Array(vecA);
@@ -631,7 +632,7 @@
                     normB += vb * vb;
                 }
 
-                if (normA <= 0.0 || normB <= 0.0) return 0.0;
+                if (normA === 0 || normB === 0) return 0.0;
                 return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
             }, PRIORITY.NORMAL);
         }
@@ -655,7 +656,8 @@
             return {
                 backend: this.backend,
                 isWebGPU: this.isWebGPUSupported,
-                isDirectML: this.isDirectMLFallback,
+                // Garantiza que la propiedad exista aunque el fallback no esté activo
+                isDirectML: !!this.isDirectMLFallback,
                 hardware: { ...this.hardwareInfo },
                 metrics: { ...this.metrics },
                 queuePendingTasks: this.taskQueue.length

@@ -29,13 +29,44 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
+  self.clients.claim();
 });
 
 // Estrategia Network-First con fallback a caché local soberano
 self.addEventListener('fetch', (event) => {
+  // Solo interceptar peticiones GET
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // No interceptar peticiones a otros orígenes (APIs externas, etc.)
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
+    fetch(event.request)
+      .then((response) => {
+        // Clonar la respuesta para poder guardarla en caché
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          // Fallback final: servir la página principal si es una navegación
+          if (event.request.mode === 'navigate') {
+            return caches.match('./index.html');
+          }
+          // Si no hay nada en caché, devolver una respuesta vacía o error
+          return new Response('Offline', { status: 503, statusText: 'Service Worker Offline' });
+        });
+      })
   );
 });

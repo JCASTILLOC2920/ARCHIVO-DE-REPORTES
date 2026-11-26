@@ -6075,7 +6075,13 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
 
 
 
-            // Función de exportación de reporte individual en formato JSON
+             // Inicialización segura de variables globales
+ const patient = window._activePrintPatient || null;
+ const paramCodAtencion = new URLSearchParams(window.location.search).get('cod') || null;
+ const isAutoDownload = /[?&]auto=1/.test(window.location.search);
+ const isFullySigned = !!window._reportFullySigned;
+
+ // Función de exportación de reporte individual en formato JSON
 
             window.descargarReporteJson = function() {
 
@@ -6161,7 +6167,7 @@ if (paramCodAtencion && typeof window.REAL_SUPABASE_PATIENTS !== 'undefined' && 
 
                         try {
 
-                            const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : (window.jsPDF || null);
+                            const jsPDFClass = window.jspdf?.jsPDF ?? window.jsPDF ?? null;
 
 
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GROQ AI PATHOLOGY COPILOT (ESTILOS UI)
+   GROQ AI PATHOLOGY COPILOT (ESTILOS UI) - GOLIATH OMEGA-ARGÓN v12.0
    Motor de Inteligencia Artificial Ultrarrápido para Informes Patológicos
    ========================================================================== */
 
@@ -210,6 +210,7 @@
 .groq-prompt-textarea {
     width: 100%;
     min-height: 70px;
+    max-height: 180px;
     padding: 10px 12px;
     background: #0b1120;
     border: 1px solid #334155;
@@ -356,9 +357,8 @@
     transform: translateY(-1px);
 }
 
-
 /* ==========================================================
    BLINDAJE DE SEGURIDAD Y PRIVACIDAD (PROTOCOLO ELENA)
-   Eliminación definitiva y bloqueo por CSS de Boletas y Copiloto IA
+   Soporte Clínico Integral - JC PATH LAB S.A.C.
    ========================================================== */
-/* Boletas habilitadas */
+/* Boletas y Copiloto IA completamente funcionales y activos bajo especificación Goliath Omega-Argón */

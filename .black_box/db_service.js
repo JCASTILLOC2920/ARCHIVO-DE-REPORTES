@@ -4906,7 +4906,8 @@ export class MultiClinicSyncEngine {
         }
 
         try {
-            if (this.supabaseSubscription) {
+            // Eliminamos la suscripción previa solo si el cliente expone el método correspondiente
+            if (this.supabaseSubscription && typeof client.removeChannel === 'function') {
                 client.removeChannel(this.supabaseSubscription);
             }
 
@@ -4933,7 +4934,8 @@ export class MultiClinicSyncEngine {
 
     scheduleReconnection() {
         setTimeout(() => {
-            if (!this.isStarted) return;
+            // `isStarted` puede no estar inicializado; asumimos que el motor está activo salvo que se indique lo contrario
+            if (this.isStarted === false) return;
             this.backoffDelay = Math.min(this.backoffDelay * 2, this.maxBackoffDelay);
             console.log(`[MultiClinicSyncEngine] Intentando reconexión WebSocket en ${this.backoffDelay}ms...`);
             this.connectSupabaseRealtime();
@@ -4941,11 +4943,13 @@ export class MultiClinicSyncEngine {
     }
 
     startAdaptivePolling() {
+        // Garantiza que no queden intervalos previos activos
         if (this.pollingIntervalId) clearInterval(this.pollingIntervalId);
         
         const pollIntervalMs = 9000;
         this.pollingIntervalId = setInterval(async () => {
-            if (document.visibilityState === 'hidden') return;
+            // En entornos sin DOM (Node, pruebas) `document` no existe → evitamos excepción
+            if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
             await this.triggerImmediateSync(true);
         }, pollIntervalMs);
     }
@@ -4969,14 +4973,16 @@ export class MultiClinicSyncEngine {
     }
 
     handleRemotePayload(payload) {
-        const { eventType, new: newRecord, old: oldRecord } = payload;
+        // Supabase puede enviar el tipo de evento bajo `eventType` o `type`
+        const { eventType, type, new: newRecord, old: oldRecord } = payload;
+        const evt = eventType || type;
         if (!newRecord && !oldRecord) return;
 
         const record = newRecord || oldRecord;
         const cod = record.codAtencion || record.cod_atencion;
         if (!cod) return;
 
-        if (eventType === 'INSERT' || eventType === 'UPDATE') {
+        if (evt === 'INSERT' || evt === 'UPDATE') {
             if (Array.isArray(patientDatabase)) {
                 const idx = patientDatabase.findIndex(p => String(p.codAtencion || p.cod_atencion) === String(cod));
                 if (idx !== -1) {
@@ -4986,7 +4992,7 @@ export class MultiClinicSyncEngine {
                 }
                 sortPatientArray(patientDatabase);
             }
-        } else if (eventType === 'DELETE') {
+        } else if (evt === 'DELETE') {
             if (Array.isArray(patientDatabase)) {
                 const idx = patientDatabase.findIndex(p => String(p.codAtencion || p.cod_atencion) === String(cod));
                 if (idx !== -1) {
@@ -4996,7 +5002,7 @@ export class MultiClinicSyncEngine {
         }
 
         if (this.broadcastChannel) {
-            this.broadcastChannel.postMessage({ type: 'REMOTE_SYNC_EVENT', eventType, record });
+            this.broadcastChannel.postMessage({ type: 'REMOTE_SYNC_EVENT', eventType: evt, record });
         }
 
         const clinicaNombre = record.clinica || 'Clínica';
@@ -5150,7 +5156,9 @@ export function suscribirCanalChat(clinica, onMensajeRecibido) {
         return null;
     }
 
-    const channelName = `chat_clinica_${String(clinica || 'general').replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`;
+    // Normalizamos el nombre del canal para evitar caracteres no permitidos
+    const safeClinica = String(clinica || 'general').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const channelName = `chat_clinica_${safeClinica}_${Date.now()}`;
     
     try {
         const channel = client.channel(channelName)
@@ -5160,6 +5168,7 @@ export function suscribirCanalChat(clinica, onMensajeRecibido) {
                     event: 'INSERT',
                     schema: 'public',
                     table: 'mensajes_chat_clinicas',
+                    // Sólo filtramos cuando la clínica es específica y válida
                     filter: clinica && clinica !== 'TODAS' && clinica !== 'GENERAL' ? `clinica_id=eq.${clinica}` : undefined
                 },
                 (payload) => {

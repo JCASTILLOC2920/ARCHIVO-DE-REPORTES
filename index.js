@@ -13,6 +13,13 @@ import * as urology from './cap_urology.js';
  * @returns {object}
  */
 function deepFreeze(obj) {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+  if (Object.isFrozen(obj)) {
+    return obj;
+  }
+  
   const props = Object.getOwnPropertyNames(obj);
   for (const p of props) {
     const v = obj[p];
@@ -29,7 +36,11 @@ function deepFreeze(obj) {
  * @returns {boolean}
  */
 function isPlainObject(o) {
-  return Object.prototype.toString.call(o) === '[object Object]';
+  if (o === null || typeof o !== 'object') {
+    return false;
+  }
+  const proto = Object.getPrototypeOf(o);
+  return proto === Object.prototype || proto === null;
 }
 
 /* ------------------------------------------------------------------ */
@@ -86,6 +97,23 @@ const Exporter = {
    */
   listSchemas() {
     return Array.from(schemasMap.keys());
+  },
+
+  /**
+   * Verifica si un esquema existe.
+   * @param {string} name
+   * @returns {boolean}
+   */
+  hasSchema(name) {
+    return schemasMap.has(name);
+  },
+
+  /**
+   * Obtiene todas las claves globales registradas.
+   * @returns {string[]}
+   */
+  getGlobalKeys() {
+    return Array.from(globalKeys);
   },
 
   // Acceso directo (también O(1) gracias al Map interno)

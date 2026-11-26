@@ -1,64 +1,113 @@
 // pdf_engine.js
-// PROTOCOLO ACTOR-CRITICO: Módulo Aislado para Generación y Enrutamiento de PDF
+// Módulo aislado para generación y enrutamiento de PDF
 import { patientDatabase } from './db_service.js?v=20261105_v674';
 
+/**
+ * Normaliza cualquier código de atención para comparaciones.
+ * @param {string|number} code
+ * @returns {string}
+ */
+function normalizeCode(code) {
+    return String(code ?? '')
+        .trim()
+        .toLowerCase()
+        .replace(/[-_\s]/g, '');
+}
 
+/**
+ * Busca un paciente en las fuentes disponibles.
+ * @param {string} target Normalized code.
+ * @returns {object|null}
+ */
+function findPatient(target) {
+    // 1️⃣ Base local importada
+    if (Array.isArray(patientDatabase)) {
+        const found = patientDatabase.find(p => normalizeCode(p.codAtencion ?? p.cod_atencion) === target);
+        if (found) return found;
+    }
+
+    // 2️⃣ Cache global Supabase (si existe)
+    if (Array.isArray(window?.REAL_SUPABASE_PATIENTS)) {
+        const found = window.REAL_SUPABASE_PATIENTS.find(p => normalizeCode(p.codAtencion ?? p.cod_atencion) === target);
+        if (found) return found;
+    }
+
+    // 3️⃣ Paciente activo en la UI
+    const active = window?.activePatient ?? window?.currentEditingPatient;
+    if (active && normalizeCode(active.codAtencion ?? active.cod_atencion) === target) {
+        return active;
+    }
+
+    return null;
+}
+
+/**
+ * Persiste temporalmente los datos del paciente para la ventana de impresión.
+ * @param {object} patient
+ */
+function persistPatientData(patient) {
+    try {
+        const payload = JSON.stringify(patient);
+        localStorage.setItem('printPatientData', payload);
+        if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('printPatientData', payload);
+        }
+    } catch (e) {
+        console.warn('[PDF Engine] No se pudo guardar en storage', e);
+    }
+}
+
+/**
+ * Abre la ventana de impresión del PDF.
+ * @param {string|number} codAtencion Código de atención del paciente.
+ * @param {boolean} [autoDownload=false] Si true, la página intentará descargar el PDF automáticamente.
+ * @returns {Window|null} Referencia a la ventana abierta o null si el popup fue bloqueado.
+ */
 export function openPrintWindow(codAtencion, autoDownload = false) {
     if (!codAtencion) {
-        console.error("Error: No se proporcionó código de atención para generar PDF.");
-        return;
+        console.error('Error: No se proporcionó código de atención para generar PDF.');
+        return null;
     }
-    
+
     console.log(`[PDF Engine] Preparando documento para código: ${codAtencion} (autoDownload: ${autoDownload})`);
-    
-    const cleanTarget = String(codAtencion).trim().toLowerCase().replace(/[-_\s]/g, '');
-    let patient = patientDatabase && Array.isArray(patientDatabase) ? patientDatabase.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanTarget) : null;
-    
-    if (!patient && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-        patient = window.REAL_SUPABASE_PATIENTS.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanTarget);
+
+    const target = normalizeCode(codAtencion);
+    const patient = findPatient(target);
+
+    // Si no se encuentra el paciente, avisar y abortar la generación.
+    if (!patient) {
+        alert('Paciente no encontrado. Verifique el código de atención.');
+        return null;
     }
 
-    if (!patient && typeof window !== 'undefined') {
-        const active = window.activePatient || window.currentEditingPatient;
-        if (active) {
-            const activeCode = String(active.codAtencion || active.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '');
-            if (activeCode === cleanTarget) {
-                patient = active;
-            }
-        }
-    }
-    
-    let isClinicUser = false;
-    try {
-        const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
-        if (u && u.perfil === 'Usuario') isClinicUser = true;
-    } catch(e) {}
+    // Persistir datos para la página de impresión.
+    persistPatientData(patient);
 
-    const isSigned = patient && (patient.firmado === true || patient.firmado === 1 || String(patient.firmado).toLowerCase() === 'true');
-    const isReady = patient && (String(patient.estado || '').toLowerCase().includes('completad') || String(patient.estado || '').toLowerCase().includes('listo') || String(patient.estado || '').toLowerCase().includes('firmad'));
+    // Determinar si el paciente está completamente firmado.
+    const isSigned = Boolean(patient.firmado === true || patient.firmado === 1 || String(patient.firmado).toLowerCase() === 'true');
+    const isReady = /completad|listo|firmad/i.test(String(patient.estado ?? ''));
     const isFullySigned = isSigned && isReady;
 
-    
-
-    if (patient) {
-        try {
-            const patientStr = JSON.stringify(patient);
-            localStorage.setItem('printPatientData', patientStr);
-            if (typeof sessionStorage !== 'undefined') {
-                sessionStorage.setItem('printPatientData', patientStr);
-            }
-        } catch (e) {
-            console.warn("[PDF Engine] No se pudo guardar en localStorage/sessionStorage", e);
-        }
+    // Si se solicitó descarga automática pero el caso no está firmado, impedirla.
+    if (autoDownload && !isFullySigned) {
+        const proceed = confirm('El caso aún no está firmado completamente. ¿Desea continuar con la descarga?');
+        if (!proceed) return null;
     }
-    
-    // Abrir imprimir.html pasando el codAtencion como parámetro GET con autoDownload activo si se solicitó descarga directa
-    const printUrl = `imprimir.html?${autoDownload ? 'autoDownload=true&' : ''}codAtencion=${encodeURIComponent(codAtencion)}&_cb=${Date.now()}`;
+
+    // Construir URL de impresión.
+    const params = new URLSearchParams();
+    if (autoDownload) params.append('autoDownload', 'true');
+    params.append('codAtencion', codAtencion);
+    params.append('_cb', Date.now().toString());
+
+    const printUrl = `imprimir.html?${params.toString()}`;
     const newWindow = window.open(printUrl, '_blank');
-    
+
     if (newWindow) {
         newWindow.focus();
-    } else {
-        alert("Por favor permita las ventanas emergentes (pop-ups) para generar el PDF.");
+        return newWindow;
     }
+
+    alert('Por favor permita las ventanas emergentes (pop-ups) para generar el PDF.');
+    return null;
 }

@@ -129,7 +129,6 @@ export function setGroqApiKey(newKey) {
     }
 }
 
-// Bóveda Criptográfica Multi-Capa: 19 Llaves Groq LPU Activas con Anti-Scanning
 // Bóveda Criptográfica Multi-Capa: Llaves de Reserva y Excedente (Vault Reserve)
 const _VAULT_GROQ_POOL = [
     "SjdSUXJROHM5UlNRM2g0QUl1cTdFa2ZWWUYzYnlkR1dhcUxmMVcyQmNFSGdRRTVRcnd0VV9rc2c=",
@@ -145,7 +144,7 @@ const _VAULT_GROQ_POOL = [
     "R3FxT0ZtUGpaejJIWGVHcEVFNEoxNzV1WUYzYnlkR1dIdklocFNDSWhxblQ1YmxjWlRad19rc2c=",
     "RG15RUZ3R0xQcERNaGpSYWh5VzB0TnRnWUYzYnlkR1dYZXY5Ymxtd0RjWHVnaU4zeVBYeF9rc2c="
 ];
-const _VAULT_RESERVE_POOL = _VAULT_GROQ_POOL;;
+const _VAULT_RESERVE_POOL = _VAULT_GROQ_POOL;
 
 // Bóveda Militar de Claves Cerebras CS-3 (Failover Secundario - 14 Nodos)
 const _VAULT_CEREBRAS_POOL = [

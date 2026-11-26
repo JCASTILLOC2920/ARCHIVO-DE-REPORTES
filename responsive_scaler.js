@@ -2,6 +2,7 @@
  * responsive_scaler.js
  * Sistema de Escalado Matemático Fluido y Matriz Tri-Adaptativa por Densidad Útil
  * Resiliencia Total ante Zoom del Navegador (50% a 200%) y Tamaño de Monitor (13" a 32")
+ * [GOLIATH OMEGA-ARGÓN v12.0 - JC PATH LAB]
  */
 (function () {
     function updateResponsiveScale() {

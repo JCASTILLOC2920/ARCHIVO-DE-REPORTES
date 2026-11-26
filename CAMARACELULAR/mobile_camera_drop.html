@@ -2,462 +2,316 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cámara Clínica Móvil - JCPATHLAB</title>
-    <!-- Supabase SDK -->
-    <!-- Conector Soberano LAN Docker n8n -->
+    <title>Captura de Orden – JCPATHLAB Móvil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        :root {
-            --bg-dark: #0f172a;
-            --surface-dark: #1e293b;
-            --accent-emerald: #10b981;
-            --accent-blue: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+        :root{
+            --bg-dark:#0F172A;
+            --accent-blue:#0284C7;
+            --accent-green:#10B981;
+            --accent-amber:#F59E0B;
+            --accent-red:#EF4444;
+            --text-primary:#F1F5F9;
+            --text-secondary:#94A3B8;
         }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        body{margin:0;background:#0F172A;color:#F1F5F9;font-family:system-ui,sans-serif;overflow:hidden;}
+        header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#1E293B;}
+        .logo-title{font-weight:700;font-size:1.1rem;}
+        .status-badge{display:flex;align-items:center;gap:6px;color:#38bdf8;}
+        .status-dot{width:10px;height:10px;border-radius:50%;background:#38bdf8;animation:blink 1.5s infinite;}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+        main{position:relative;height:calc(100vh - 56px);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+        .viewfinder-container{position:relative;width:100%;max-width:480px;height:70vh;background:#1E293B;border-radius:12px;overflow:hidden;}
+        video, #previewContainer{width:100%;height:100%;object-fit:cover;}
+        #previewContainer{display:none;justify-content:center;align-items:center;background:#1E293B;}
+        #previewImage{max-width:100%;max-height:100%;}
+        .overlay-guide{position:absolute;top:0;left:0;width:100%;height:100%;border:4px dashed #38bdf8;box-sizing:border-box;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+        .guide-text{color:#38bdf8;font-weight:600;background:rgba(0,0,0,0.4);padding:4px 8px;border-radius:4px;}
+        .controls-area{margin-top:12px;width:100%;max-width:480px;display:flex;flex-direction:column;gap:8px;align-items:center;}
+        .btn{padding:10px 16px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:background .2s;}
+        .btn-primary{background:#0284C7;color:#fff;}
+        .btn-primary:hover{background:#0369A1;}
+        .btn-secondary{background:#475569;color:#F1F5F9;}
+        .btn-secondary:hover{background:#334155;}
+        .fallback-notice{font-size:.85rem;color:#94A3B8;margin-top:4px;}
+        #reviewControls{display:none;flex-direction:column;gap:8px;width:100%;}
+        #successScreen{
+            position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,.95);
+            display:none;flex-direction:column;align-items:center;justify-content:center;color:#F1F5F9;text-align:center;padding:24px;
         }
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-        header {
-            background-color: var(--surface-dark);
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .logo-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: var(--text-main);
-        }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-emerald);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-emerald);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-emerald);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 16px;
-            max-width: 600px;
-            width: 100%;
-            margin: 0 auto;
-            justify-content: space-between;
-        }
-        .viewfinder-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 3/4;
-            background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid rgba(56, 189, 248, 0.3);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        video, canvas, #previewImage {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        #previewContainer {
-            display: none;
-            z-index: 10;
-        }
-        .overlay-guide {
-            position: absolute;
-            inset: 20px;
-            border: 2px dashed rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
-            pointer-events: none;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 10px;
-        }
-        .guide-text {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(4px);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
-        }
-        .controls-area {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-        }
-        .btn-primary:active {
-            transform: scale(0.97);
-        }
-        .btn-secondary {
-            background: var(--surface-dark);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .btn-secondary:active {
-            transform: scale(0.97);
-        }
-        #cameraInput {
-            display: none;
-        }
-        .fallback-notice {
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-        }
-        /* Success Screen */
-        #successScreen {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: var(--bg-dark);
-            z-index: 100;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            text-align: center;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .success-icon {
-            font-size: 4rem;
-            margin-bottom: 16px;
-            animation: bounce 0.6s infinite alternate;
-        }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
-        }
-        .success-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-emerald);
-            margin-bottom: 8px;
-        }
-        .success-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            line-height: 1.4;
-        }
+        .success-icon{font-size:3rem;margin-bottom:12px}
+        .success-title{font-size:1.4rem;font-weight:700;margin-bottom:8px}
+        .success-desc{font-size:1rem;margin-bottom:20px}
+        #processCanvas{display:none;}
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo-title">JCPATHLAB • Móvil</div>
-        <div class="status-badge" id="statusBadge">
-            <div class="status-dot"></div>
-            <span id="statusText">Conectando...</span>
+<header>
+    <div class="logo-title">JCPATHLAB • Móvil</div>
+    <div class="status-badge" id="statusBadge">
+        <div class="status-dot"></div>
+        <span id="statusText">Conectando...</span>
+    </div>
+</header>
+
+<main>
+    <div class="viewfinder-container" id="viewfinder">
+        <video id="videoPreview" autoplay playsinline muted></video>
+        <div id="previewContainer">
+            <img id="previewImage" alt="Vista previa de orden">
         </div>
-    </header>
-
-    <main>
-        <div class="viewfinder-container" id="viewfinder">
-            <!-- Lane 1: Live Video Stream -->
-            <video id="videoPreview" autoplay playsinline muted></video>
-            
-            <!-- Lane 2: Preview Captured Image -->
-            <div id="previewContainer">
-                <img id="previewImage" alt="Vista previa de orden">
-            </div>
-
-            <div class="overlay-guide" id="overlayGuide">
-                <span class="guide-text">Alinee la orden médica dentro del recuadro</span>
-            </div>
+        <div class="overlay-guide" id="overlayGuide">
+            <span class="guide-text">Alinee la orden médica dentro del recuadro</span>
         </div>
-
-        <div class="controls-area">
-            <!-- Normal Shooting Controls -->
-            <div id="shootingControls">
-                <!-- Selector de Modo de Captura -->
-                <div id="modePillContainer" style="display: flex; gap: 8px; margin-bottom: 12px; width: 100%;">
-                    <button type="button" id="btnModeOrden" class="mode-pill active" onclick="switchCaptureMode('orden')" style="flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #38bdf8; background: rgba(56,189,248,0.25); color: #38bdf8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;">
-                        📄 Orden / Hoja
-                    </button>
-                    <button type="button" id="btnModeFrasco" class="mode-pill" onclick="switchCaptureMode('frasco')" style="flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #475569; background: #1e293b; color: #94a3b8; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;">
-                        🧪 Frasco (IA 27B)
-                    </button>
-                </div>
-                <button class="btn btn-primary" id="btnCapture">
-                    📸 TOMAR FOTO DE LA ORDEN
-                </button>
-                <div class="fallback-notice">
-                    ¿La cámara en vivo falla? <a href="#" id="lnkNative" style="color: var(--accent-blue);">Usar cámara nativa del sistema</a>
-                </div>
-            </div>
-
-            <!-- Review / Confirmation Controls -->
-            <div id="reviewControls" style="display: none; gap: 10px; display: none; flex-direction: column;">
-                <button class="btn btn-primary" id="btnSend">
-                    ⚡ ENVIAR A LA COMPUTADORA
-                </button>
-                <button class="btn btn-secondary" id="btnRetake">
-                    🔄 REPETIR FOTO
-                </button>
-            </div>
-        </div>
-
-        <!-- Hidden Native File Input (Infallible Fallback) -->
-        <input type="file" id="cameraInput" accept="image/*" capture="environment">
-    </main>
-
-    <!-- Success Screen Overlay -->
-    <div id="successScreen">
-        <div class="success-icon">🎉</div>
-        <div class="success-title">¡Orden médica enviada con éxito a la PC!</div>
-        <div class="success-desc">La imagen ha sido sincronizada en tiempo real con el sistema clínico. Puede cerrar esta ventana o tomar otra fotografía.</div>
-        <button class="btn btn-primary" id="btnAnother">📸 Tomar otra foto</button>
     </div>
 
-    <!-- Hidden Processing Canvas -->
-    <canvas id="processCanvas" style="display: none;"></canvas>
+    <div class="controls-area">
+        <div id="shootingControls">
+            <div id="modePillContainer" style="display:flex;gap:8px;margin-bottom:12px;width:100%;">
+                <button type="button" id="btnModeOrden" class="mode-pill active"
+                        style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #38bdf8;background:rgba(56,189,248,0.25);color:#38bdf8;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s;">
+                    📄 Orden / Hoja
+                </button>
+                <button type="button" id="btnModeFrasco" class="mode-pill"
+                        style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #475569;background:#1e293b;color:#94a3b8;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s;">
+                    🧪 Frasco (IA 27B)
+                </button>
+            </div>
+            <button class="btn btn-primary" id="btnCapture">📸 TOMAR FOTO DE LA ORDEN</button>
+            <div class="fallback-notice">
+                ¿La cámara en vivo falla? <a href="#" id="lnkNative" style="color:var(--accent-blue);">Usar cámara nativa del sistema</a>
+            </div>
+        </div>
 
-    <script>
-        (function() {
-            const params = new URLSearchParams(window.location.search);
-            const token = params.get('token') || 'default-token';
-            const mode = params.get('mode') || 'auto';
-            const target = params.get('target') || 'macro';
+        <div id="reviewControls">
+            <button class="btn btn-primary" id="btnSend">⚡ ENVIAR A LA COMPUTADORA</button>
+            <button class="btn btn-secondary" id="btnRetake">🔄 REPETIR FOTO</button>
+        </div>
+    </div>
 
-            const statusText = document.getElementById('statusText');
-            const videoEl = document.getElementById('videoPreview');
-            const cameraInput = document.getElementById('cameraInput');
-            const previewContainer = document.getElementById('previewContainer');
-            const previewImage = document.getElementById('previewImage');
-            const shootingControls = document.getElementById('shootingControls');
-            const reviewControls = document.getElementById('reviewControls');
-            const btnCapture = document.getElementById('btnCapture');
-            const btnSend = document.getElementById('btnSend');
-            const btnRetake = document.getElementById('btnRetake');
-            const lnkNative = document.getElementById('lnkNative');
-            const successScreen = document.getElementById('successScreen');
-            const btnAnother = document.getElementById('btnAnother');
-            const processCanvas = document.getElementById('processCanvas');
-            const overlayGuide = document.getElementById('overlayGuide');
+    <input type="file" id="cameraInput" accept="image/*" capture="environment">
+</main>
 
-            let supabaseClient = null;
-            let realtimeChannel = null;
-            let currentBlobUrl = null;
-            let mediaStream = null;
+<div id="successScreen">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">¡Orden médica enviada con éxito a la PC!</div>
+    <div class="success-desc">La imagen ha sido sincronizada en tiempo real con el sistema clínico. Puede cerrar esta ventana o tomar otra fotografía.</div>
+    <button class="btn btn-primary" id="btnAnother">📸 Tomar otra foto</button>
+</div>
 
-            // 1. Enlace Soberano Docker n8n y BroadcastChannel
-            try {
-                if (typeof BroadcastChannel !== 'undefined') {
-                    realtimeChannel = new BroadcastChannel('jcpathlab_realtime_reports');
-                }
-                statusText.innerText = '🟢 Enlazado con la PC del Doctor (LAN Soberana)';
-            } catch (e) {
-                statusText.innerText = '🟢 Enlace LAN Activo';
+<canvas id="processCanvas"></canvas>
+
+<script>
+(() => {
+    /* ---------- Parámetros de URL ---------- */
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token') || 'default-token';
+    const mode = params.get('mode') || 'auto';
+    const target = params.get('target') || 'macro';
+
+    /* ---------- Referencias del DOM ---------- */
+    const statusText = document.getElementById('statusText');
+    const videoEl = document.getElementById('videoPreview');
+    const cameraInput = document.getElementById('cameraInput');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const shootingControls = document.getElementById('shootingControls');
+    const reviewControls = document.getElementById('reviewControls');
+    const btnCapture = document.getElementById('btnCapture');
+    const btnSend = document.getElementById('btnSend');
+    const btnRetake = document.getElementById('btnRetake');
+    const lnkNative = document.getElementById('lnkNative');
+    const successScreen = document.getElementById('successScreen');
+    const btnAnother = document.getElementById('btnAnother');
+    const processCanvas = document.getElementById('processCanvas');
+    const overlayGuide = document.getElementById('overlayGuide');
+    const btnModeOrden = document.getElementById('btnModeOrden');
+    const btnModeFrasco = document.getElementById('btnModeFrasco');
+
+    /* ---------- Estado ---------- */
+    let selectedMode = 'orden';
+    let mediaStream = null;
+    let realtimeChannel = null;
+
+    /* ---------- Canal Broadcast (LAN) ---------- */
+    try {
+        if (typeof BroadcastChannel !== 'undefined') {
+            realtimeChannel = new BroadcastChannel('jcpathlab_realtime_reports');
+        }
+        statusText.innerText = '🟢 Enlazado con la PC del Doctor (LAN Soberana)';
+    } catch (e) {
+        statusText.innerText = '🟢 Enlace LAN Activo';
+    }
+
+    /* ---------- Funciones auxiliares ---------- */
+    const stopMedia = () => {
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(t => t.stop());
+            mediaStream = null;
+        }
+    };
+
+    const toggleMode = (modeName) => {
+        selectedMode = modeName;
+        if (modeName === 'orden') {
+            btnModeOrden.classList.add('active');
+            btnModeFrasco.classList.remove('active');
+            btnModeOrden.style.background = 'rgba(56,189,248,0.25)';
+            btnModeOrden.style.border = '1.5px solid #38bdf8';
+            btnModeOrden.style.color = '#38bdf8';
+            btnModeFrasco.style.background = '#1e293b';
+            btnModeFrasco.style.border = '1.5px solid #475569';
+            btnModeFrasco.style.color = '#94a3b8';
+        } else {
+            btnModeFrasco.classList.add('active');
+            btnModeOrden.classList.remove('active');
+            btnModeFrasco.style.background = 'rgba(56,189,248,0.25)';
+            btnModeFrasco.style.border = '1.5px solid #38bdf8';
+            btnModeFrasco.style.color = '#38bdf8';
+            btnModeOrden.style.background = '#1e293b';
+            btnModeOrden.style.border = '1.5px solid #475569';
+            btnModeOrden.style.color = '#94a3b8';
+        }
+    };
+
+    const startCamera = async () => {
+        try {
+            mediaStream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: { ideal: 'environment' },
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 }
+                },
+                audio: false
+            });
+            videoEl.srcObject = mediaStream;
+            await videoEl.play();
+        } catch (err) {
+            console.warn('[Camera] getUserMedia falló, usando fallback nativo:', err);
+            switchToNativeFallback();
+        }
+    };
+
+    const switchToNativeFallback = () => {
+        stopMedia();
+        videoEl.style.display = 'none';
+        cameraInput.click();
+    };
+
+    const handleImageCaptured = (source) => {
+        const canvas = processCanvas;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        const maxW = 1600, maxH = 1200;
+        let w = source.width || source.videoWidth || 1280;
+        let h = source.height || source.videoHeight || 960;
+
+        if (w > maxW || h > maxH) {
+            const ratio = Math.min(maxW / w, maxH / h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+        }
+
+        canvas.width = w;
+        canvas.height = h;
+        ctx.drawImage(source, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+        previewImage.src = dataUrl;
+        previewContainer.style.display = 'flex';
+        videoEl.style.display = 'none';
+        overlayGuide.style.display = 'none';
+        shootingControls.style.display = 'none';
+        reviewControls.style.display = 'flex';
+    };
+
+    const sendPayload = async (payload) => {
+        try {
+            if (realtimeChannel && typeof realtimeChannel.postMessage === 'function') {
+                realtimeChannel.postMessage({ type: 'CAPTURE_RECEIVED', payload });
             }
-
-            // 2. Start Live Camera (Lane 1)
-            async function startCamera() {
-                try {
-                    mediaStream = await navigator.mediaDevices.getUserMedia({
-                        video: {
-                            facingMode: { ideal: 'environment' },
-                            width: { ideal: 1920 },
-                            height: { ideal: 1080 }
-                        },
-                        audio: false
-                    });
-                    videoEl.srcObject = mediaStream;
-                } catch (err) {
-                    console.warn('[Camera] Falló acceso a getUserMedia, usando fallback nativo:', err);
-                    switchToNativeFallback();
-                }
-            }
-
-            function switchToNativeFallback() {
-                if (mediaStream) {
-                    mediaStream.getTracks().forEach(t => t.stop());
-                    mediaStream = null;
-                }
-                videoEl.style.display = 'none';
-                cameraInput.click();
-            }
-
-            lnkNative.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchToNativeFallback();
+            const host = window.location.hostname || '127.0.0.1';
+            await fetch(`http://${host}:5678/webhook/captura-celular`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
+        } catch (e) {
+            console.error('[Send] error:', e);
+        }
+    };
 
-            startCamera();
+    /* ---------- Eventos ---------- */
+    btnModeOrden.addEventListener('click', () => toggleMode('orden'));
+    btnModeFrasco.addEventListener('click', () => toggleMode('frasco'));
 
-            // 3. Capture Photo Action
-            function handleImageCaptured(imgSource) {
-                // Resize & compress to canvas (max 1600x1200, JPEG 0.85)
-                const canvas = processCanvas;
-                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    lnkNative.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchToNativeFallback();
+    });
 
-                const maxWidth = 1600;
-                const maxHeight = 1200;
-                let w = imgSource.width || imgSource.videoWidth || 1280;
-                let h = imgSource.height || imgSource.videoHeight || 960;
+    btnCapture.addEventListener('click', () => {
+        if (mediaStream && videoEl.readyState >= 2) {
+            handleImageCaptured(videoEl);
+        } else {
+            cameraInput.click();
+        }
+    });
 
-                if (w > maxWidth || h > maxHeight) {
-                    const ratio = Math.min(maxWidth / w, maxHeight / h);
-                    w = Math.round(w * ratio);
-                    h = Math.round(h * ratio);
-                }
+    cameraInput.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            handleImageCaptured(img);
+        };
+        img.src = url;
+    });
 
-                canvas.width = w;
-                canvas.height = h;
-                ctx.drawImage(imgSource, 0, 0, w, h);
+    btnRetake.addEventListener('click', () => {
+        previewContainer.style.display = 'none';
+        videoEl.style.display = 'block';
+        overlayGuide.style.display = 'flex';
+        reviewControls.style.display = 'none';
+        shootingControls.style.display = 'flex';
+        cameraInput.value = '';
+        if (mediaStream) videoEl.play();
+    });
 
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+    btnSend.addEventListener('click', async () => {
+        const dataUrl = previewImage.src;
+        if (!dataUrl) return;
 
-                // Show preview
-                previewImage.src = dataUrl;
-                previewContainer.style.display = 'block';
-                videoEl.style.display = 'none';
-                overlayGuide.style.display = 'none';
+        btnSend.disabled = true;
+        btnSend.innerText = '📤 Enviando a la PC...';
 
-                shootingControls.style.display = 'none';
-                reviewControls.style.display = 'flex';
-            }
+        const payload = {
+            dataUrl,
+            filename: `orden_celular_${Date.now()}.jpg`,
+            mime: 'image/jpeg',
+            target,
+            mode: selectedMode,
+            token
+        };
 
-            btnCapture.addEventListener('click', () => {
-                if (mediaStream && videoEl.readyState >= 2) {
-                    handleImageCaptured(videoEl);
-                } else {
-                    cameraInput.click();
-                }
-            });
+        await sendPayload(payload);
+        successScreen.style.display = 'flex';
+    });
 
-            cameraInput.addEventListener('change', (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    const file = e.target.files[0];
-                    const img = new Image();
-                    const url = URL.createObjectURL(file);
-                    img.onload = () => {
-                        URL.revokeObjectURL(url);
-                        handleImageCaptured(img);
-                    };
-                    img.src = url;
-                }
-            });
+    btnAnother.addEventListener('click', () => {
+        successScreen.style.display = 'none';
+        btnSend.disabled = false;
+        btnSend.innerText = '⚡ ENVIAR A LA COMPUTADORA';
+        btnRetake.click();
+    });
 
-            // 4. Retake Photo
-            btnRetake.addEventListener('click', () => {
-                previewContainer.style.display = 'none';
-                videoEl.style.display = 'block';
-                overlayGuide.style.display = 'flex';
-                reviewControls.style.display = 'none';
-                shootingControls.style.display = 'flex';
-                cameraInput.value = '';
-            });
+    window.addEventListener('beforeunload', stopMedia);
 
-            // 5. Send to PC via Realtime Broadcast y Docker n8n
-            btnSend.addEventListener('click', async () => {
-                const dataUrl = previewImage.src;
-                if (!dataUrl) return;
-
-                btnSend.disabled = true;
-                btnSend.innerText = '📤 Enviando a la PC...';
-
-                const payload = {
-                    dataUrl: dataUrl,
-                    filename: 'orden_celular_' + Date.now() + '.jpg',
-                    mime: 'image/jpeg',
-                    target: target,
-                    mode: selectedMode,
-                    token: token
-                };
-
-                try {
-                    if (realtimeChannel && typeof realtimeChannel.postMessage === 'function') {
-                        realtimeChannel.postMessage({ type: 'CAPTURE_RECEIVED', payload });
-                    }
-                    const host = window.location.hostname || '127.0.0.1';
-                    await fetch(`http://${host}:5678/webhook/captura-celular`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    }).catch(() => {});
-
-                    successScreen.style.display = 'flex';
-                } catch (err) {
-                    console.error('[Send Error]', err);
-                    successScreen.style.display = 'flex';
-                }
-            });
-
-            btnAnother.addEventListener('click', () => {
-                successScreen.style.display = 'none';
-                btnSend.disabled = false;
-                btnSend.innerText = '⚡ ENVIAR A LA COMPUTADORA';
-                btnRetake.click();
-            });
-        })();
-    </script>
+    /* ---------- Inicialización ---------- */
+    startCamera();
+})();
+</script>
 </body>
 </html>

@@ -839,16 +839,29 @@
         }
     }
 
-    // Inicialización al cargar el DOM
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            inyectarEstilosMacro();
-            inyectarBotonIngresoMasivo();
-        });
-    } else {
+    // Inicialización al cargar el DOM con Resiliencia de Inyección Múltiple (SLA Cero Errores)
+    function inicializarModuloMacroMasivo() {
         inyectarEstilosMacro();
         inyectarBotonIngresoMasivo();
     }
 
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', inicializarModuloMacroMasivo);
+    } else {
+        inicializarModuloMacroMasivo();
+    }
+
+    // Polling de respaldo para SPA dinámicas con DOM tardío
+    if (window.self === window.top) {
+        setTimeout(inicializarModuloMacroMasivo, 1000);
+        setTimeout(inicializarModuloMacroMasivo, 3000);
+    }
+
     window.abrirModalIngresoMasivoMacro = abrirModalIngresoMasivo;
+    window.ingresoMasivoMacroService = {
+        state,
+        hablarCortana,
+        procesarSiguienteEnCola,
+        agregarArchivosACola
+    };
 })();

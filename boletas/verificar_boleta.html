@@ -656,17 +656,22 @@
             return result;
         }
 
+        // Clave secreta soberana utilizada para la generación del HMAC.
+        // REEMPLAZAR 'REPLACE_WITH_REAL_SECRET' por la clave real del entorno de producción.
+        const SOBERANA_SECRET_KEY = 'REPLACE_WITH_REAL_SECRET';
+
         async function calcularSHA256(cadena) {
-            try {
-                if (window.crypto && window.crypto.subtle && window.TextEncoder) {
-                    const encoder = new TextEncoder();
-                    const data = encoder.encode(cadena);
-                    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                }
-            } catch (e) {}
-            return sha256_pure_js(unescape(encodeURIComponent(cadena)));
+            // Utiliza la API Web Crypto si está disponible; de lo contrario, devuelve una cadena vacía.
+            if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(cadena);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+            // Fallback seguro: sin implementación de SHA-256 puro, retornamos cadena vacía para evitar referencia a función inexistente.
+            console.warn('Web Crypto no disponible; cálculo SHA-256 no soportado en este entorno.');
+            return '';
         }
 
         async function ejecutarVerificacion(codigoParam, sigParam, urlData = null) {

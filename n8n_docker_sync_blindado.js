@@ -202,7 +202,7 @@
                     const db = await this._initDB();
                     await _putIDB(db, STORE_COLA, {
                         id_cola: `inf_${cod}`,
-                        url: ENDPOINT_PACIENTE,
+                        url: ENDPOINT_INFORME,
                         payload: infFinal,
                         ts: Date.now()
                     });

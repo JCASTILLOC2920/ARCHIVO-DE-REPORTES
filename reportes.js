@@ -635,7 +635,8 @@
     function formatMicroscopicDescription(text) {
         if (!text) return '';
         try {
-            let str = repairCorruptedText(text);
+            // Si la función de reparación no está definida, usar un fallback seguro
+            let str = typeof repairCorruptedText === 'function' ? repairCorruptedText(text) : String(text);
             str = str.replace(/\\+n/gi, '\n');
             str = str.replace(/\\+N/gi, '\n');
             str = str.replace(/<\/?(?:ul|ol|li|p|div|header|section)[^>]*>/gi, '\n');
@@ -705,20 +706,22 @@
     function safeRenderQrCode(containerElem, urlToEncode, options = {}) {
         if (!containerElem) return false;
         try {
+            // Limpiar contenido previo
             containerElem.innerHTML = '';
             const width = options.width || 56;
             const height = options.height || 56;
             const colorDark = options.colorDark || '#0f766e';
             const colorLight = options.colorLight || '#ffffff';
 
+            // Intentar usar la librería QRCode si está disponible
             if (typeof QRCode !== 'undefined' && typeof QRCode === 'function') {
                 try {
                     new QRCode(containerElem, {
                         text: urlToEncode,
-                        width: width,
-                        height: height,
-                        colorDark: colorDark,
-                        colorLight: colorLight,
+                        width,
+                        height,
+                        colorDark,
+                        colorLight,
                         correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.M) || 0
                     });
                     return true;
@@ -727,14 +730,30 @@
                 }
             }
 
-            // Fallback elegante SVG / Badge si QRCode no está cargado
-            containerElem.innerHTML = `
-                <div style="width:${width}px; height:${height}px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f0fdfa; border:1px solid #0f766e; border-radius:4px; font-size:6.5pt; color:#0f766e; text-align:center; font-weight:800; line-height:1.1; padding:2px; box-sizing:border-box;">
+            // Fallback SVG/Badge totalmente autónomo (no depende de QRCode)
+            const fallbackHtml = `
+                <div style="
+                    width:${width}px;
+                    height:${height}px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    background:#f0fdfa;
+                    border:1px solid #0f766e;
+                    border-radius:4px;
+                    font-size:6.5pt;
+                    color:#0f766e;
+                    text-align:center;
+                    font-weight:800;
+                    line-height:1.1;
+                    padding:2px;
+                    box-sizing:border-box;">
                     <span style="font-size:12px;">🔒</span>
                     <span>VALIDADO</span>
                     <span style="font-size:5pt; color:#64748b; font-family:monospace;">PMC13645</span>
-                </div>
-            `;
+                </div>`;
+            containerElem.innerHTML = fallbackHtml;
             return true;
         } catch (e) {
             console.warn('[ReportesEngine] Error en safeRenderQrCode:', e);
@@ -752,7 +771,16 @@
 
         // Paso 1: Storage (solo si hay código solicitado explícito y coincide con el código almacenado)
         try {
-            const stored = safeGetStorage('printPatientData');
+            let stored = safeGetStorage('printPatientData');
+            // Si el valor almacenado es una cadena JSON, intentar parsearla
+            if (typeof stored === 'string') {
+                try {
+                    stored = JSON.parse(stored);
+                } catch (eParse) {
+                    console.warn('[ReportesEngine] No se pudo parsear JSON de Storage:', eParse);
+                    stored = null;
+                }
+            }
             if (stored && typeof stored === 'object') {
                 const storedCode = cleanCode(stored.codAtencion || stored.cod_atencion);
                 if (codAtencion && storedCode && (storedCode === codAtencion || canonicalCode(storedCode) === canonicalCode(codAtencion))) {
@@ -760,7 +788,9 @@
                     console.log('[ReportesEngine] Datos recuperados de Storage para código coincidente:', codAtencion);
                 }
             }
-        } catch (eStorage) {}
+        } catch (eStorage) {
+            console.warn('[ReportesEngine] Error al acceder a Storage:', eStorage);
+        }
 
         // Paso 2: Supabase (si está disponible y faltan datos)
         if ((!patient || (!patient.macroDesc && !patient.diagnostico)) && codAtencion && typeof window !== 'undefined' && window.supabase && typeof window.SUPABASE_CONFIG !== 'undefined') {

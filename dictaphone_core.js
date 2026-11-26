@@ -241,8 +241,44 @@ function resolveGroqCognitiveApiKey() {
  * Cabeza B (Cognitiva): Refinamiento anatómico y terminológico ultra-rápido en Groq LLaMA
  */
 async function refineTranscriptWithGroqCognitiveHead(rawText) {
-    // Modo Ultra-Rápido: Retorno directo sin latencia de red para 0ms de lag de dictado
-    return rawText;
+    if (!rawText || typeof rawText !== 'string') return '';
+    const apiKey = resolveGroqCognitiveApiKey();
+    if (!apiKey) return rawText;
+
+    try {
+        const payload = {
+            model: "llama-3.3-70b-versatile",
+            messages: [
+                {
+                    role: "system",
+                    content: "Eres un patólogo experto revisando transcripciones de dictado médico. Corrige estrictamente terminología anatómica, oncológica, abreviaturas patológicas y medidas (cm, mm, infiltración perineural, invasión linfovascular). No respondas con saludos ni explicaciones, devuelve únicamente el texto corregido con rigor médico."
+                },
+                {
+                    role: "user",
+                    content: rawText
+                }
+            ],
+            temperature: 0.1,
+            max_tokens: 300
+        };
+
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) return rawText;
+        const data = await response.json();
+        const refined = data?.choices?.[0]?.message?.content?.trim();
+        return refined || rawText;
+    } catch (e) {
+        console.warn("[Dictaphone] Error en Cabeza B Cognitiva (LLaMA):", e);
+        return rawText;
+    }
 }
 
 function resolveGroqApiKey() {

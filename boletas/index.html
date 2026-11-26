@@ -2,235 +2,66 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <title>JC PATH LAB | Operaciones v6.0 Soberano</title>
-    <meta name="description" content="Centro de Operaciones Clínicas JC PATH LAB. Gestión soberana de boletas, clientes y auditoría médica. 100% Offline, Cero Créditos.">
-    <meta name="theme-color" content="#080c14">
-    
-    <!-- Design System Antigravity v6.0 - Clean Enterprise Biotech -->
-    <link rel="stylesheet" href="antigravity.css?v=6.1.0">
-    <link rel="stylesheet" href="css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-    
-    <!-- Motores Soberanos Locales (100% Offline con fallback CDN) -->
-    <script src="dexie.min.js"></script>
-    <script>window.Dexie || document.write('<script src="https://unpkg.com/dexie@3.2.2/dist/dexie.js"><\/script>')</script>
-    <!-- Motor jsPDF desacoplado: Carga asíncrona bajo demanda optimizada por Titán / Prime -->
-    <script src="qrcode.min.js"></script>
-    
-    <!-- Lógica Operativa Soberana (n8n Docker / Dexie SQLite) -->
-    <script defer src="antigravity.js?v=6.1.0"></script>
-<!-- MODO EMBEBIDO SOBERANO SIBLING -->
-    <script>
-        if (window.self !== window.top) {
-            document.documentElement.classList.add('is-embedded');
-        }
-    </script>
-    <style>
-        html.is-embedded .institutional-topbar,
-        html.is-embedded .sovereign-header,
-        html.is-embedded #ag-lock-screen {
-            display: none !important;
-        }
-        html.is-embedded body {
-            padding-top: 0 !important;
-            margin: 0 !important;
-            background: #080c14 !important;
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JC PATH LAB – Archivo de Reportes</title>
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          integrity="sha512-xxxxxx" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <!-- Estilos principales -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <!-- 1. CAPA DE SEGURIDAD (DESACTIVADA POR SOBERANÍA) -->
-    <div id="ag-lock-screen" style="display: none;">
-        <div class="lock-box">
-            <i class="fas fa-microscope" style="font-size: 3.5rem; color: var(--accent-secondary); margin-bottom: 2rem; filter: drop-shadow(0 0 15px var(--accent-glow));"></i>
-            <h2 style="margin-bottom: 0.5rem; letter-spacing: -1px;">JC PATH LAB</h2>
-            <p style="color: var(--text-dim); margin-bottom: 2.5rem; font-size: 0.95rem;">UNIDAD DE DIAGNÓSTICO ESPECIALIZADO</p>
-            
-            <div class="form-group" style="text-align: left;">
-                <input type="text" id="ag-user" placeholder="ID de Usuario Operativo" aria-label="Usuario">
-                <div class="password-wrapper">
-                    <input type="password" id="ag-pass" placeholder="Clave de Encriptación" aria-label="Contraseña">
-                    <i class="fas fa-eye toggle-password" id="toggle-ag-pass"></i>
-                </div>
-            </div>
-            
-            <button id="btn-ingresar" class="btn">ACCESO AL SISTEMA SEGURO</button>
-            <p id="ag-error" style="color: var(--error-vivid); margin-top: 1.5rem; display: none; font-weight: 600; font-size: 0.85rem;">FALLO EN AUTORIZACIÓN</p>
-            
-            <button id="btn-reset-db" class="btn btn-secondary" style="margin-top: 2rem; font-size: 0.75rem;">DEPURACIÓN ESTRUCTURAL (DB RESET)</button>
-        </div>
-    </div>
-
-    <!-- 2. CABECERA INSTITUCIONAL SOBERANA -->
+    <!-- 1. ENCABEZADO PRINCIPAL -->
     <header class="sovereign-header">
-        <!-- Barra Superior Institucional Oficial -->
-        <div class="institutional-topbar">
-            <div class="topbar-content">
-                <div class="director-badge">
-                    <i class="fas fa-user-md"></i>
-                    <span><strong>Dr. Josehp Christopher Castillo Cuenca</strong> • CMP 58455 • RNE 029091</span>
-                </div>
-                <div class="location-badge">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Mz. M2 Lote 13, Urb. Jardines de Chillón, Puente Piedra, Lima</span>
-                </div>
-                <div class="contact-badge">
-                    <a href="https://wa.me/51986396733" target="_blank" class="contact-link" title="Contactar por WhatsApp">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>Central / WhatsApp: <strong>986 396 733</strong></span>
-                    </a>
-                </div>
-                <div class="sovereign-status-badge" id="sovereign-sync-status" title="Estado de persistencia con Docker n8n / Dexie">
-                    <span class="status-dot"></span>
-                    <span class="status-text">n8n Docker :5678</span>
-                </div>
+        <div class="header-container">
+            <div class="logo">
+                <img src="logo.svg" alt="JC PATH LAB" loading="lazy">
+                <h1>ARCHIVO DE REPORTES</h1>
             </div>
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="#clientes">Clientes</a></li>
+                    <li><a href="#plantilla">Nueva Boleta</a></li>
+                    <li><a href="#registro-boletas">Histórico</a></li>
+                </ul>
+            </nav>
         </div>
-
-        <!-- Barra de Navegación Principal -->
-        <nav class="navbar">
-            <div class="logo" data-section="inicio">
-                <div class="logo-icon-wrap">
-                    <i class="fas fa-microscope"></i>
-                </div>
-                <div class="logo-text-block">
-                    <span class="logo-text">JC PATH LAB</span>
-                    <span class="logo-subtext">ANATOMÍA PATOLÓGICA • CITODIAGNÓSTICO</span>
-                </div>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#" class="nav-link active" data-section="inicio"><i class="fas fa-th-large"></i> Inicio</a></li>
-                <li><a href="#" class="nav-link" data-section="registro"><i class="fas fa-user-plus"></i> Integración</a></li>
-                <li><a href="#" class="nav-link" data-section="listado"><i class="fas fa-building"></i> Gestión</a></li>
-                <li><a href="#" class="nav-link" data-section="plantilla"><i class="fas fa-file-invoice-dollar"></i> Emisión</a></li>
-                <li><a href="#" class="nav-link" data-section="registro-boletas"><i class="fas fa-folder-tree"></i> Historial</a></li>
-            </ul>
-            <div class="header-actions">
-                <button type="button" id="btn-sync-now" class="btn-action-icon" title="Sincronizar ahora con n8n / SQLite">
-                    <i class="fas fa-rotate"></i>
-                </button>
-            </div>
-        </nav>
     </header>
 
-    <!-- Barra de Navegación Móvil (Solo en Pantallas Táctiles / Celulares) -->
-    <nav class="mobile-nav">
-        <a href="#" class="mobile-nav-item active" data-section="inicio">
-            <i class="fas fa-th-large"></i><span>Inicio</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-section="registro">
-            <i class="fas fa-user-plus"></i><span>Integrar</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-section="listado">
-            <i class="fas fa-building"></i><span>Cartera</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-section="plantilla">
-            <i class="fas fa-file-invoice-dollar"></i><span>Emitir</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-section="registro-boletas">
-            <i class="fas fa-folder-tree"></i><span>Archivo</span>
-        </a>
-    </nav>
+    <!-- 2. CONTENIDO PRINCIPAL -->
+    <main class="sovereign-main">
 
-    <!-- 3. CENTRO DE OPERACIONES -->
-    <main>
-        <!-- SECCIÓN 1: INICIO / DASHBOARD -->
-        <section id="inicio" class="active">
+        <!-- SECCIÓN 1: LISTADO DE CLIENTES -->
+        <section id="clientes">
             <div class="section-header">
-                <h1 class="section-title">Centro de Operaciones Clínicas</h1>
-                <p class="section-subtitle">Gestión Integral de Anatomía Patológica, Facturación y Auditoría Soberana</p>
+                <h2 class="section-title">Gestión de Entidades Clínicas</h2>
+                <p class="section-subtitle">Base de datos de clientes con auditoría forense</p>
             </div>
-            
-            <div class="card-container">
-                <div class="card" data-section="registro">
-                    <i class="fas fa-id-card-clip"></i>
-                    <h3>Integración</h3>
-                    <p>Alta de nuevos clientes, clínicas y pacientes particulares.</p>
-                </div>
-                <div class="card" data-section="plantilla">
-                    <i class="fas fa-receipt"></i>
-                    <h3>Emisión Técnica</h3>
-                    <p>Generación de boletas y constancias con PDF vectorial nítido.</p>
-                </div>
-                <div class="card" data-section="listado">
-                    <i class="fas fa-database"></i>
-                    <h3>Gestión de Cartera</h3>
-                    <p>Control del catálogo institucional y tarifas médicas.</p>
-                </div>
-                <div class="card" data-section="registro-boletas">
-                    <i class="fas fa-folder-tree"></i>
-                    <h3>Archivo Maestro</h3>
-                    <p>Auditoría histórica de boletas y reimpresión en 1 clic.</p>
-                </div>
-            </div>
-        </section>
 
-        <!-- SECCIÓN 2: INTEGRACIÓN DE CLIENTES / CLÍNICAS -->
-        <section id="registro">
-            <div class="section-header">
-                <h2 class="section-title">Integración de Paciente / Clínica</h2>
-                <p class="section-subtitle">Alta en la Base de Datos Soberana (n8n Docker / SQLite Local)</p>
-            </div>
-            <div class="form-container">
-                <form id="cliente-form">
-                    <div class="smart-input-container">
-                        <label for="razon-social" class="form-label">INSTITUCIÓN / RAZÓN SOCIAL</label>
-                        <input type="text" id="razon-social" list="datalist-clinicas-sugeridas" required placeholder="Ej: Clínica La Luz S.A.C.">
-                        <datalist id="datalist-clinicas-sugeridas"></datalist>
-                        <div id="search-spinner" class="spinner" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="smart-input-container with-inject">
-                        <label for="ruc" class="form-label">RUC / DNI DE IDENTIFICACIÓN</label>
-                        <input type="text" id="ruc" required placeholder="11 dígitos (RUC) u 8 dígitos (DNI)">
-                        <button type="button" class="inject-btn" id="btn-inject-ruc" title="Inyectar RUC de catálogo">
-                            <i class="fas fa-syringe"></i> INYECTAR
-                        </button>
-                    </div>
-
-                    <div class="smart-input-container with-inject">
-                        <label for="direccion" class="form-label">DIRECCIÓN FISCAL REGISTRADA</label>
-                        <input type="text" id="direccion" required placeholder="Avenida, Calle, Distrito, Provincia">
-                        <button type="button" class="inject-btn" id="btn-inject-dir" title="Inyectar Dirección de catálogo">
-                            <i class="fas fa-syringe"></i> INYECTAR
-                        </button>
-                    </div>
-
-                    <div class="smart-input-container">
-                        <label for="telefono" class="form-label">TELÉFONO / WHATSAPP DE CONTACTO</label>
-                        <input type="text" id="telefono" placeholder="WhatsApp / Central Telefónica">
-                    </div>
-                    
-                    <button type="button" id="registrar-cliente" class="btn" style="margin-top: 1rem;">
-                        <i class="fas fa-check-circle"></i> DESPLEGAR REGISTRO MAESTRO
-                    </button>
-                </form>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 3: GESTIÓN DE CARTERA -->
-        <section id="listado">
-            <div class="section-header">
-                <h2 class="section-title">Gestión de Cartera Médica</h2>
-                <p class="section-subtitle">Catálogo Oficial Sincronizado de Entidades y Clínicas</p>
-            </div>
-            
             <div class="table-toolbar">
                 <div class="table-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="filtro-clientes" placeholder="Buscar clínica por nombre, RUC o ciudad...">
+                    <input type="text" id="filtro-clientes" placeholder="Buscar cliente por nombre, RUC o DNI...">
                 </div>
+                <button type="button" id="btn-agregar-cliente" class="btn-primary">
+                    <i class="fas fa-plus"></i> Nuevo Cliente
+                </button>
             </div>
 
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 80px;">IDENT</th>
+                            <th style="width:80px;">IDENT</th>
                             <th>RAZÓN SOCIAL / CLÍNICA</th>
                             <th>RUC / DNI</th>
-                            <th style="width: 100px; text-align: center;">ACCIONES</th>
+                            <th style="width:100px; text-align:center;">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody id="clientes-body"></tbody>
@@ -238,27 +69,29 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 4: EMISIÓN DE BOLETA / VALOR -->
+        <!-- SECCIÓN 2: EMISIÓN DE BOLETA TÉCNICA -->
         <section id="plantilla">
             <div class="section-header">
                 <h2 class="section-title">Emisión de Boleta Técnica</h2>
-                <p class="section-subtitle">Generación Vectorial de Alta Resolución (300+ DPI &bull; Peso &lt; 80 KB)</p>
+                <p class="section-subtitle">Generación vectorial de alta resolución (300+ DPI • Peso < 80 KB)</p>
             </div>
+
             <div class="form-container">
                 <div class="form-group">
                     <label for="cliente-select" class="form-label">SELECCIÓN DE ENTIDAD O PACIENTE:</label>
-                    <select id="cliente-select"></select>
+                    <select id="cliente-select" aria-label="Lista de clientes"></select>
                 </div>
-                
+
                 <div class="template-details">
-                    <p>RUC / DNI: <strong id="ruc-cliente" style="color: var(--accent-secondary);">-</strong></p>
+                    <p>RUC / DNI: <strong id="ruc-cliente" style="color:var(--accent-secondary);">-</strong></p>
                     <p>Dirección: <span id="direccion-cliente">-</span></p>
-                    <p>Tarifa Base Sugerida: <strong id="tarifa-cliente" style="color: var(--accent-emerald-bright);">S/ 70.00</strong></p>
+                    <p>Tarifa Base Sugerida: <strong id="tarifa-cliente" style="color:var(--accent-emerald-bright);">S/ 70.00</strong></p>
                 </div>
 
                 <div class="form-group">
                     <label for="num-muestras" class="form-label">NÚMERO DE MUESTRAS CLÍNICAS:</label>
-                    <input type="number" id="num-muestras" value="1" min="1" max="50">
+                    <input type="number" id="num-muestras" value="1" min="1" max="50" aria-describedby="num-muestras-help">
+                    <small id="num-muestras-help" class="form-text">Máximo 50 muestras por boleta.</small>
                 </div>
 
                 <div class="form-group">
@@ -268,27 +101,27 @@
 
                 <div class="template-total">
                     <span class="total-label">TOTAL A FACTURAR:</span>
-                    <span id="pago-total" class="total-amount">S/ 0.00</span>
+                    <span id="pago-total" class="total-amount">S/ 0.00</span>
                 </div>
 
-                <!-- Distintivo Visual Zero-Trust Antifraude en Pantalla -->
-                <div class="zero-trust-badge" id="preview-zero-trust-badge">
+                <!-- Badge Zero‑Trust -->
+                <div class="zero-trust-badge" id="preview-zero-trust-badge" aria-live="polite">
                     <div class="zt-badge-header">
                         <div class="zt-badge-title">
                             <i class="fas fa-shield-halved"></i>
-                            <span>🔬 VALIDACIÓN ZERO-TRUST ANTIFRAUDE</span>
+                            <span>🔬 VALIDACIÓN ZERO‑TRUST ANTIFRAUDE</span>
                         </div>
-                        <span class="zt-status-pill"><i class="fas fa-lock"></i> SOBERANO 100%</span>
+                        <span class="zt-status-pill"><i class="fas fa-lock"></i> SOBERANO 100%</span>
                     </div>
                     <div class="zt-badge-body">
                         <div class="zt-qr-preview-box" id="zt-preview-qr">
                             <i class="fas fa-qrcode"></i>
                         </div>
                         <div class="zt-badge-info">
-                            <p class="zt-subtext">Escanee para certificar la autenticidad fiscal y legal del comprobante. JC PATH LAB.</p>
+                            <p class="zt-subtext">Escanee para certificar la autenticidad fiscal y legal del comprobante. JC PATH LAB.</p>
                             <div class="zt-hash-row">
-                                <span class="zt-hash-label">SELLO SHA-256:</span>
-                                <code class="zt-hash-code" id="zt-preview-hash">Generación automática de firma...</code>
+                                <span class="zt-hash-label">SELLO SHA‑256:</span>
+                                <code class="zt-hash-code" id="zt-preview-hash">Generación automática de firma…</code>
                             </div>
                             <div class="zt-meta-row">
                                 <span><i class="fas fa-fingerprint"></i> Criptografía Local Inmutable</span>
@@ -298,17 +131,17 @@
                     </div>
                 </div>
 
-                <button type="button" id="guardar-boleta" class="btn">
+                <button type="button" id="guardar-boleta" class="btn-primary">
                     <i class="fas fa-file-invoice"></i> GENERAR Y ARCHIVAR BOLETA
                 </button>
             </div>
         </section>
 
-        <!-- SECCIÓN 5: ARCHIVO MAESTRO DE BOLETAS -->
+        <!-- SECCIÓN 3: ARCHIVO MAESTRO DE BOLETAS -->
         <section id="registro-boletas">
             <div class="section-header">
                 <h2 class="section-title">Archivo Maestro de Operaciones</h2>
-                <p class="section-subtitle">Historial de Comprobantes con Validación Criptográfica y Descarga Inmediata</p>
+                <p class="section-subtitle">Historial de comprobantes con validación criptográfica y descarga inmediata</p>
             </div>
 
             <div class="table-toolbar">
@@ -322,11 +155,11 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 140px;">CÓDIGO</th>
+                            <th style="width:140px;">CÓDIGO</th>
                             <th>ENTIDAD / INSTITUCIÓN</th>
-                            <th style="width: 110px;">FECHA</th>
-                            <th style="width: 130px;">MONTO TOTAL</th>
-                            <th style="width: 170px; text-align: center;">ACCIONES</th>
+                            <th style="width:110px;">FECHA</th>
+                            <th style="width:130px;">MONTO TOTAL</th>
+                            <th style="width:170px; text-align:center;">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody id="boletas-body"></tbody>
@@ -334,14 +167,14 @@
             </div>
         </section>
 
-        <!-- MODAL DE VALIDACIÓN ZERO-TRUST Y QR (POPUP FLOTANTE) -->
-        <div id="modal-qr-container" class="ag-modal" style="display: none;" role="dialog" aria-modal="true">
+        <!-- MODAL DE VALIDACIÓN ZERO‑TRUST -->
+        <div id="modal-qr-container" class="ag-modal" role="dialog" aria-modal="true" aria-labelledby="modal-qr-title" style="display:none;">
             <div class="ag-modal-backdrop" id="modal-qr-backdrop"></div>
             <div class="ag-modal-card">
                 <div class="ag-modal-header">
-                    <div class="ag-modal-title">
-                        <i class="fas fa-shield-halved" style="color: var(--accent-secondary);"></i>
-                        <span>🔬 VALIDACIÓN ZERO-TRUST ANTIFRAUDE</span>
+                    <div class="ag-modal-title" id="modal-qr-title">
+                        <i class="fas fa-shield-halved" style="color:var(--accent-secondary);"></i>
+                        <span>🔬 VALIDACIÓN ZERO‑TRUST ANTIFRAUDE</span>
                     </div>
                     <button type="button" class="ag-modal-close" id="btn-cerrar-modal-qr" title="Cerrar ventana">&times;</button>
                 </div>
@@ -352,14 +185,14 @@
                     </div>
                     <div class="modal-qr-details">
                         <div class="modal-qr-verdict">
-                            <i class="fas fa-check-circle" style="color: var(--accent-emerald-bright); font-size: 1.4rem;"></i>
+                            <i class="fas fa-check-circle" style="color:var(--accent-emerald-bright);font-size:1.4rem;"></i>
                             <div class="verdict-text-block">
-                                <span class="verdict-title">BOLETA AUTÉNTICA - REGISTRADA EN JC PATH LAB</span>
-                                <span class="verdict-subtitle">Certificación Soberana Inmutable • Validez Legal y Fiscal</span>
+                                <span class="verdict-title">BOLETA AUTÉNTICA – REGISTRADA EN JC PATH LAB</span>
+                                <span class="verdict-subtitle">Certificación soberana inmutable • Validez legal y fiscal</span>
                             </div>
                         </div>
-                        <p class="modal-qr-subtext">Escanee para certificar la autenticidad fiscal y legal del comprobante. JC PATH LAB.</p>
-                        
+                        <p class="modal-qr-subtext">Escanee para certificar la autenticidad fiscal y legal del comprobante. JC PATH LAB.</p>
+
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <span class="detail-label">CÓDIGO DE BOLETA:</span>
@@ -375,17 +208,17 @@
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">MONTO TOTAL:</span>
-                                <span id="modal-qr-total" class="detail-value-monto">S/ 70.00</span>
+                                <span id="modal-qr-total" class="detail-value-monto">S/ 70.00</span>
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">FECHA DE EMISIÓN:</span>
                                 <span id="modal-qr-fecha" class="detail-value">30/10/2026</span>
                             </div>
                             <div class="detail-item full">
-                                <span class="detail-label">HASH SHA-256 TRUNCATED (SELLO SOBERANO):</span>
+                                <span class="detail-label">HASH SHA‑256 TRUNCATED (SELLO SOBERANO):</span>
                                 <div class="hash-copy-wrap">
-                                    <code id="modal-qr-hash" class="hash-code-display">fc6edd9e4965b24fff2ff1ec78969134...</code>
-                                    <button type="button" id="btn-copy-hash" class="btn-copy" title="Copiar Hash SHA-256">
+                                    <code id="modal-qr-hash" class="hash-code-display">fc6edd9e4965b24fff2ff1ec78969134…</code>
+                                    <button type="button" id="btn-copy-hash" class="btn-copy" title="Copiar Hash SHA‑256">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
@@ -393,10 +226,10 @@
                         </div>
 
                         <div class="modal-qr-actions">
-                            <a id="modal-qr-link-verificar" href="#" target="_blank" class="btn btn-secondary" title="Abrir Validador Oficial">
+                            <a id="modal-qr-link-verificar" href="#" target="_blank" class="btn btn-secondary" title="Abrir validador oficial">
                                 <i class="fas fa-external-link-alt"></i> VALIDADOR SOBERANO
                             </a>
-                            <button type="button" id="btn-modal-descargar-pdf" class="btn" title="Descargar PDF con QR">
+                            <button type="button" id="btn-modal-descargar-pdf" class="btn-primary" title="Descargar PDF con QR">
                                 <i class="fas fa-file-pdf"></i> DESCARGAR PDF
                             </button>
                         </div>
@@ -404,6 +237,7 @@
                 </div>
             </div>
         </div>
+
     </main>
 
     <!-- 4. PIE DE PÁGINA INSTITUCIONAL SOBERANO -->
@@ -411,16 +245,21 @@
         <div class="footer-container">
             <div class="footer-brand">
                 <h4>JC PATH LAB &bull; UNIDAD DE ANATOMÍA PATOLÓGICA Y CITODIAGNÓSTICO</h4>
-                <p class="footer-medic">Dirección Médica: <strong>Dr. Josehp Christopher Castillo Cuenca</strong> &bull; CMP 58455 &bull; RNE 029091</p>
-                <p class="footer-address"><i class="fas fa-map-marker-alt"></i> Mz. M2 Lote 13, Urb. Jardines de Chillón, Puente Piedra, Lima</p>
-                <p class="footer-contact"><i class="fab fa-whatsapp"></i> Central Telefónica / WhatsApp Directo: <strong>986 396 733</strong></p>
+                <p class="footer-medic">Dirección Médica: <strong>Dr. Josehp Christopher Castillo Cuenca</strong> &bull; CMP 58455 &bull; RNE 029091</p>
+                <p class="footer-address"><i class="fas fa-map-marker-alt"></i> Mz. M2 Lote 13, Urb. Jardines de Chillón, Puente Piedra, Lima</p>
+                <p class="footer-contact"><i class="fab fa-whatsapp"></i> Central Telefónica / WhatsApp Directo: <strong>986 396 733</strong></p>
             </div>
             <div class="footer-meta">
-                <span class="sovereign-tag">100% OFFLINE SOBERANO &bull; CERO CRÉDITOS DE NUBE</span>
-                <p>&copy; 2026 JC PATH LAB &bull; Sistema Neuro-Estéril de Emisión de Boletas</p>
-                <p style="margin-top: 4px; color: var(--text-muted);">Sincronización Atómica n8n Docker (Puerto 5678) / IndexedDB Dexie</p>
+                <span class="sovereign-tag">100 % OFFLINE SOBERANO &bull; CERO CRÉDITOS DE NUBE</span>
+                <p>&copy; 2026 JC PATH LAB &bull; Sistema Neuro‑Estéril de Emisión de Boletas</p>
+                <p style="margin-top:4px;color:var(--text-muted);">Sincronización atómica n8n Docker (Puerto 5678) • IndexedDB Dexie</p>
             </div>
         </div>
     </footer>
+
+    <!-- Scripts de la aplicación -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"
+            integrity="sha512-xxxxxx" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="app.js" defer></script>
 </body>
 </html>

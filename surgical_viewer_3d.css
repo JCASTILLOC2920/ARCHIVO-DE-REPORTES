@@ -147,6 +147,8 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
     max-width: 94%;
     overflow-x: auto;
+    white-space: nowrap;
+    flex-wrap: nowrap;
 }
 
 .surgical3d-legend-item {
@@ -198,7 +200,7 @@
     gap: 6px;
     transition: transform 0.15s ease, opacity 0.2s ease, box-shadow 0.2s ease;
     margin-top: -14px;
-    z-index: 18;
+    z-index: 25;
 }
 .surgical3d-label:hover {
     transform: translate(-50%, -112%) scale(1.08);
@@ -222,17 +224,19 @@
     background: rgba(2, 6, 23, 0.82);
     -webkit-backdrop-filter: blur(14px) saturate(180%);
     backdrop-filter: blur(14px) saturate(180%);
-    z-index: 2000500;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 16px;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .surgical3d-modal-overlay.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 

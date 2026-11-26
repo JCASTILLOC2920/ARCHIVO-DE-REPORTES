@@ -1687,7 +1687,9 @@ export function importDatabaseBackupJSON(file) {
 
             try {
                 localStorage.setItem('patientDatabaseLocal', JSON.stringify(window.patientDatabase));
-            } catch (err) {}
+            } catch (err) {
+                console.warn("No se pudo guardar en localStorage:", err);
+            }
 
             if (typeof window.refreshPatientTable === 'function') {
                 window.refreshPatientTable();

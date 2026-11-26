@@ -2856,7 +2856,11 @@ export function handleMobileNav(target) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (target === 'visor360') {
         const firstCard = document.querySelector('.mobile-patient-card');
-        const targetCod = firstCard ? firstCard.dataset.cod : (patientDatabase[0]?.codAtencion || '26Q-394');
+        // Obtén el código del primer paciente de forma segura, usando la base de datos global si está disponible
+        const globalPatientDB = (typeof window !== 'undefined' && (window.patientDatabase || window.REAL_SUPABASE_PATIENTS || [])) || [];
+        const targetCod = firstCard
+            ? firstCard.dataset.cod
+            : (globalPatientDB[0]?.codAtencion || '26Q-394');
         openMobile360Modal(targetCod);
     } else if (target === 'config') {
         const appContainer = document.getElementById('appContainer');
@@ -2952,17 +2956,19 @@ export function downloadPatientJSON(codOrPatient) {
             patient = codOrPatient;
         } else {
             const cleanCod = String(codOrPatient || '').trim().toLowerCase().replace(/[-_\s]/g, '');
-            if (Array.isArray(patientDatabase)) {
-                patient = patientDatabase.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanCod);
-            }
-            if (!patient && typeof window !== 'undefined' && Array.isArray(window.REAL_SUPABASE_PATIENTS)) {
-                patient = window.REAL_SUPABASE_PATIENTS.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanCod);
-            }
+    // Busca el paciente en la base de datos global (window.patientDatabase) o en los backups de Supabase
+    const globalPatientDB = (typeof window !== 'undefined' && (window.patientDatabase || window.REAL_SUPABASE_PATIENTS || window.REAL_SUPABASE_BACKUP)) || [];
+    if (Array.isArray(globalPatientDB)) {
+        patient = globalPatientDB.find(x => String(x.codAtencion || x.cod_atencion || '').trim().toLowerCase().replace(/[-_\s]/g, '') === cleanCod);
+    }
         }
-        if (!patient) {
-            if (typeof window.showToast === 'function') window.showToast("No se encontraron datos para exportar este paciente.", "warning");
-            return;
+    if (!patient) {
+        // Notifica al usuario de forma no intrusiva si no se encuentra el paciente
+        if (typeof window !== 'undefined' && typeof window.showToast === 'function') {
+            window.showToast("No se encontraron datos para exportar este paciente.", "warning");
         }
+        return;
+    }
         const safeCod = (patient.codAtencion || patient.cod_atencion || 'PACIENTE').replace(/[^a-zA-Z0-9_-]/g, '_');
         const exportData = {
             institucion: "JC PATH LAB - Anatomía Patológica y Citopatología",

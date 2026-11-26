@@ -1,5 +1,5 @@
 /**
- * JC PATH LAB - MACRO & MICRO FOTO INSERTER
+ * JC PATH LAB - MACRO & MICRO FOTO INSERTER (Versión Refaccionada Omega-Argón v12.0)
  * La Colmena Soberana - Dr. José Castillo
  * Regla Inviolable: La letra amarilla siempre debe ser 'CASO 26Q-[CODIGO]'
  */
@@ -127,7 +127,7 @@
             reader.onload = async (e) => {
                 const base64Data = e.target.result;
                 try {
-                    const response = await fetch('http://127.0.0.1:5678/api/procesar_macro_editorial', {
+                    const response = await fetch('http://127.0.0.1:8010/api/procesar_macro_editorial', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -267,16 +267,41 @@
             modal.style.display = 'none';
             const inputId = targetKey === 'img02' ? 're_img02Input' : 're_img01Input';
             const el = document.getElementById(inputId);
-            if (el) el.click();
+            if (el) {
+                el.click();
+            } else {
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                fileInput.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (evt) => {
+                            if (typeof window.setupMiniCropper === 'function') {
+                                window.setupMiniCropper(targetKey, evt.target.result);
+                                notify('✅ Microfotografía cargada correctamente.', 'success');
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+                document.body.appendChild(fileInput);
+                fileInput.click();
+                setTimeout(() => { if (fileInput.parentNode) fileInput.parentNode.removeChild(fileInput); }, 1000);
+            }
         };
 
         document.getElementById('btnOptMicroQr').onclick = () => {
             modal.style.display = 'none';
             if (typeof window.openQrConnectModal === 'function') {
                 window.openQrConnectModal('micro', targetKey);
+            } else {
+                notify('Módulo de conexión QR no disponible en este entorno.', 'warning');
             }
         };
     }
 
-    console.log('[MacroMicro Inserter] Cargado correctamente.');
+    console.log('[MacroMicro Inserter] Cargado correctamente (Omega-Argón v12.0).');
 })();

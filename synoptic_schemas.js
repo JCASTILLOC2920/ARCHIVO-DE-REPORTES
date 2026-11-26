@@ -96,7 +96,7 @@ export function compileSynopticReport(schemaId, state) {
 
     schema.sections.forEach(section => {
         let sectionHasData = false;
-        let sectionLines = [];
+        const sectionLines = [];
 
         section.fields.forEach(field => {
             if (field.dependsOn) {

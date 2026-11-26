@@ -5210,9 +5210,24 @@ export const capSchemasDigestivo = {
 export const digestiveSynopticSchemas = capSchemasDigestivo;
 
 // Función de compilación de reporte histopatológico sinóptico largo y estructurado
+// Optimización: Uso de Mapas de Caché para resolución O(1) de etiquetas y validación estricta de estado
 export function compileDigestiveSynopticReport(schemaId, state) {
     const schema = capSchemasDigestivo[schemaId];
-    if (!schema) return "";
+    if (!schema || !state) return "";
+
+    // Pre-cálculo de caché de opciones para evitar búsquedas lineales repetidas (O(N) -> O(1))
+    const optionCache = new Map();
+    schema.sections.forEach(section => {
+        section.fields.forEach(field => {
+            if (field.options && Array.isArray(field.options)) {
+                const fieldMap = new Map();
+                field.options.forEach(opt => {
+                    fieldMap.set(opt.value, opt);
+                });
+                optionCache.set(field.id, fieldMap);
+            }
+        });
+    });
 
     let text = `==========================================================\n`;
     text += `INFORME HISTOPATOLÓGICO SINÓPTICO (PROTOCOLO OFICIAL CAP)\n`;
@@ -5227,44 +5242,64 @@ export function compileDigestiveSynopticReport(schemaId, state) {
             // Verificar dependencias condicionales
             if (field.dependsOn) {
                 const depVal = state[field.dependsOn.field];
-                if (field.dependsOn.value && depVal !== field.dependsOn.value) return;
+                if (field.dependsOn.value !== undefined && depVal !== field.dependsOn.value) return;
                 if (field.dependsOn.values && !field.dependsOn.values.includes(depVal)) return;
             }
 
             const val = state[field.id];
+            
+            // Validación estricta: Ignorar undefined, null, strings vacíos y NaN en números
             if (val === undefined || val === null || val === "") return;
+            if (field.type === "number" && (isNaN(val) || val === "")) return;
 
             sectionHasData = true;
+            const fieldMap = optionCache.get(field.id);
 
             if (field.type === "radio" || field.type === "select") {
-                const opt = field.options ? field.options.find(o => o.value === val) : null;
+                const opt = fieldMap ? fieldMap.get(val) : null;
                 if (opt) {
                     let label = opt.label;
                     if (opt.hasInput) {
                         const extra = state[`${field.id}_extra`] || "";
-                        if (label.includes("(especificar)") || label.includes("(explicar)")) {
-                            label = label.replace("(especificar)", `: ${extra}`).replace("(explicar)", `: ${extra}`);
-                        } else {
-                            label += extra ? `: ${extra}` : "";
+                        if (extra) {
+                            // Lógica robusta de sustitución
+                            if (label.includes("(especificar)")) {
+                                label = label.replace("(especificar)", `: ${extra}`);
+                            } else if (label.includes("(explicar)")) {
+                                label = label.replace("(explicar)", `: ${extra}`);
+                            } else {
+                                label += `: ${extra}`;
+                            }
                         }
                     }
                     sectionText += `  • ${field.label}: ${label}\n`;
                 } else {
-                    sectionText += `  • ${field.label}: ${val}\n`;
+                    // Fallback si la opción no existe en el esquema (datos corruptos o nuevos)
+                    sectionText += `  • ${field.label}: [Valor no definido en esquema: ${val}]\n`;
                 }
             } else if (field.type === "checkbox") {
                 if (Array.isArray(val) && val.length > 0) {
-                    let labels = val.map(v => {
-                        const opt = field.options ? field.options.find(o => o.value === v) : null;
+                    const labels = [];
+                    val.forEach(v => {
+                        const opt = fieldMap ? fieldMap.get(v) : null;
                         if (opt) {
                             let label = opt.label;
                             if (opt.hasInput) {
                                 const extra = state[`${field.id}_${v}_extra`] || "";
-                                label += extra ? `: ${extra}` : "";
+                                if (extra) {
+                                    if (label.includes("(especificar)")) {
+                                        label = label.replace("(especificar)", `: ${extra}`);
+                                    } else if (label.includes("(explicar)")) {
+                                        label = label.replace("(explicar)", `: ${extra}`);
+                                    } else {
+                                        label += `: ${extra}`;
+                                    }
+                                }
                             }
-                            return label;
+                            labels.push(label);
+                        } else {
+                            labels.push(`[Desconocido: ${v}]`);
                         }
-                        return v;
                     });
                     sectionText += `  • ${field.label}:\n    - ${labels.join("\n    - ")}\n`;
                 }
