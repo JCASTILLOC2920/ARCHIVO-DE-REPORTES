@@ -13072,6 +13072,12 @@ html body .report-editor-container {
 
   <!-- jcpathlab_design.css retirado (404) -->
 <style id="jc-ultra-light-mobile-2026">
+  /* Ocultar botones solicitados (Reporte de Boletas, Actualizar, Copiloto IA, Chat Cortana) */
+  #btnHeaderReporteBoletas, #btnHeaderGroqAI, #btnSidebarGroqAI, #btnSidebarBoletas,
+  #cortanaInlinePanel, .cortana-inline-wrapper, .cortana-search-bar, #cortanaChatBtn,
+  button[title*="Actualizar"], button[onclick*="refreshData"], button[onclick*="recargar"] {
+    display: none !important;
+  }
   /* Optimizacion ultra-ligera: bajo consumo RAM/CPU y responsive en cualquier monitor o celular */
   #tableBody tr { content-visibility: auto; contain-intrinsic-size: 48px; }
   @media (max-width: 1024px), (prefers-reduced-motion: reduce) {
