@@ -17,7 +17,72 @@
         await Promise.all(toDelete.map(n => caches.delete(n)));
     }
 
+<<<<<<< HEAD
     /** Muestra u oculta los botones de instalación según el estado. */
+=======
+    // Purgar cachés obsoletas del navegador cliente de inmediato
+    if (typeof window !== 'undefined' && 'caches' in window) {
+        caches.keys().then(function(cacheNames) {
+            cacheNames.forEach(function(name) {
+                if (name !== 'jcpathlab-informes-v20261126_1269' && (name.startsWith('jcpathlab-informes-') || name.startsWith('jcpathlab-soberano-') || name.startsWith('reportes-cache-'))) {
+                    console.log('[PWA Medical] Purgando caché obsoleta cliente:', name);
+                    caches.delete(name);
+                }
+            });
+        });
+    }
+
+    ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB', 'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3', 'activePatientDb'].forEach(function(k){  var val = localStorage.getItem(k);  if (val && (val.indexOf('SIN NOMBRE') !== -1 || val.indexOf('26Q-18974') !== -1)) {    localStorage.removeItem(k);  }});
+
+    // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
+    if ('serviceWorker' in navigator) {
+        let refreshing = false;
+        const hadController = !!navigator.serviceWorker.controller;
+        navigator.serviceWorker.addEventListener('controllerchange', function() {
+            if (hadController && !refreshing) {
+                refreshing = true;
+                console.log(`[PWA Medical] Nuevo Service Worker activo (${APP_BUILD_VERSION}). Actualizando interfaz automáticamente...`);
+                localStorage.setItem('app_version_informes', APP_BUILD_VERSION);
+                window.location.reload();
+            }
+        });
+
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js?v=20261105_v674', { scope: './', updateViaCache: 'none' })
+                .then(function(registration) {
+                    registration.update().catch(function() {});
+                    console.log('[PWA Medical] Service Worker registrado con éxito (v655). Scope:', registration.scope);
+                    
+                    registration.addEventListener('updatefound', function() {
+                        const newWorker = registration.installing;
+                        if (newWorker) {
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('[PWA Medical] Nueva versión médica lista. Activando inmediatamente...');
+                                    newWorker.postMessage({ action: 'skipWaiting' });
+                                }
+                            });
+                        }
+                    });
+                })
+                .catch(function(err) {
+                    console.warn('[PWA Medical] Aviso: Service Worker no disponible o error menor en registro (continuando carga normal):', err);
+                });
+        });
+    }
+
+    // 2. Detección de Modo Standalone / App Ya Instalada
+    function isAppInstalled() {
+        return window.matchMedia('(display-mode: standalone)').matches ||
+               window.navigator.standalone === true ||
+               document.referrer.includes('android-app://');
+    }
+
+    // 3. Captura del Evento beforeinstallprompt para Instalación Nativa en Android
+    let deferredInstallPrompt = null;
+    window.deferredInstallPrompt = null;
+
+>>>>>>> 2d24bd85513a34eb0a43fa9470d2ab9e0abda2ff
     function updateInstallUi(show) {
         const installBtns = document.querySelectorAll('#btnInstallApp, .pwa-install-header-btn, .btn-pwa-install');
         installBtns.forEach(btn => {
