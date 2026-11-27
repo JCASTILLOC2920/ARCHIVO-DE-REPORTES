@@ -39395,7 +39395,7 @@ window.cortanaFiltrar = function(tipo) {
       .cortana-voice-btn { display:inline-flex; align-items:center; gap:6px; height:42px; padding:0 18px; background:rgba(16,185,129,0.12); color:#34D399; border:none; border-radius:10px; font-weight:600; letter-spacing:0.02em; font-size:12.5px; cursor:pointer; transition:background .2s ease, transform .15s ease; }
       .cortana-voice-btn:hover { background:rgba(16,185,129,0.22); }
       .cortana-voice-btn.listening { background:rgba(239,68,68,0.25); color:#fca5a5; border-color:#ef4444; box-shadow:0 0 12px rgba(239,68,68,0.45); }
-      #cortanaInlinePanel { background:linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(10,18,34,0.98) 100%) !important; border:1px solid rgba(56,189,248,0.35) !important; border-radius:11px !important; margin-top:6px !important; overflow:hidden !important; box-shadow:0 14px 32px rgba(0,0,0,0.45) !important; }
+      #cortanaInlinePanel { display: none !important; }
       .cortana-inline-header { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:rgba(2,132,199,0.14); border-bottom:1px solid rgba(56,189,248,0.22); }
       .cortana-inline-profile { display:flex; align-items:center; gap:10px; color:#f8fafc; font-size:13px; }
       .cortana-inline-titles { display:flex; flex-direction:column; line-height:1.25; }
@@ -39953,7 +39953,7 @@ window.cortanaFiltrar = function(tipo) {
     </div>
   </div>
   <div class="cf-msgs" id="cortanaFloatMsgs">
-    <div class="cf-msg bot">Listo, Dr. Castillo. Puedo controlar la página web por usted:<br>• <b>abre 26Q-408</b> (o cualquier código)<br>• <b>pasa a citologia / HE / duplicados</b><br>• <b>macro: / micro: / diag:</b> [texto]<br>• <b>guarda / pdf / vista previa / firma</b><br>• <b>abre laminario</b></div>
+    <div class="cf-msg bot" id="cortanaGreetingMsg">Buenos días, Dr. Castillo. ¿En qué le puedo ayudar?</div>
   </div>
   <div class="cf-chips">
     <button type="button" class="cf-chip" onclick="window.cortanaEjecutarOrden('pasa a HE')">HE (Q)</button>
@@ -39972,6 +39972,13 @@ window.cortanaFiltrar = function(tipo) {
 <script>
 (function initCortanaControlTotal() {
   var cortanaVozActiva = true;
+  (function ajustarSaludo() {
+    var g = document.getElementById('cortanaGreetingMsg');
+    if (!g) return;
+    var h = new Date().getHours();
+    var sal = h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
+    g.textContent = sal + ', Dr. Castillo. ¿En qué le puedo ayudar?';
+  })();
 
   function hablarCortana(htmlTxt) {
     if (!cortanaVozActiva || !('speechSynthesis' in window)) return;
