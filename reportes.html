@@ -13070,27 +13070,64 @@ html body .report-editor-container {
 
     <!-- global_styles.css v3 omitido -->
 
-  <!-- jcpathlab_design.css retirado (404) -->
+<!-- jcpathlab_design.css retirado (404) -->
 <style id="jc-ultra-light-mobile-2026">
-  /* Ocultar botones solicitados (Reporte de Boletas, Actualizar) y supresión permanente botón flotante WhatsApp */
-  #btnHeaderReporteBoletas, #btnSidebarBoletas,
-  button[title*="Actualizar"], button[onclick*="refreshData"], button[onclick*="recargar"],
-  a[href*="wa.me/51986396733"], .whatsapp-float-btn, .btn-whatsapp-flotante {
+  /* Ocultar botones solicitados y barra de búsqueda de Cortana */
+  #btnHeaderReporteBoletas,
+  #btnSidebarBoletas,
+  button[title*="Actualizar"],
+  button[onclick*="refreshData"],
+  button[onclick*="recargar"],
+  a[href*="wa.me/51986396733"],
+  .whatsapp-float-btn,
+  .btn-whatsapp-flotante,
+  #cortanaTableSearchBar,
+  .cortana-table-search-bar,
+  .cortana-search-box,
+  .cortana-search-bar,
+  #cortanaSearchInput,
+  .cortana-search-field,
+  #cortanaChatBtn,
+  #cortanaInlinePanel,
+  .cortana-inline-wrapper,
+  .cortana-assistant-bar,
+  .cortana-header-bar {
     display: none !important;
   }
-  /* Botón Cortana en cabecera superior visible y destacado */
+
+  /* Mantener visible el botón Cortana en la cabecera superior */
   #btnHeaderGroqAI {
     display: inline-flex !important;
   }
-  /* Optimizacion ultra-ligera: bajo consumo RAM/CPU y responsive en cualquier monitor o celular */
-  #tableBody tr { content-visibility: auto; contain-intrinsic-size: 48px; }
-  @media (max-width: 1024px), (prefers-reduced-motion: reduce) {
-    * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-    .table-container, .glass-card, .modal-content { box-shadow: 0 2px 8px rgba(0,0,0,0.18) !important; }
+
+  /* Optimización ultra‑ligera: bajo consumo RAM/CPU y responsive */
+  #tableBody tr {
+    content-visibility: auto;
+    contain-intrinsic-size: 48px;
   }
+
+  @media (max-width: 1024px), (prefers-reduced-motion: reduce) {
+    * {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    .table-container,
+    .glass-card,
+    .modal-content {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18) !important;
+    }
+  }
+
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; max-width: 100vw; }
-    .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 </style>
 </head>
