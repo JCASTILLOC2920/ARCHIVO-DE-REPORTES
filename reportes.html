@@ -7634,59 +7634,15 @@ html body .connection-status.online {
 
 
 html body .services-tabs .tab-btn {
-
-
-
-
-
   font-family: var(--jc-font) !important;
-
-
-
-
-
-  border-radius: 12px !important;
-
-
-
-
-
-  font-weight: 700 !important;
-
-
-
-
-
-  padding: 10px 18px !important;
-
-
-
-
-
-  border: 1px solid var(--jc-line) !important;
-
-
-
-
-
-  background: rgba(14, 21, 38, 0.6) !important;
-
-
-
-
-
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  padding: 12px 24px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: rgba(14, 21, 38, 0.8) !important;
   color: var(--jc-text-dim) !important;
-
-
-
-
-
   transition: all 0.2s ease !important;
-
-
-
-
-
 }
 
 
@@ -7730,77 +7686,25 @@ html body .services-tabs .tab-btn:hover {
 
 
 html body .services-tabs .tab-btn.active[data-service="Q"] {
-
-
-
-
-
-  background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(192, 132, 252, 0.22)) !important;
-
-
-
-
-
-  border-color: var(--jc-cyan) !important;
-
-
-
-
-
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid #0284c7 !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  padding: 12px 24px !important;
   color: #ffffff !important;
-
-
-
-
-
-  box-shadow: 0 0 18px rgba(0, 242, 254, 0.3) !important;
-
-
-
-
-
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
 }
 
-
-
-
-
-
-
-
-
-
-
 html body .services-tabs .tab-btn.active[data-service="C"] {
-
-
-
-
-
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(192, 132, 252, 0.25)) !important;
-
-
-
-
-
-  border-color: var(--jc-eos) !important;
-
-
-
-
-
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid #e11d48 !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  padding: 12px 24px !important;
   color: #ffffff !important;
-
-
-
-
-
-  box-shadow: 0 0 18px rgba(244, 63, 94, 0.3) !important;
-
-
-
-
-
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
 }
 
 
@@ -13169,22 +13073,25 @@ html body .report-editor-container {
   #cortanaOpenChatBtn {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 7px !important;
-    height: 38px !important;
-    padding: 0 16px !important;
-    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+    gap: 8px !important;
+    height: auto !important;
+    min-height: 40px !important;
+    padding: 12px 24px !important;
+    background: #0284c7 !important;
     color: #ffffff !important;
-    border: 1px solid rgba(125, 211, 252, 0.5) !important;
-    border-radius: 9px !important;
-    font-weight: 700 !important;
+    border: 1px solid #0369a1 !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em !important;
     font-size: 13px !important;
     cursor: pointer !important;
-    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
-    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+    transition: all 0.15s ease !important;
   }
   #cortanaOpenChatBtn:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.45) !important;
+    background: #0369a1 !important;
+    border-color: #075985 !important;
+    color: #ffffff !important;
   }
 
   /* Mantener visible el botón Cortana en la cabecera superior */
@@ -39401,7 +39308,7 @@ window.cortanaFiltrar = function(tipo) {
       .cortana-duplex-chips { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding-top:2px; }
       .cortana-chip { background:rgba(30,41,59,0.85); color:#cbd5e1; border:1px solid rgba(148,163,184,0.25); border-radius:999px; padding:3px 11px; font-size:11.5px; font-weight:600; cursor:pointer; transition:all .15s ease; }
       .cortana-chip:hover, .cortana-chip.active { background:rgba(2,132,199,0.28); color:#e0f2fe; border-color:#38bdf8; }
-      .cortana-voice-btn { display:inline-flex; align-items:center; gap:6px; height:38px; padding:0 13px; background:rgba(16,185,129,0.16); color:#34d399; border:1px solid rgba(16,185,129,0.45); border-radius:9px; font-weight:700; font-size:12.5px; cursor:pointer; transition:all .15s ease; }
+      .cortana-voice-btn { display:inline-flex; align-items:center; gap:6px; height:auto; min-height:40px; padding:10px 20px; background:rgba(16,185,129,0.16); color:#34d399; border:1px solid rgba(16,185,129,0.45); border-radius:8px; font-weight:600; letter-spacing:0.02em; font-size:12.5px; cursor:pointer; transition:all .15s ease; }
       .cortana-voice-btn.listening { background:rgba(239,68,68,0.25); color:#fca5a5; border-color:#ef4444; box-shadow:0 0 12px rgba(239,68,68,0.45); }
       #cortanaInlinePanel { background:linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(10,18,34,0.98) 100%) !important; border:1px solid rgba(56,189,248,0.35) !important; border-radius:11px !important; margin-top:6px !important; overflow:hidden !important; box-shadow:0 14px 32px rgba(0,0,0,0.45) !important; }
       .cortana-inline-header { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:rgba(2,132,199,0.14); border-bottom:1px solid rgba(56,189,248,0.22); }
