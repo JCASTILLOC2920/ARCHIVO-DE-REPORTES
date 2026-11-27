@@ -260,28 +260,10 @@
     };
 
     function mountSmartCockpitButtons() {
-        const btnMacroVis = document.getElementById('btnCrearMacroVision');
-        if (btnMacroVis && !document.getElementById('btnCasoGemeloO1')) {
-            const btnGem = document.createElement('button');
-            btnGem.type = 'button';
-            btnGem.id = 'btnCasoGemeloO1';
-            btnGem.className = 'cockpit-phase-btn';
-            btnGem.style.cssText = 'background:linear-gradient(135deg,#0284c7,#38bdf8) !important;color:#fff !important;border:1px solid #7dd3fc !important;font-weight:700 !important;border-radius:6px !important;padding:3px 10px !important;margin-left:6px !important;cursor:pointer !important;font-size:0.72rem !important;display:inline-flex !important;align-items:center !important;gap:5px !important;';
-            btnGem.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> CASO GEMELO (0ms)';
-            btnGem.title = 'Autocompletar Microscopía y Diagnóstico con el Caso Gemelo Histórico más exacto (0 llaves)';
-            btnGem.onclick = window.sugerirCasoGemeloHistorico;
-            btnMacroVis.parentNode.insertBefore(btnGem, btnMacroVis.nextSibling);
-
-            const btnWa = document.createElement('button');
-            btnWa.type = 'button';
-            btnWa.id = 'btnWhatsAppCockpitO1';
-            btnWa.className = 'cockpit-phase-btn';
-            btnWa.style.cssText = 'background:#16a34a !important;color:#fff !important;border:1px solid #4ade80 !important;font-weight:700 !important;border-radius:6px !important;padding:3px 10px !important;margin-left:6px !important;cursor:pointer !important;font-size:0.72rem !important;display:inline-flex !important;align-items:center !important;gap:5px !important;';
-            btnWa.innerHTML = '<i class="fa-brands fa-whatsapp"></i> WHATSAPP';
-            btnWa.title = 'Notificar Informe por WhatsApp en 1 clic';
-            btnWa.onclick = window.enviarInformeWhatsAppDirecto;
-            btnGem.parentNode.insertBefore(btnWa, btnGem.nextSibling);
-        }
+        ['btnCasoGemeloO1', 'btnWhatsAppCockpitO1'].forEach(id => {
+            const old = document.getElementById(id);
+            if (old) old.remove();
+        });
         ['re_macroDesc', 're_microDesc', 're_diagnostico', 're_sexo'].forEach(id => {
             const el = document.getElementById(id);
             if (el && !el._concordanceWired) {

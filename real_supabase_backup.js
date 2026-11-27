@@ -79398,5 +79398,45 @@ window.REAL_SUPABASE_BACKUP = [
     "estado": "Pendiente"
   }
 ];
+(function enforceCorrelativeIntegrity() {
+  if (!Array.isArray(window.REAL_SUPABASE_BACKUP)) return;
+  const seen = new Set();
+  const cleaned = [];
+  for (const r of window.REAL_SUPABASE_BACKUP) {
+    if (!r || r.cmd) continue;
+    let rawCod = String(r.codAtencion || r.codigo || r.cod_atencion || '').trim().toUpperCase().replace(/\s+/g, '');
+    if (!rawCod || rawCod === 'TEST-SYNC-003') continue;
+    const pacName = String(r.paciente || r.paciente_nombre || ((r.apellidos || '') + ' ' + (r.nombres || ''))).replace(/[,\-\s]/g, '');
+    // Descartar fantasmas sin paciente cuando existe su par real con cero (26Q-037, 26Q-032) o ficha vacia 26Q-415
+    if ((rawCod === '26Q-37' || rawCod === '26Q-32' || rawCod === '26Q-415') && !pacName) continue;
+    if (rawCod === '25031') rawCod = '25C-031';
+    const m = rawCod.match(/^(\d{2})([A-Z]+)-(\d+)$/);
+    let canonicalKey = rawCod;
+    if (m) {
+      const yr = parseInt(m[1], 10);
+      const srv = m[2];
+      const num = parseInt(m[3], 10);
+      r._sortYear = yr;
+      r._sortType = srv;
+      r._sortNum = num;
+      canonicalKey = `${yr}_${srv}_${num}`;
+      r.codAtencion = rawCod;
+      r.cod_atencion = rawCod;
+      r.codigo = rawCod;
+    }
+    if (seen.has(canonicalKey)) continue;
+    seen.add(canonicalKey);
+    cleaned.push(r);
+  }
+  const srvOrder = { Q: 1, C: 2, I: 3 };
+  cleaned.sort((a, b) => {
+    const ya = Number(a._sortYear || 0), yb = Number(b._sortYear || 0);
+    if (yb !== ya) return yb - ya;
+    const sa = srvOrder[a._sortType || a.service] || 9, sb = srvOrder[b._sortType || b.service] || 9;
+    if (sa !== sb) return sa - sb;
+    return Number(b._sortNum || 0) - Number(a._sortNum || 0);
+  });
+  window.REAL_SUPABASE_BACKUP = cleaned;
+})();
 window.REAL_SUPABASE_PATIENTS = window.REAL_SUPABASE_BACKUP;
 window.realSupabaseBackup = window.REAL_SUPABASE_BACKUP;

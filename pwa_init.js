@@ -5,9 +5,9 @@
     // -------------------------------------------------------------------------
     // 0. Utilidades comunes
     // -------------------------------------------------------------------------
-    const APP_BUILD_VERSION = '20261105_v674';
+    const APP_BUILD_VERSION = '20261127_v1310';
     const CACHE_PREFIXES = ['jcpathlab-informes-', 'jcpathlab-soberano-', 'reportes-cache-'];
-    const CURRENT_CACHE_NAME = 'jcpathlab-informes-v20261126_1269';
+    const CURRENT_CACHE_NAME = 'jcpathlab-informes-v20261127_1310';
 
     /** Elimina cachés que coinciden con los prefijos indicados y que no son la actual. */
     async function purgeObsoleteCaches() {
@@ -30,7 +30,29 @@
         });
     }
 
-    ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB', 'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3', 'activePatientDb'].forEach(function(k){  var val = localStorage.getItem(k);  if (val && (val.indexOf('SIN NOMBRE') !== -1 || val.indexOf('26Q-18974') !== -1)) {    localStorage.removeItem(k);  }});
+    ['patientDatabaseLocal', 'patientDatabase', 'pacientesDB', 'patientDatabaseLocal_bak1', 'patientDatabaseLocal_bak2', 'patientDatabaseLocal_bak3', 'activePatientDb'].forEach(function(k){
+        var val = localStorage.getItem(k);
+        if (!val) return;
+        if (val.indexOf('SIN NOMBRE') !== -1 || val.indexOf('26Q-18974') !== -1 || val.indexOf('TEST-SYNC-003') !== -1 || val.indexOf('26Q- 218') !== -1 || val.indexOf('krypton_hibrido') !== -1 || val.indexOf('"26Q-415"') !== -1) {
+            try {
+                var arr = JSON.parse(val);
+                if (Array.isArray(arr)) {
+                    var clean = arr.filter(function(p) {
+                        var c = String((p && (p.codAtencion || p.codigo || p.cod_atencion)) || '').trim();
+                        var nom = String((p && (p.paciente || p.nombres || p.apellidos)) || '').replace(/[,\-\s]/g, '');
+                        if (!c || c === 'TEST-SYNC-003' || c === '26Q- 218' || c === '26Q- 214' || p.cmd) return false;
+                        if (c === '26Q-415' && !nom) return false;
+                        return true;
+                    });
+                    localStorage.setItem(k, JSON.stringify(clean));
+                } else {
+                    localStorage.removeItem(k);
+                }
+            } catch(e) {
+                localStorage.removeItem(k);
+            }
+        }
+    });
 
     // 1. Registro del Service Worker Médico con Bypass de Caché y Autocontrol
     if ('serviceWorker' in navigator) {

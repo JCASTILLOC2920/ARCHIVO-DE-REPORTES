@@ -2273,7 +2273,7 @@ function parseAtencionSortKey(cod) {
 
 
 
-    <script src="pwa_init.js?v=20261108_elite_soberano" defer></script>
+    <script src="pwa_init.js?v=20261127_v1310" defer></script>
 
 
 
@@ -2339,7 +2339,7 @@ function parseAtencionSortKey(cod) {
 
 
 
-    <script src="responsive_scaler.js?v=20261108_elite_soberano" defer></script>
+    <script src="responsive_scaler.js?v=20261127_v1310" defer></script>
 
 
 
@@ -13080,8 +13080,25 @@ html body .report-editor-container {
   button[onclick*="recargar"],
   a[href*="wa.me/51986396733"],
   .whatsapp-float-btn,
-  .btn-whatsapp-flotante {
+  .btn-whatsapp-flotante,
+  #btnCasoGemeloO1,
+  #btnWhatsAppCockpitO1,
+  #btnToggleEditorFullWidth,
+  #btnEditorOpenCapProtocols,
+  #re_btnCrearPlantilla,
+  #editorPhotoDock .cockpit-dock-divider,
+  #editorPhotoDock .cockpit-photos-wrap {
     display: none !important;
+  }
+  #re_catMacro, #re_catMicro, #re_catDiag {
+    min-width: 195px !important;
+    width: auto !important;
+    flex: 0 1 220px !important;
+  }
+  #re_planMacro, #re_planMicro, #re_planDiag {
+    min-width: 260px !important;
+    width: auto !important;
+    flex: 1 1 320px !important;
   }
 
   /* === REFINAMIENTO EDITORIAL MÉDICO: SELECTS VISIBLES Y BARRA CORTANA DUPLEX === */
@@ -27656,7 +27673,7 @@ html body .report-editor-container {
 
 
 
-    <script src="real_supabase_backup.js?v=20261126_405"></script>
+    <script src="real_supabase_backup.js?v=20261127_v1310"></script>
 
 
 
@@ -28474,7 +28491,7 @@ html body .report-editor-container {
 
 
 
-    <script src="plantillas_data.js?v=20261108_elite_soberano" defer></script>
+    <script src="plantillas_data.js?v=20261127_v1310"></script>
 
 
 
@@ -39639,6 +39656,174 @@ window.cortanaFiltrar = function(tipo) {
     };
     if (openChatBtn) openChatBtn.addEventListener('click', window.cortanaAbrirChat);
     if (closeBtn) closeBtn.addEventListener('click', () => { if (panel) panel.style.display = 'none'; });
+
+    // === GARANTE INFALIBLE DE PLANTILLAS Y BOTONES DE CABINA (IMAGEN 2) ===
+    function ensureTemplatesWiredAndPopulated() {
+        const cats = window.defaultCategories || [];
+        const tpls = window.defaultTemplates || [];
+        if (!cats.length || !tpls.length) return;
+
+        const pairs = [
+            { catId: 're_catMacro', planId: 're_planMacro', tipo: 'Macroscopica', field: 'macro', boxId: 're_macroDesc' },
+            { catId: 're_catMicro', planId: 're_planMicro', tipo: 'Microscopica', field: 'micro', boxId: 're_microDesc' },
+            { catId: 're_catDiag',  planId: 're_planDiag',  tipo: 'Microscopica', field: 'diag',  boxId: 're_diagnostico' }
+        ];
+
+        const uniqueCatNames = Array.from(new Set(cats.map(c => String(c.categoria || '').trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'es'));
+
+        function fillPlansFor(pair, catVal) {
+            const planEl = document.getElementById(pair.planId);
+            if (!planEl) return;
+            const prevVal = planEl.value;
+            planEl.innerHTML = '<option value="">SELECCIONAR PLANTILLA (' + (catVal ? 'filtrada' : 'todas') + ')</option>';
+            let list = tpls;
+            if (catVal) {
+                const selCatObj = cats.find(c => String(c.id) === String(catVal));
+                const selName = selCatObj ? String(selCatObj.categoria || '').trim().toUpperCase() : String(catVal).trim().toUpperCase();
+                const matchingCatIds = new Set(cats.filter(c => String(c.categoria || '').trim().toUpperCase() === selName).map(c => String(c.id)));
+                matchingCatIds.add(String(catVal));
+                const filtered = tpls.filter(t => matchingCatIds.has(String(t.categoryId)));
+                if (filtered.length > 0) list = filtered;
+            }
+            list.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = String(t.id);
+                opt.textContent = t.titulo;
+                planEl.appendChild(opt);
+            });
+            if (prevVal && Array.from(planEl.options).some(o => o.value === String(prevVal))) {
+                planEl.value = String(prevVal);
+            }
+        }
+
+        pairs.forEach(pair => {
+            const catEl = document.getElementById(pair.catId);
+            const planEl = document.getElementById(pair.planId);
+            if (!catEl || !planEl) return;
+
+            if (catEl.options.length <= 1) {
+                const prevCat = catEl.value;
+                catEl.innerHTML = '<option value="">SELECCIONAR ESPECIALIDAD</option>';
+                uniqueCatNames.forEach(name => {
+                    const match = cats.find(c => String(c.categoria || '').trim() === name && c.tipo === pair.tipo)
+                               || cats.find(c => String(c.categoria || '').trim() === name);
+                    if (match) {
+                        const opt = document.createElement('option');
+                        opt.value = String(match.id);
+                        opt.textContent = name;
+                        catEl.appendChild(opt);
+                    }
+                });
+                if (prevCat) catEl.value = prevCat;
+            }
+
+            if (planEl.options.length <= 1) {
+                fillPlansFor(pair, catEl.value);
+            }
+
+            if (!catEl._kryptonBound) {
+                catEl._kryptonBound = true;
+                catEl.addEventListener('change', () => {
+                    fillPlansFor(pair, catEl.value);
+                });
+            }
+
+            if (!planEl._kryptonBound) {
+                planEl._kryptonBound = true;
+                planEl.addEventListener('change', () => {
+                    const tpl = tpls.find(t => String(t.id) === String(planEl.value));
+                    if (!tpl) return;
+                    // Si elige en Macroscopia y micro/diag estan vacios o pide plantilla completa, rellena su caja (y ofrece sincronia limpia)
+                    const setBox = (boxId, textVal) => {
+                        if (!textVal) return;
+                        const box = document.getElementById(boxId);
+                        if (!box) return;
+                        if (box.tagName === 'TEXTAREA' || box.tagName === 'INPUT') {
+                            box.value = textVal;
+                        } else {
+                            box.innerHTML = String(textVal).replace(/\n/g, '<br>');
+                        }
+                        box.dispatchEvent(new Event('input', { bubbles: true }));
+                    };
+                    setBox(pair.boxId, tpl[pair.field] || '');
+                    if (pair.field === 'macro') {
+                        const miBox = document.getElementById('re_microDesc');
+                        const diBox = document.getElementById('re_diagnostico');
+                        const miEmpty = miBox && !(miBox.value || miBox.textContent || '').trim();
+                        const diEmpty = diBox && !(diBox.value || diBox.textContent || '').trim();
+                        if (miEmpty && tpl.micro) setBox('re_microDesc', tpl.micro);
+                        if (diEmpty && tpl.diag) setBox('re_diagnostico', tpl.diag);
+                    }
+                });
+            }
+        });
+    }
+
+    // Asegurar que los botones de Fase 1, Fase 2, Crear Macroscopia y Pestañas funcionen siempre
+    document.addEventListener('click', (ev) => {
+        const tabBtn = ev.target.closest('.tab-header-btn');
+        if (tabBtn) {
+            const tabId = tabBtn.getAttribute('data-tab');
+            if (tabId) {
+                document.querySelectorAll('.tab-header-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#reportEditorModalOverlay .tab-pane').forEach(p => {
+                    p.classList.remove('active');
+                    p.style.display = 'none';
+                });
+                tabBtn.classList.add('active');
+                const pane = document.getElementById(tabId);
+                if (pane) {
+                    pane.classList.add('active');
+                    pane.style.display = '';
+                }
+            }
+            return;
+        }
+
+        const p1 = ev.target.closest('.cockpit-phase-btn.phase-1');
+        if (p1) {
+            if (window.switchEditorTab) window.switchEditorTab('tab_descrip');
+            const m = document.getElementById('re_macroDesc');
+            if (m) {
+                m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                m.focus();
+                m.style.outline = '2px solid #38bdf8';
+                setTimeout(() => { m.style.outline = ''; }, 1400);
+            }
+            if (window.showToast) window.showToast('Fase 1 activa: Macroscopía y Casetes', 'info', 2200);
+            return;
+        }
+
+        const p2 = ev.target.closest('.cockpit-phase-btn.phase-2');
+        if (p2) {
+            if (window.switchEditorTab) window.switchEditorTab('tab_descrip');
+            const mi = document.getElementById('re_microDesc');
+            const di = document.getElementById('re_diagnostico');
+            if (mi) {
+                mi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                mi.focus();
+                mi.style.outline = '2px solid #10b981';
+                if (di) di.style.outline = '2px solid #10b981';
+                setTimeout(() => { mi.style.outline = ''; if (di) di.style.outline = ''; }, 1400);
+            }
+            if (window.showToast) window.showToast('Fase 2 activa: Microscopía y Diagnóstico', 'success', 2200);
+            return;
+        }
+
+        const btnVis = ev.target.closest('#btnCrearMacroVision');
+        if (btnVis && typeof window.crearMacroscopiaDesdeImagen === 'function') {
+            ev.preventDefault();
+            window.crearMacroscopiaDesdeImagen();
+        }
+    }, true);
+
+    setTimeout(ensureTemplatesWiredAndPopulated, 400);
+    setTimeout(ensureTemplatesWiredAndPopulated, 1500);
+    document.addEventListener('click', (ev) => {
+        if (ev.target.closest('.edit-btn, [onclick*="editar"], #reportEditorModalOverlay select')) {
+            setTimeout(ensureTemplatesWiredAndPopulated, 120);
+        }
+    });
 })();
 </script>
 
