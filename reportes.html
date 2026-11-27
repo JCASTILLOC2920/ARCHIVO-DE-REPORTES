@@ -13072,12 +13072,15 @@ html body .report-editor-container {
 
   <!-- jcpathlab_design.css retirado (404) -->
 <style id="jc-ultra-light-mobile-2026">
-  /* Ocultar botones solicitados (Reporte de Boletas, Actualizar, Copiloto IA, Chat Cortana) */
-  #btnHeaderReporteBoletas, #btnHeaderGroqAI, #btnSidebarGroqAI, #btnSidebarBoletas,
-  #cortanaInlinePanel, .cortana-inline-wrapper, .cortana-search-bar, #cortanaChatBtn,
-  #cortanaSearchInput, .cortana-search-field, .cortana-assistant-bar, .cortana-header-bar,
-  button[title*="Actualizar"], button[onclick*="refreshData"], button[onclick*="recargar"] {
+  /* Ocultar botones solicitados (Reporte de Boletas, Actualizar) y supresión permanente botón flotante WhatsApp */
+  #btnHeaderReporteBoletas, #btnSidebarBoletas,
+  button[title*="Actualizar"], button[onclick*="refreshData"], button[onclick*="recargar"],
+  a[href*="wa.me/51986396733"], .whatsapp-float-btn, .btn-whatsapp-flotante {
     display: none !important;
+  }
+  /* Botón Cortana en cabecera superior visible y destacado */
+  #btnHeaderGroqAI {
+    display: inline-flex !important;
   }
   /* Optimizacion ultra-ligera: bajo consumo RAM/CPU y responsive en cualquier monitor o celular */
   #tableBody tr { content-visibility: auto; contain-intrinsic-size: 48px; }
@@ -13894,19 +13897,19 @@ html body .report-editor-container {
 
 
 
-                    <button type="button" class="groq-ai-btn" id="btnHeaderGroqAI" onclick="window.openGroqCopilotModal && window.openGroqCopilotModal()" title="Copiloto IA de Patología (Groq LPU en 0.2s)">
+                    <button type="button" class="groq-ai-btn" id="btnHeaderGroqAI" onclick="(window.cortanaAbrirChat ? window.cortanaAbrirChat() : (window.openGroqCopilotModal && window.openGroqCopilotModal()))" title="Cortana IA • Asistente y Copiloto de Patología JC PATH LAB" style="display: inline-flex !important; align-items: center; gap: 6px;">
 
 
 
 
 
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: #38bdf8;"></i>
 
 
 
 
 
-                        <span>Copiloto IA</span>
+                        <span>Cortana IA</span>
 
 
 
@@ -39334,8 +39337,7 @@ window.cortanaAbrirChat = function() {
 
 
 
-<!-- JCPATHLAB_WA_FLOTANTE_V1 -->
-<a href="https://wa.me/51986396733?text=Hola%20JC%20PATH%20LAB%2C%20deseo%20informaci%C3%B3n%20sobre%20biopsias%20o%20resultados." target="_blank" rel="noopener" aria-label="WhatsApp JC PATH LAB" style="position:fixed;right:18px;bottom:18px;z-index:9999;background:#10b981;color:#052e16;font-family:system-ui,sans-serif;font-weight:800;font-size:14px;padding:11px 16px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.28);text-decoration:none;">WhatsApp +51 986 396 733</a>
+<!-- Boton flotante WhatsApp suprimido definitivamente por orden del Dr. Castillo -->
 </body>
 
 
