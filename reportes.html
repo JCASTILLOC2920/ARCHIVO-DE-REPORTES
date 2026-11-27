@@ -13042,13 +13042,15 @@ html body .report-editor-container {
   #cortanaTableSearchBar {
     display: flex !important;
     flex-direction: column !important;
-    gap: 8px !important;
+    gap: 10px !important;
     margin: 6px 0 10px 0 !important;
     padding: 10px 14px !important;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(12, 34, 59, 0.92) 100%) !important;
-    border: 1px solid rgba(56, 189, 248, 0.32) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.14) !important;
+    background: rgba(15, 23, 42, 0.72) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
   }
   #cortanaTableSearchBar .cortana-search-box {
     display: flex !important;
@@ -13059,38 +13061,44 @@ html body .report-editor-container {
   #cortanaSearchInput {
     display: block !important;
     flex: 1 1 auto !important;
-    height: 38px !important;
+    height: 42px !important;
     padding: 0 14px !important;
-    background: rgba(9, 14, 26, 0.85) !important;
-    border: 1px solid rgba(56, 189, 248, 0.38) !important;
-    border-radius: 9px !important;
+    background: rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 10px !important;
     color: #f8fafc !important;
     font-size: 13.5px !important;
+    outline: none !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  }
+  #cortanaSearchInput:focus {
+    border-color: rgba(56, 189, 248, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16) !important;
   }
   #cortanaSearchInput::placeholder {
-    color: #94a3b8 !important;
+    color: #94A3B8 !important;
   }
   #cortanaOpenChatBtn {
     display: inline-flex !important;
     align-items: center !important;
     gap: 8px !important;
-    height: auto !important;
-    min-height: 40px !important;
-    padding: 12px 24px !important;
-    background: #0284c7 !important;
+    height: 42px !important;
+    padding: 0 20px !important;
+    background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%) !important;
     color: #ffffff !important;
-    border: 1px solid #0369a1 !important;
-    border-radius: 8px !important;
+    border: none !important;
+    border-radius: 10px !important;
     font-weight: 600 !important;
     letter-spacing: 0.02em !important;
     font-size: 13px !important;
     cursor: pointer !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
-    transition: all 0.15s ease !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 4px 14px rgba(14, 165, 233, 0.25) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease !important;
   }
   #cortanaOpenChatBtn:hover {
-    background: #0369a1 !important;
-    border-color: #075985 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 20px rgba(14, 165, 233, 0.42) !important;
+    filter: brightness(1.06) !important;
     color: #ffffff !important;
   }
 
@@ -39308,7 +39316,8 @@ window.cortanaFiltrar = function(tipo) {
       .cortana-duplex-chips { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding-top:2px; }
       .cortana-chip { background:rgba(30,41,59,0.85); color:#cbd5e1; border:1px solid rgba(148,163,184,0.25); border-radius:999px; padding:3px 11px; font-size:11.5px; font-weight:600; cursor:pointer; transition:all .15s ease; }
       .cortana-chip:hover, .cortana-chip.active { background:rgba(2,132,199,0.28); color:#e0f2fe; border-color:#38bdf8; }
-      .cortana-voice-btn { display:inline-flex; align-items:center; gap:6px; height:auto; min-height:40px; padding:10px 20px; background:rgba(16,185,129,0.16); color:#34d399; border:1px solid rgba(16,185,129,0.45); border-radius:8px; font-weight:600; letter-spacing:0.02em; font-size:12.5px; cursor:pointer; transition:all .15s ease; }
+      .cortana-voice-btn { display:inline-flex; align-items:center; gap:6px; height:42px; padding:0 18px; background:rgba(16,185,129,0.12); color:#34D399; border:none; border-radius:10px; font-weight:600; letter-spacing:0.02em; font-size:12.5px; cursor:pointer; transition:background .2s ease, transform .15s ease; }
+      .cortana-voice-btn:hover { background:rgba(16,185,129,0.22); }
       .cortana-voice-btn.listening { background:rgba(239,68,68,0.25); color:#fca5a5; border-color:#ef4444; box-shadow:0 0 12px rgba(239,68,68,0.45); }
       #cortanaInlinePanel { background:linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(10,18,34,0.98) 100%) !important; border:1px solid rgba(56,189,248,0.35) !important; border-radius:11px !important; margin-top:6px !important; overflow:hidden !important; box-shadow:0 14px 32px rgba(0,0,0,0.45) !important; }
       .cortana-inline-header { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:rgba(2,132,199,0.14); border-bottom:1px solid rgba(56,189,248,0.22); }
