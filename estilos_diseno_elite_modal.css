@@ -1,0 +1,429 @@
+/* ==========================================================================
+   ESTILOS DE DISEÑO ÉLITE - MODAL REGISTRO PACIENTE (JC PATH LAB)
+   Arquitectura Front-End Goliath Omega-Argón v12.0
+   Autoridad: Dr. José Castillo / Protocolo Dark Glassmorphism Médico
+   ========================================================================== */
+
+:root {
+  --c-bg-dark: rgba(15, 23, 42, 0.85);          /* #0f172a 85% */
+  --c-bg-glass: rgba(15, 23, 42, 0.65);
+  --c-blur: 12px;
+
+  /* Gradientes */
+  --c-gradient-border: linear-gradient(135deg, #0284c7, #7c3aed);
+
+  /* Acciones y Paleta Neuro-Ergonómica */
+  --c-primary: #0284c7;        /* Cian Clínico */
+  --c-primary-dark: #0369a1;
+  --c-primary-light: #38bdf8;
+  --c-success: #10b981;        /* Verde Esmeralda */
+  --c-warning: #f59e0b;        /* Ámbar */
+  --c-danger: #ef4444;         /* Rojo Carmesí */
+  --c-violeta: #7c3aed;        /* Violeta Hematoxilina IA */
+  --c-blanco: #f8fafc;         /* Blanco Clínico */
+  --c-texto-muted: #94a3b8;
+
+  /* Tipografía y Transiciones */
+  --font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-size-base: 0.95rem;
+  --line-height-base: 1.4;
+  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------- RESETEO --------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --------------------------- OVERLAY --------------------------- */
+#registroPacienteOverlay,
+.modal-overlay,
+#backupModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.75);
+  backdrop-filter: blur(var(--c-blur));
+  -webkit-backdrop-filter: blur(var(--c-blur));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#registroPacienteOverlay.active,
+.modal-overlay.active,
+#backupModalOverlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --------------------------- MODAL --------------------------- */
+#registroPacienteModal,
+.modal-container,
+.modal-registro-paciente {
+  position: relative;
+  width: 92%;
+  max-width: 620px;
+  max-height: 90vh;
+  background: var(--c-bg-glass);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  backdrop-filter: blur(var(--c-blur));
+  -webkit-backdrop-filter: blur(var(--c-blur));
+  padding: 2rem;
+  color: var(--c-blanco);
+  font-family: var(--font-family);
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#registroPacienteOverlay.active #registroPacienteModal,
+.modal-overlay.active .modal-container,
+#backupModalOverlay.active .modal-container {
+  transform: translateY(0);
+}
+
+/* Border gradient – pseudo‑element */
+#registroPacienteModal::before,
+.modal-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 1.1rem;
+  background: var(--c-gradient-border);
+  z-index: -1;
+  opacity: 0.8;
+}
+
+/* --------------------------- HEADER --------------------------- */
+#registroPacienteModal .modal-header,
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  color: var(--c-blanco);
+  font-family: var(--font-family);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  letter-spacing: -0.025em;
+}
+
+.modal-title::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 22px;
+  background: var(--c-primary);
+  border-radius: 3px;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--c-texto-muted);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--c-blanco);
+}
+
+/* --------------------------- BODY & FORM GRID --------------------------- */
+#registroPacienteModal .modal-body,
+.modal-body {
+  font-family: var(--font-family);
+  color: #e2e8f0;
+}
+
+.modal-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.modal-form-group,
+.modal-body .form-group {
+  position: relative;
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.modal-form-group.full-width {
+  grid-column: span 2;
+}
+
+/* Labels */
+.modal-label,
+.modal-body .form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  transition: var(--transition-smooth);
+}
+
+/* Input fields */
+.modal-input,
+.modal-select,
+.modal-body .form-group input,
+.modal-body .form-group textarea,
+.modal-body .form-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.5rem;
+  color: var(--c-blanco);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  line-height: var(--line-height-base);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+/* Focus state – cyan glow resplandeciente */
+.modal-input:focus,
+.modal-select:focus,
+.modal-body .form-group input:focus,
+.modal-body .form-group textarea:focus,
+.modal-body .form-group select:focus {
+  outline: none;
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.35);
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.modal-input::placeholder,
+.modal-body .form-group input::placeholder {
+  color: #64748b;
+}
+
+.modal-form-group:focus-within .modal-label {
+  color: var(--c-primary);
+}
+
+/* --------------------------- BOTONES Y ACCIONES --------------------------- */
+.modal-btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-btn,
+.modal-body .btn,
+.btn-primary,
+.btn-secondary,
+.btn-accent,
+.modal-btn-primary,
+.modal-btn-secondary,
+.modal-btn-action,
+.modal-btn-dictado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-family: var(--font-family);
+  font-size: 0.94rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+/* Primary – Guardar Paciente */
+.btn-primary,
+.modal-btn-primary {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: var(--c-blanco);
+  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+}
+
+.btn-primary:hover,
+.modal-btn-primary:hover {
+  background: linear-gradient(135deg, #0369a1, #0284c7);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Secondary – Validar / Buscar DNI / Cancelar */
+.btn-secondary,
+.modal-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover,
+.modal-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--c-blanco);
+  transform: translateY(-1px);
+}
+
+/* Action / DNI Search */
+.modal-btn-action {
+  background: rgba(124, 58, 237, 0.18);
+  color: #c4b5fd;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+}
+
+.modal-btn-action:hover {
+  background: rgba(124, 58, 237, 0.28);
+  color: #ddd6fe;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
+}
+
+/* Accent – Llenado por Dictado (efecto pulsante suave y seguro) */
+.btn-accent,
+.modal-btn-dictado {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--c-success);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  animation: pulseDictado 2s infinite ease-in-out;
+}
+
+.btn-accent:hover,
+.modal-btn-dictado:hover {
+  background: rgba(16, 185, 129, 0.25);
+  color: #34d399;
+}
+
+@keyframes pulseDictado {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+}
+
+.modal-btn:active,
+.btn:active {
+  transform: translateY(0);
+}
+
+.modal-btn:disabled,
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* --------------------------- BADGE ESTADO RENIEC / LOCAL --------------------------- */
+.badge-status,
+.modal-badge-reniec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--c-success);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  letter-spacing: 0.02em;
+}
+
+.badge-status.ok,
+.modal-badge-reniec.ok {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--c-success);
+}
+
+.badge-status.warn {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--c-warning);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.badge-status.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--c-danger);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.badge-status svg,
+.modal-badge-reniec svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: currentColor;
+}
+
+/* --------------------------- SCROLLBAR PERSONALIZADO --------------------------- */
+#registroPacienteModal::-webkit-scrollbar,
+.modal-container::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+#registroPacienteModal::-webkit-scrollbar-track,
+.modal-container::-webkit-scrollbar-track,
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#registroPacienteModal::-webkit-scrollbar-thumb,
+.modal-container::-webkit-scrollbar-thumb,
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+#registroPacienteModal::-webkit-scrollbar-thumb:hover,
+.modal-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* --------------------------- RESPONSIVE --------------------------- */
+@media (max-width: 640px) {
+  .modal-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-form-group.full-width {
+    grid-column: span 1;
+  }
+  #registroPacienteModal,
+  .modal-container {
+    width: 95%;
+    padding: 1.25rem;
+  }
+  .modal-btn-group {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+  .modal-btn,
+  .modal-body .btn {
+    width: 100%;
+  }
+}
