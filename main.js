@@ -852,7 +852,7 @@ function initMainApp() {
     const tabButtons = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
 
     window.switchServiceTab = function(serviceId, clickedBtn) {
-        if (!serviceId || (serviceId !== 'Q' && serviceId !== 'C' && serviceId !== 'I')) return;
+        if (!serviceId || (serviceId !== 'Q' && serviceId !== 'C' && serviceId !== 'I' && serviceId !== 'D')) return;
         sessionStorage.setItem('manualServiceSelected', 'true');
         const tabBtns = document.querySelectorAll('.services-tabs .tab-btn[data-service]');
         tabBtns.forEach(btn => btn.classList.remove('active'));

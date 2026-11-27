@@ -79424,11 +79424,25 @@ window.REAL_SUPABASE_BACKUP = [
       r.cod_atencion = rawCod;
       r.codigo = rawCod;
     }
-    if (seen.has(canonicalKey)) continue;
+    const clinName = String(r.paciente || r.paciente_nombre || '').trim().toUpperCase().replace(/\s+/g, ' ');
+    const clinEsp = String(r.especimen || r.muestra || '').trim().toUpperCase().replace(/\s+/g, ' ');
+    const clinFec = String(r.fecRegistro || r.fec_registro || r.fecha_ingreso || '').trim();
+    const clinKey = (clinName.length > 5 && !clinName.includes('SIN NOMBRE') && !clinName.includes('POR IDENTIFICAR') && clinEsp.length > 3)
+      ? `CLIN_${clinName}|${clinEsp}|${clinFec}`
+      : '';
+    if (seen.has(canonicalKey) || (clinKey && seen.has(clinKey))) {
+      r._originalService = r.service || r._sortType || 'Q';
+      r.service = 'D';
+      r._sortType = 'D';
+      r._isDuplicate = true;
+      cleaned.push(r);
+      continue;
+    }
     seen.add(canonicalKey);
+    if (clinKey) seen.add(clinKey);
     cleaned.push(r);
   }
-  const srvOrder = { Q: 1, C: 2, I: 3 };
+  const srvOrder = { Q: 1, C: 2, I: 3, D: 4 };
   cleaned.sort((a, b) => {
     const ya = Number(a._sortYear || 0), yb = Number(b._sortYear || 0);
     if (yb !== ya) return yb - ya;

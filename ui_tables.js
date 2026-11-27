@@ -693,7 +693,13 @@ export function renderTable(data = patientDatabase) {
         if (codeUpper.startsWith('26Q-189') && pacUpper.includes('DESCONOCIDO')) return false;
         if (pacUpper.includes('SIN NOMBRE') && (String(item.clinica || '').toUpperCase().includes('SIN CLINICA') || !item.clinica)) return false;
         const especimenUpper = String(item.especimen || '').toUpperCase();
-        let s = item.service;
+        let s = (item._isDuplicate || item.service === 'D') ? 'D' : item.service;
+        if (currentService === 'D') {
+            return s === 'D';
+        }
+        if (s === 'D') {
+            return false;
+        }
         if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
             // 1. Detección por patrón de código (24C-, 25C-, 26C-, C-01, 24C01, etc.)
             if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
