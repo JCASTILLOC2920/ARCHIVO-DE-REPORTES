@@ -39897,10 +39897,30 @@ window.cortanaFiltrar = function(tipo) {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: move;
+    user-select: none;
   }
-  .cf-title { font-size: 13px; font-weight: 600; color: #F1F5F9; display: flex; align-items: center; gap: 8px; }
-  .cf-dot { width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; }
+  .cf-title { font-size: 13px; font-weight: 600; color: #F1F5F9; display: flex; align-items: center; gap: 9px; }
+  .cf-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #7dd3fc 0%, #0284c7 60%, #0f172a 100%);
+    border: 2px solid #38BDF8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.55);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: #fff; flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .cf-avatar.speaking { animation: cortanaPulse 0.9s infinite alternate; }
+  @keyframes cortanaPulse {
+    from { transform: scale(1); box-shadow: 0 0 8px rgba(56,189,248,0.5); }
+    to { transform: scale(1.12); box-shadow: 0 0 18px rgba(16,185,129,0.85); border-color: #34D399; }
+  }
+  .cf-head-btns { display: flex; align-items: center; gap: 6px; }
+  .cf-icon-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #94A3B8; border-radius: 6px; width: 26px; height: 26px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+  .cf-icon-btn.active { color: #34D399; border-color: rgba(16,185,129,0.4); }
   .cf-close { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #94A3B8; border-radius: 6px; width: 26px; height: 26px; cursor: pointer; }
+  .cf-mic-btn { height: 36px; width: 38px; padding: 0; border-radius: 8px; border: 1px solid rgba(16,185,129,0.35); background: rgba(16,185,129,0.14); color: #34D399; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .cf-mic-btn.listening { background: rgba(239,68,68,0.25); color: #FCA5A5; border-color: #EF4444; }
   .cf-msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; }
   .cf-msg { padding: 8px 11px; border-radius: 8px; line-height: 1.45; max-width: 90%; word-wrap: break-word; }
   .cf-msg.bot { background: #182234; border: 1px solid rgba(255,255,255,0.06); color: #F1F5F9; align-self: flex-start; }
@@ -39919,9 +39939,18 @@ window.cortanaFiltrar = function(tipo) {
 </button>
 
 <div id="cortanaFloatWindow" role="dialog" aria-label="Chat Flotante Cortana">
-  <div class="cf-head">
-    <div class="cf-title"><span class="cf-dot"></span><span>Cortana • Control Total Web</span></div>
-    <button type="button" class="cf-close" onclick="window.toggleCortanaFloat && window.toggleCortanaFloat()">&times;</button>
+  <div class="cf-head" id="cortanaFloatHeader">
+    <div class="cf-title">
+      <div class="cf-avatar" id="cortanaAvatarOrb"><i class="fa-solid fa-wave-square"></i></div>
+      <div>
+        <div>Cortana • Control Total</div>
+        <div style="font-size:10px;color:#94A3B8;font-weight:400;">Arrastre aquí para mover</div>
+      </div>
+    </div>
+    <div class="cf-head-btns">
+      <button type="button" id="cortanaTtsToggleBtn" class="cf-icon-btn active" title="Activar/Silenciar Voz de Cortana" onclick="window.toggleCortanaVoz && window.toggleCortanaVoz()"><i class="fa-solid fa-volume-high"></i></button>
+      <button type="button" class="cf-close" onclick="window.toggleCortanaFloat && window.toggleCortanaFloat()">&times;</button>
+    </div>
   </div>
   <div class="cf-msgs" id="cortanaFloatMsgs">
     <div class="cf-msg bot">Listo, Dr. Castillo. Puedo controlar la página web por usted:<br>• <b>abre 26Q-408</b> (o cualquier código)<br>• <b>pasa a citologia / HE / duplicados</b><br>• <b>macro: / micro: / diag:</b> [texto]<br>• <b>guarda / pdf / vista previa / firma</b><br>• <b>abre laminario</b></div>
@@ -39934,13 +39963,97 @@ window.cortanaFiltrar = function(tipo) {
     <button type="button" class="cf-chip" onclick="window.cortanaEjecutarOrden('pdf')">PDF</button>
   </div>
   <div class="cf-bar">
-    <input type="text" id="cortanaFloatInput" placeholder="Escriba una orden o búsqueda..." onkeydown="if(event.key==='Enter'){event.preventDefault();window.enviarOrdenCortanaFloat();}">
+    <button type="button" id="cortanaFloatMicBtn" class="cf-mic-btn" title="Hablar con Cortana" onclick="window.cortanaDictarFloat && window.cortanaDictarFloat()"><i class="fa-solid fa-microphone"></i></button>
+    <input type="text" id="cortanaFloatInput" placeholder="Escriba o hable una orden..." onkeydown="if(event.key==='Enter'){event.preventDefault();window.enviarOrdenCortanaFloat();}">
     <button type="button" onclick="window.enviarOrdenCortanaFloat()">Enviar</button>
   </div>
 </div>
 
 <script>
 (function initCortanaControlTotal() {
+  var cortanaVozActiva = true;
+
+  function hablarCortana(htmlTxt) {
+    if (!cortanaVozActiva || !('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      var limpio = String(htmlTxt || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      if (!limpio) return;
+      var u = new SpeechSynthesisUtterance(limpio);
+      u.lang = 'es-PE';
+      u.rate = 1.05;
+      var orb = document.getElementById('cortanaAvatarOrb');
+      u.onstart = function() { if (orb) orb.classList.add('speaking'); };
+      u.onend = function() { if (orb) orb.classList.remove('speaking'); };
+      u.onerror = function() { if (orb) orb.classList.remove('speaking'); };
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  window.toggleCortanaVoz = function() {
+    cortanaVozActiva = !cortanaVozActiva;
+    var btn = document.getElementById('cortanaTtsToggleBtn');
+    if (btn) {
+      btn.classList.toggle('active', cortanaVozActiva);
+      btn.innerHTML = cortanaVozActiva ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
+    }
+    if (!cortanaVozActiva && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+  };
+
+  window.cortanaDictarFloat = function() {
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var micBtn = document.getElementById('cortanaFloatMicBtn');
+    var orb = document.getElementById('cortanaAvatarOrb');
+    if (!SR) {
+      addMsg('Su navegador no soporta dictado directo; use Chrome o Edge.', 'bot');
+      return;
+    }
+    var rec = new SR();
+    rec.lang = 'es-PE';
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    if (micBtn) micBtn.classList.add('listening');
+    if (orb) orb.classList.add('speaking');
+    rec.onresult = function(ev) {
+      var transcript = ev.results[0][0].transcript;
+      if (transcript) window.cortanaEjecutarOrden(transcript);
+    };
+    rec.onerror = function() {
+      if (micBtn) micBtn.classList.remove('listening');
+      if (orb) orb.classList.remove('speaking');
+    };
+    rec.onend = function() {
+      if (micBtn) micBtn.classList.remove('listening');
+      if (orb) orb.classList.remove('speaking');
+    };
+    rec.start();
+  };
+
+  // Arrastre libre de la ventana flotante por su cabecera
+  (function habilitarArrastre() {
+    var win = document.getElementById('cortanaFloatWindow');
+    var hdr = document.getElementById('cortanaFloatHeader');
+    if (!win || !hdr) return;
+    var dragging = false, offX = 0, offY = 0;
+    hdr.addEventListener('mousedown', function(e) {
+      if (e.target.closest('button')) return;
+      dragging = true;
+      var rect = win.getBoundingClientRect();
+      offX = e.clientX - rect.left;
+      offY = e.clientY - rect.top;
+      win.style.right = 'auto';
+      win.style.bottom = 'auto';
+      win.style.left = rect.left + 'px';
+      win.style.top = rect.top + 'px';
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!dragging) return;
+      win.style.left = Math.max(4, Math.min(window.innerWidth - win.offsetWidth - 4, e.clientX - offX)) + 'px';
+      win.style.top = Math.max(4, Math.min(window.innerHeight - win.offsetHeight - 4, e.clientY - offY)) + 'px';
+    });
+    document.addEventListener('mouseup', function() { dragging = false; });
+  })();
+
   function addMsg(txt, cls) {
     var box = document.getElementById('cortanaFloatMsgs');
     if (!box) return;
@@ -39949,6 +40062,7 @@ window.cortanaFiltrar = function(tipo) {
     d.innerHTML = txt;
     box.appendChild(d);
     box.scrollTop = box.scrollHeight;
+    if (cls === 'bot') hablarCortana(txt);
   }
 
   window.toggleCortanaFloat = function(forceOpen) {
