@@ -2092,26 +2092,131 @@
 
                 display: inline-flex !important;
 
-                align-items: center !important;
-
-                justify-content: center !important;
-
-                box-sizing: border-box !important;
-
-                text-align: center !important;
-
-            }
-
-            .pv-main-layout {
-
-                margin-top: 115px !important;
-
-            }
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Impresión de Reporte — JC Path Lab</title>
+    <style>
+        /* -------------------------------------------------
+           ESTILOS BASE EXISTENTES (JC PATH LAB)
+        ------------------------------------------------- */
+        body {
+            font-family: 'JetBrains Mono', monospace, sans-serif;
+            background-color: #0F172A;
+            color: #0284C7;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        .some-center {
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+        }
+
+        .pv-main-layout {
+            margin-top: 115px !important;
+        }
+
+        /* -------------------------------------------------
+           BLOQUE MAESTRO DE CORRECCIÓN A4 Y OPTIMIZACIÓN 60 FPS 
+           — JC PATH LAB (#jc-imprimir-a4-fullwidth-fix)
+        ------------------------------------------------- */
+        #jc-imprimir-a4-fullwidth-fix .sheet,
+        #jc-imprimir-a4-fullwidth-fix .page-sheet,
+        #jc-imprimir-a4-fullwidth-fix .a4-page,
+        #jc-imprimir-a4-fullwidth-fix .report-sheet,
+        #jc-imprimir-a4-fullwidth-fix.sheet,
+        #jc-imprimir-a4-fullwidth-fix.page-sheet,
+        #jc-imprimir-a4-fullwidth-fix.a4-page,
+        #jc-imprimir-a4-fullwidth-fix.report-sheet {
+            width: 210mm !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 12mm 14mm !important;
+            margin: 0 auto !important;
+            content-visibility: auto !important;
+            float: none !important;
+            column-count: 1 !important;
+        }
+
+        #jc-imprimir-a4-fullwidth-fix .sheet > *, 
+        #jc-imprimir-a4-fullwidth-fix .sheet table, 
+        #jc-imprimir-a4-fullwidth-fix .page-sheet > *, 
+        #jc-imprimir-a4-fullwidth-fix .page-sheet table, 
+        #jc-imprimir-a4-fullwidth-fix .a4-page > *, 
+        #jc-imprimir-a4-fullwidth-fix .a4-page table, 
+        #jc-imprimir-a4-fullwidth-fix .report-sheet > *, 
+        #jc-imprimir-a4-fullwidth-fix .report-sheet table,
+        #jc-imprimir-a4-fullwidth-fix .header-container, 
+        #jc-imprimir-a4-fullwidth-fix .patient-table, 
+        #jc-imprimir-a4-fullwidth-fix .section-content, 
+        #jc-imprimir-a4-fullwidth-fix .diag-box, 
+        #jc-imprimir-a4-fullwidth-fix .diagnostico-box {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            float: none !important;
+            column-count: 1 !important;
+        }
+
+        /* Optimización y control estricto para impresión A4 física */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            body {
+                background: #FFFFFF !important;
+                color: #000000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #jc-imprimir-a4-fullwidth-fix .sheet,
+            #jc-imprimir-a4-fullwidth-fix .page-sheet,
+            #jc-imprimir-a4-fullwidth-fix .a4-page,
+            #jc-imprimir-a4-fullwidth-fix .report-sheet {
+                width: 210mm !important;
+                min-height: 297mm !important;
+                margin: 0 !important;
+                padding: 12mm 14mm !important;
+                page-break-after: always !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+        }
     </style>
 </head>
+<body id="jc-imprimir-a4-fullwidth-fix" class="pv-main-layout">
+    <div class="sheet">
+        <header class="header-container">
+            <h1>JC PATH LAB — Reporte Clínico Oficial</h1>
+        </header>
+
+        <section class="patient-table">
+            <table>
+                <tr><th>Paciente</th><td>Juan Pérez</td></tr>
+                <tr><th>Edad</th><td>45 años</td></tr>
+                <tr><th>Fecha</th><td>27/11/2026</td></tr>
+            </table>
+        </section>
+
+        <section class="section-content">
+            <h2>Diagnóstico Anatomo-Patológico</h2>
+            <div class="diag-box diagnostico-box">
+                <p>Diagnóstico preliminar: Tejido sin alteraciones significativas aparentes bajo tinción estándar.</p>
+            </div>
+        </section>
+
+        <footer class="footer-container some-center">
+            <p>© JC Path Lab – 2026. Autoridad: Dr. José Castillo. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+</body>
+</html>
 
 <body>
 
