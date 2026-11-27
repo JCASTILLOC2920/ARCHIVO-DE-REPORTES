@@ -40191,7 +40191,8 @@ window.cortanaFiltrar = function(tipo) {
       });
       if (resp.ok) {
         var j = await resp.json();
-        if (j && j.respuesta_directa) addMsg(j.respuesta_directa, 'bot');
+        var msgK = j && (j.respuesta || j.respuesta_directa || j.mensaje);
+        if (msgK) addMsg(msgK, 'bot');
       }
     } catch (errSrv) {}
     return 'OK';
