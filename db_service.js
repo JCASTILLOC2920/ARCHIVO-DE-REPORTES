@@ -1734,6 +1734,7 @@ export function initLocalDatabases(force = false) {
     // RUTINA SOBERANA DE AUTO-ACTUALIZACIÓN: Si masterList tiene más registros que localStorage o registros nuevos, sincronizar incondicionalmente
     if (masterList.length > 0 && (parsed.length < masterList.length || !parsed.some(p => (p.codAtencion || p.cod_atencion || p.codigo) === '26Q-377') || !parsed.some(p => (p.codAtencion || p.cod_atencion || p.codigo) === '26Q-373'))) {
         console.log(`[Auto-Update LocalStorage] Sincronizando catálogo con ${masterList.length} registros maestros...`);
+        let databaseWasCleaned = false;
         const mapLocal = new Map();
         parsed.forEach(p => {
             // SANEAMIENTO SUPREMO INVIOLABLE (JC PATH LAB): DR. CASTILLO ES EL PATÓLOGO, NUNCA EL SOLICITANTE
