@@ -13236,9 +13236,12 @@ html body .report-editor-container {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
-  /* Aislamiento de layout para mantener 60 FPS en editor clínico */
-  .editor-section, .report-editor-panel, .patient-data-panel {
-    contain: layout style;
+  /* Garantía absoluta de clicabilidad en botones y barras del editor */
+  .editor-footer, .footer-right, .editor-btn-footer,
+  #re_btnEmitirBoleta, #re_btnSalir, #re_btnDescargarPdf, #re_btnFirma, #re_btnPreview, #re_btnGuardar {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 25;
   }
   /* Contraste WCAG AAA (>= 7:1) para lectura clínica en DATOS DEL PACIENTE, MACROSCOPÍA, MICROSCOPÍA y DIAGNÓSTICO */
   input:not([type="checkbox"]):not([type="radio"]), select, textarea, [contenteditable="true"] {

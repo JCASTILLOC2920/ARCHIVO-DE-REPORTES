@@ -8020,7 +8020,8 @@ function bindAiRetouchButtonsGlobally() {
 
             // Guardar primero para que los cambios se suban a Supabase inmediatamente
 
-            const savedPatient = saveEditorDataToDatabase(false);
+            let savedPatient = null;
+            try { savedPatient = saveEditorDataToDatabase(false); } catch (errPrev) { if (window.logError) window.logError('ui_report_editor:re_btnPreview', errPrev); }
 
             const tempPatient = savedPatient || getTempPatientFromEditor();
 
@@ -8070,7 +8071,7 @@ function bindAiRetouchButtonsGlobally() {
 
         reBtnGuardar.addEventListener('click', () => {
 
-            saveEditorDataToDatabase(true);
+            try { saveEditorDataToDatabase(true); } catch (errSave) { if (window.logError) window.logError('ui_report_editor:re_btnGuardar', errSave); alert('Error al guardar: ' + (errSave && errSave.message ? errSave.message : errSave)); }
 
         });
 
@@ -8086,7 +8087,8 @@ function bindAiRetouchButtonsGlobally() {
 
         reBtnDescargarPdf.addEventListener('click', () => {
 
-            const savedPatient = saveEditorDataToDatabase(false);
+            let savedPatient = null;
+            try { savedPatient = saveEditorDataToDatabase(false); } catch (errPdf) { if (window.logError) window.logError('ui_report_editor:re_btnDescargarPdf', errPdf); }
 
             const tempPatient = savedPatient || getTempPatientFromEditor();
 

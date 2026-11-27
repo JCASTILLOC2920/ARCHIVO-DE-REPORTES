@@ -782,9 +782,9 @@ function initMainApp() {
         console.error("[Core] Error al cargar médicos para autocompletar:", err);
     });
 
-    initModalListeners();
-    initReportEditorLogic();
-    initAdminUI();
+    try { initModalListeners(); } catch (eMod) { console.error('[Main] Error en initModalListeners:', eMod); }
+    try { initReportEditorLogic(); } catch (eEd) { console.error('[Main] Error en initReportEditorLogic:', eEd); }
+    try { initAdminUI(); } catch (eAdm) { console.error('[Main] Error en initAdminUI:', eAdm); }
     if (typeof window.loadContaduriaData === 'function') {
         window.loadContaduriaData();
     }
