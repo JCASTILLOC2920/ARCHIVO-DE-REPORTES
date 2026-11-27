@@ -39,19 +39,19 @@ if (typeof window !== 'undefined') {
     window.patientMap = patientMap;
 }
 
-// Auto-actualización inmediata y soberana de localStorage e IndexedDB a los 1,252 registros reconciliados + RENIEC
+// Auto-actualización aditiva y soberana de localStorage e IndexedDB (Blindaje Antidestrucción KRYPTON)
 (function autoActualizarLocalStorageSoberano() {
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
     try {
-        const CURRENT_SSOT_VER = '20261126_v1269_ssot_restaurado';
+        const CURRENT_SSOT_VER = '20261127_v1270_antidestruccion';
         const savedVer = localStorage.getItem('jcpathlab_ssot_version');
         const raw = localStorage.getItem('patientDatabaseLocal') || localStorage.getItem('patientDatabase') || localStorage.getItem('pacientesDB');
-        let parsedCount = 0;
+        let parsed = [];
         let hasGhostData = false;
         if (raw) {
             try {
-                const parsed = JSON.parse(raw);
-                parsedCount = parsed.length;
+                parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed)) parsed = [];
                 hasGhostData = parsed.some(p => {
                     if (!p) return false;
                     const nom = String(p.paciente || '').toUpperCase();
@@ -59,16 +59,45 @@ if (typeof window !== 'undefined') {
                     const doc = String(p.med_solicitante || p.medSolicitante || p.doctor || '').toUpperCase();
                     return nom.includes('SIN NOMBRE') || /26Q-18\d{3}/.test(cod) || (['26Q-300', '26Q-301', '26Q-259'].includes(cod) && doc.includes('CASTILLO'));
                 });
-            } catch(e) {}
+            } catch(e) { parsed = []; }
         }
         const master = getRealSupabasePatients();
-        const targetCount = Math.max(1252, master.length);
-        if ((savedVer !== CURRENT_SSOT_VER || parsedCount < targetCount || hasGhostData) && master.length >= 1250) {
-            console.log(`[Auto-Heal LocalStorage] Sincronizando almacenamiento local (${parsedCount} -> ${master.length} pacientes SSOT v1269)...`);
-            const serializedMaster = JSON.stringify(master);
-            if (serializedMaster.length < 4500000) {
-                safeSetLocalStorage('patientDatabaseLocal', serializedMaster);
+        
+        // BLINDAJE SOBERANO KRYPTON: NUNCA SOBRESCRIBIR CIEGAMENTE
+        // Si hay registros locales nuevos (ej. 406, 407, 408...), PRESERVARLOS SIEMPRE EN UN MERGE
+        const cleanFunc = (c) => String(c || '').trim().toLowerCase().replace(/[-_\s]/g, '');
+        const mapMerged = new Map();
+        
+        // 1. Sembrar registros maestros
+        master.forEach(m => {
+            if (m && (m.codAtencion || m.cod_atencion)) {
+                mapMerged.set(cleanFunc(m.codAtencion || m.cod_atencion), m);
             }
+        });
+        
+        // 2. Fusionar encima registros locales existentes (prevalecen los locales editados o nuevos)
+        let newLocalCount = 0;
+        parsed.forEach(p => {
+            if (p && (p.codAtencion || p.cod_atencion)) {
+                const k = cleanFunc(p.codAtencion || p.cod_atencion);
+                if (!mapMerged.has(k)) {
+                    // Registro local nuevo inexistente en master (ej. 408) -> PRESERVAR INCONDICIONALMENTE
+                    mapMerged.set(k, p);
+                    newLocalCount++;
+                } else {
+                    // Si el local tiene datos más frescos, preservar local
+                    const prev = mapMerged.get(k);
+                    if (p.updatedAt && prev.updatedAt && p.updatedAt > prev.updatedAt) {
+                        mapMerged.set(k, { ...prev, ...p });
+                    }
+                }
+            }
+        });
+        
+        const mergedList = Array.from(mapMerged.values());
+        if (savedVer !== CURRENT_SSOT_VER || mergedList.length > parsed.length || hasGhostData) {
+            console.log(`[Auto-Heal LocalStorage] Sincronización aditiva: ${parsed.length} locales + ${newLocalCount} nuevos preservados -> Total ${mergedList.length} expedientes.`);
+            safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(mergedList));
             try { localStorage.setItem('jcpathlab_ssot_version', CURRENT_SSOT_VER); } catch(e) {}
         }
     } catch (e) {
@@ -1042,6 +1071,7 @@ export async function hydrateMediaFromIndexedDB() {
         if (db.objectStoreNames.contains(LRU_STORE_NAME)) stores.push(LRU_STORE_NAME);
         if (db.objectStoreNames.contains(MEDIA_STORE_NAME)) stores.push(MEDIA_STORE_NAME);
 
+        let injectedAnyNew = false;
         for (const storeName of stores) {
             const tx = db.transaction(storeName, 'readonly');
             const store = tx.objectStore(storeName);
@@ -1064,13 +1094,25 @@ export async function hydrateMediaFromIndexedDB() {
                             if (val.updatedAt && (!local.updatedAt || val.updatedAt > local.updatedAt)) {
                                 Object.assign(local, val);
                             }
-                        } else if (cleanCode && storeName !== MEDIA_STORE_NAME && (val.paciente || val.nombres || val.apellidos)) {
+                        } else if (cleanCode && storeName !== MEDIA_STORE_NAME && (val.paciente || val.nombres || val.apellidos || val.codAtencion || val.cod_atencion)) {
                             // 🛡️ GARANTÍA SOBERANA: Si el paciente está en IndexedDB pero no en la memoria estática, inyectarlo incondicionalmente
                             patientDatabase.push(val);
                             patientMap.set(cleanCode, val);
+                            injectedAnyNew = true;
                         }
                     }
                     cursor.continue();
+                }
+            };
+            tx.oncomplete = () => {
+                if (injectedAnyNew) {
+                    sortPatientArray(patientDatabase);
+                    try {
+                        const light = patientDatabase.map(({ img01, img02, macro360, solicitudInforme, ...l }) => l);
+                        safeSetLocalStorage('patientDatabaseLocal', JSON.stringify(light));
+                    } catch(e) {}
+                    if (typeof window.renderTable === 'function') window.renderTable();
+                    if (typeof window.updateAllTableViews === 'function') window.updateAllTableViews();
                 }
             };
         }
@@ -3832,9 +3874,8 @@ export function triggerAutomaticBackup() {
             }
         });
 
-        // Copia sin imágenes pesadas limitada a los expedientes más recientes para erradicar QuotaExceededError
-        const recentSubset = patientDatabase.slice(0, 150);
-        const lightweightDatabase = recentSubset.map(p => {
+        // Copia completa sin imágenes pesadas para erradicar QuotaExceededError conservando el 100% de expedientes
+        const lightweightDatabase = patientDatabase.map(p => {
             const { img01, img02, macro360, solicitudInforme, ...light } = p;
             return light;
         });
