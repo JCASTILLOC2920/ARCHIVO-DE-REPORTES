@@ -4544,7 +4544,26 @@ export function initReportEditorLogic() {
 
     }
 
-
+    window.switchEditorTab = function(tabId) {
+        if (!tabId) return;
+        document.querySelectorAll('.tab-header-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => {
+            p.classList.remove('active');
+            if (p.style.display === 'none') p.style.display = '';
+        });
+        const targetBtn = document.querySelector(`.tab-header-btn[data-tab="${tabId}"]`);
+        if (targetBtn) targetBtn.classList.add('active');
+        const targetPane = document.getElementById(tabId);
+        if (targetPane) targetPane.classList.add('active');
+        setTimeout(() => {
+            try {
+                if (tabId === 'tab_img01' && miniCropperInstances['img01']) miniCropperInstances['img01'].resize();
+                else if (tabId === 'tab_img02' && miniCropperInstances['img02']) miniCropperInstances['img02'].resize();
+                else if (tabId === 'tab_macro360' && currentMacro360Viewer) { currentMacro360Viewer._resizeCanvas(); currentMacro360Viewer._render(); }
+                else if (tabId === 'tab_synoptic' && !activeSynopticSchemaId && typeof renderSynopticForm === 'function') renderSynopticForm('prostate_turp');
+            } catch (e) {}
+        }, 50);
+    };
 
     // Tab switching logic
 

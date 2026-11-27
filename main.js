@@ -12,7 +12,7 @@ import { initTableUI, renderTable, applyFilters, setCurrentService } from './ui_
 import { initModalListeners, openModal, closeModal } from './ui_editor.js?v=20261105_v674';
 import { openPrintWindow } from './pdf_engine.js?v=20261105_v674';
 import { initDictaphone, startDictation } from './dictaphone_core.js?v=20261105_v674';
-import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261114_modal_prostatas_ok';
+import { initReportEditorLogic, populateEditorModal, openReportEditor } from './ui_report_editor.js?v=20261127_duplex_ok';
 import { initAdminUI, populateModalDoctorsSelect } from './ui_admin.js?v=20261105_v674';
 import { initBoletasModule, getStoredEmpresas, getStoredBoletas, generateNextBoletaCode, generateBoletaPDF, renderEmpresasSelect, renderEmpresasTable, renderBoletasTable } from './boletas_manager.js?v=20261105_v674';
 import { openMobileReportReader, closeMobileReportReader } from './mobile_report_reader.js?v=20261105_v674';

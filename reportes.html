@@ -13080,19 +13080,94 @@ html body .report-editor-container {
   button[onclick*="recargar"],
   a[href*="wa.me/51986396733"],
   .whatsapp-float-btn,
-  .btn-whatsapp-flotante,
-  #cortanaTableSearchBar,
-  .cortana-table-search-bar,
-  .cortana-search-box,
-  .cortana-search-bar,
-  #cortanaSearchInput,
-  .cortana-search-field,
-  #cortanaChatBtn,
-  #cortanaInlinePanel,
-  .cortana-inline-wrapper,
-  .cortana-assistant-bar,
-  .cortana-header-bar {
+  .btn-whatsapp-flotante {
     display: none !important;
+  }
+
+  /* === REFINAMIENTO EDITORIAL MÉDICO: SELECTS VISIBLES Y BARRA CORTANA DUPLEX === */
+  .cockpit-select,
+  select.editor-select,
+  #reportEditorModalOverlay select,
+  #patientRegistrationModal select {
+    height: 31px !important;
+    min-height: 31px !important;
+    max-height: none !important;
+    line-height: 1.3 !important;
+    padding: 4px 26px 4px 10px !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: #f8fafc !important;
+    background-color: #0f172a !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    border-radius: 7px !important;
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+  }
+  .cockpit-select option,
+  select.editor-select option,
+  #reportEditorModalOverlay select option,
+  #patientRegistrationModal select option {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+  }
+  #reportEditorModalOverlay input.editor-input,
+  #patientRegistrationModal input {
+    min-height: 31px !important;
+    color: #f8fafc !important;
+    background-color: rgba(15, 23, 42, 0.92) !important;
+  }
+  #cortanaTableSearchBar {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin: 6px 0 10px 0 !important;
+    padding: 10px 14px !important;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(12, 34, 59, 0.92) 100%) !important;
+    border: 1px solid rgba(56, 189, 248, 0.32) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.14) !important;
+  }
+  #cortanaTableSearchBar .cortana-search-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  #cortanaSearchInput {
+    display: block !important;
+    flex: 1 1 auto !important;
+    height: 38px !important;
+    padding: 0 14px !important;
+    background: rgba(9, 14, 26, 0.85) !important;
+    border: 1px solid rgba(56, 189, 248, 0.38) !important;
+    border-radius: 9px !important;
+    color: #f8fafc !important;
+    font-size: 13.5px !important;
+  }
+  #cortanaSearchInput::placeholder {
+    color: #94a3b8 !important;
+  }
+  #cortanaOpenChatBtn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    height: 38px !important;
+    padding: 0 16px !important;
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(125, 211, 252, 0.5) !important;
+    border-radius: 9px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  }
+  #cortanaOpenChatBtn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.45) !important;
   }
 
   /* Mantener visible el botón Cortana en la cabecera superior */
@@ -22472,67 +22547,24 @@ html body .report-editor-container {
 
 
 
-                        <div style="display: flex; gap: 4px; flex-wrap: wrap; align-items: center;">
+<div style="display: flex; gap: 4px; flex-wrap: wrap; align-items: center;">
+    <button type="button" class="tab-header-btn active" id="re_tabBtnTodoJunto" data-tab="tab_descrip" onclick="if(window.switchEditorTab){try{window.switchEditorTab('tab_descrip')}catch(e){console.error('Error switching tab:', e);}}"><i class="fa-solid fa-list-check"></i> Todo Junto (3 en 1)</button>
 
+    <!-- Pestañas 100% Pantalla y Asistente Sinóptico ocultadas con exclusión total de eventos por seguridad UX -->
+    <button type="button" class="tab-header-btn" data-tab="tab_macro_full" style="display: none !important; color: #38bdf8; font-weight: 700;" tabindex="-1" aria-hidden="true"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Macroscopía (100% Pantalla)</button>
 
+    <button type="button" class="tab-header-btn" data-tab="tab_micro_full" style="display: none !important; color: #c084fc; font-weight: 700;" tabindex="-1" aria-hidden="true"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Microscopía (100% Pantalla)</button>
 
+    <button type="button" class="tab-header-btn" data-tab="tab_diag_full" style="display: none !important; color: #34d399; font-weight: 700;" tabindex="-1" aria-hidden="true"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Diagnóstico (100% Pantalla)</button>
 
+    <button type="button" class="tab-header-btn" id="re_tabBtnSynoptic" data-tab="tab_synoptic" style="display: none !important; color: #a855f7; font-weight: 700;" tabindex="-1" aria-hidden="true"><i class="fa-solid fa-brain"></i> Asistente Sinóptico CAP</button>
 
-                            <button type="button" class="tab-header-btn active" data-tab="tab_descrip"><i class="fa-solid fa-list-check"></i> Todo Junto (3 en 1)</button>
+    <button type="button" class="tab-header-btn" id="re_tabBtnImg01" data-tab="tab_img01" onclick="if(window.switchEditorTab){try{window.switchEditorTab('tab_img01')}catch(e){console.error('Error switching tab:', e);}}"><i class="fa-regular fa-image"></i> Imagen 01</button>
 
+    <button type="button" class="tab-header-btn" id="re_tabBtnImg02" data-tab="tab_img02" onclick="if(window.switchEditorTab){try{window.switchEditorTab('tab_img02')}catch(e){console.error('Error switching tab:', e);}}"><i class="fa-regular fa-image"></i> Imagen 02</button>
 
-
-
-
-                            <!-- Pestañas 100% Pantalla y Asistente Sinóptico ocultadas para máxima limpieza ergonómica -->
-
-
-
-
-
-                            <button type="button" class="tab-header-btn" data-tab="tab_macro_full" style="display: none !important; color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Macroscopía (100% Pantalla)</button>
-
-
-
-
-
-                            <button type="button" class="tab-header-btn" data-tab="tab_micro_full" style="display: none !important; color: #c084fc; font-weight: 700;"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Microscopía (100% Pantalla)</button>
-
-
-
-
-
-                            <button type="button" class="tab-header-btn" data-tab="tab_diag_full" style="display: none !important; color: #34d399; font-weight: 700;"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Diagnóstico (100% Pantalla)</button>
-
-
-
-
-
-                            <button type="button" class="tab-header-btn" id="re_tabBtnSynoptic" data-tab="tab_synoptic" style="display: none !important; color: #a855f7; font-weight: 700;"><i class="fa-solid fa-brain"></i> Asistente Sinóptico CAP</button>
-
-
-
-
-
-                            <button type="button" class="tab-header-btn" data-tab="tab_img01"><i class="fa-regular fa-image"></i> Imagen 01</button>
-
-
-
-
-
-                            <button type="button" class="tab-header-btn" data-tab="tab_img02"><i class="fa-regular fa-image"></i> Imagen 02</button>
-
-
-
-
-
-                            <button type="button" class="tab-header-btn" id="re_tabBtnMacro360" data-tab="tab_macro360" style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-cube"></i> Macroscopía 360°</button>
-
-
-
-
-
-                        </div>
+    <button type="button" class="tab-header-btn" id="re_tabBtnMacro360" data-tab="tab_macro360" style="color: #38bdf8; font-weight: 700;" onclick="if(window.switchEditorTab){try{window.switchEditorTab('tab_macro360')}catch(e){console.error('Error switching tab:', e);}}"><i class="fa-solid fa-cube"></i> Macroscopía 360°</button>
+</div>
 
 
 
@@ -28478,19 +28510,10 @@ html body .report-editor-container {
 
 
 
-    <script src="script.js?v=20261113_guardar_infallible_ok" defer></script>
-
-
-
-
+    <script src="script.js?v=20261127_duplex_ok" defer></script>
 
     <!-- Script de Lógica del Listado -->
-
-
-
-
-
-    <script type="module" src="main.js?v=20261113_guardar_infallible_ok"></script>
+    <script type="module" src="main.js?v=20261127_duplex_ok"></script>
 
 
 
@@ -39317,36 +39340,306 @@ window.cortanaFiltrar = function(tipo) {
 
 
 
-window.cortanaAbrirChat = function() {
+(function initCortanaCarbonDuplexSuite() {
+    const DUPLEX_URL = 'http://127.0.0.1:8799/api/conversar';
+    const bar = document.getElementById('cortanaTableSearchBar');
+    const searchInput = document.getElementById('cortanaSearchInput');
+    const clearBtn = document.getElementById('cortanaClearBtn');
+    const openChatBtn = document.getElementById('cortanaOpenChatBtn');
+    const panel = document.getElementById('cortanaInlinePanel');
+    const closeBtn = document.getElementById('cortanaInlineCloseBtn');
+    const msgBox = document.getElementById('cortanaInlineMessages');
 
+    // Inyectar estilos elegantes para el panel conversacional y chips rapidos
+    const st = document.createElement('style');
+    st.textContent = `
+      .cortana-duplex-chips { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding-top:2px; }
+      .cortana-chip { background:rgba(30,41,59,0.85); color:#cbd5e1; border:1px solid rgba(148,163,184,0.25); border-radius:999px; padding:3px 11px; font-size:11.5px; font-weight:600; cursor:pointer; transition:all .15s ease; }
+      .cortana-chip:hover, .cortana-chip.active { background:rgba(2,132,199,0.28); color:#e0f2fe; border-color:#38bdf8; }
+      .cortana-voice-btn { display:inline-flex; align-items:center; gap:6px; height:38px; padding:0 13px; background:rgba(16,185,129,0.16); color:#34d399; border:1px solid rgba(16,185,129,0.45); border-radius:9px; font-weight:700; font-size:12.5px; cursor:pointer; transition:all .15s ease; }
+      .cortana-voice-btn.listening { background:rgba(239,68,68,0.25); color:#fca5a5; border-color:#ef4444; box-shadow:0 0 12px rgba(239,68,68,0.45); }
+      #cortanaInlinePanel { background:linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(10,18,34,0.98) 100%) !important; border:1px solid rgba(56,189,248,0.35) !important; border-radius:11px !important; margin-top:6px !important; overflow:hidden !important; box-shadow:0 14px 32px rgba(0,0,0,0.45) !important; }
+      .cortana-inline-header { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:rgba(2,132,199,0.14); border-bottom:1px solid rgba(56,189,248,0.22); }
+      .cortana-inline-profile { display:flex; align-items:center; gap:10px; color:#f8fafc; font-size:13px; }
+      .cortana-inline-titles { display:flex; flex-direction:column; line-height:1.25; }
+      .cortana-inline-titles span { font-size:11px; color:#7dd3fc; }
+      .cortana-inline-close-btn { background:transparent; border:1px solid rgba(148,163,184,0.3); color:#cbd5e1; border-radius:6px; width:28px; height:28px; cursor:pointer; }
+      #cortanaInlineMessages { max-height:240px; overflow-y:auto; padding:12px 14px; display:flex; flex-direction:column; gap:8px; font-size:13px; }
+      .cortana-msg { padding:9px 12px; border-radius:9px; line-height:1.45; max-width:92%; }
+      .cortana-msg.ai { background:rgba(30,41,59,0.9); border-left:3px solid #38bdf8; color:#f1f5f9; align-self:flex-start; }
+      .cortana-msg.user { background:rgba(2,132,199,0.28); border:1px solid rgba(56,189,248,0.4); color:#ffffff; align-self:flex-end; }
+      .cortana-chat-compose { display:flex; gap:8px; padding:10px 14px; border-top:1px solid rgba(148,163,184,0.18); background:rgba(9,14,26,0.9); }
+      .cortana-chat-compose input { flex:1; height:36px; padding:0 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.35); background:#0f172a; color:#f8fafc; font-size:13px; }
+      .cortana-chat-compose button { height:36px; padding:0 15px; border-radius:8px; border:none; background:#0284c7; color:#fff; font-weight:700; cursor:pointer; }
+      .cortana-case-link { display:inline-block; margin:3px 4px 0 0; padding:2px 8px; border-radius:5px; background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.4); color:#7dd3fc; font-weight:700; font-size:11.5px; cursor:pointer; text-decoration:none; }
+    `;
+    document.head.appendChild(st);
 
+    function norm(s) {
+        return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    }
 
+    function getAllPatients() {
+        if (Array.isArray(window.REAL_SUPABASE_BACKUP) && window.REAL_SUPABASE_BACKUP.length) return window.REAL_SUPABASE_BACKUP;
+        try {
+            const loc = JSON.parse(localStorage.getItem('patientDatabaseLocal') || '[]');
+            if (loc.length) return loc;
+        } catch(e) {}
+        return [];
+    }
 
+    function filtrarTablaMulticriterio(rawQuery) {
+        const q = norm(rawQuery);
+        if (clearBtn) clearBtn.style.display = q ? 'inline-flex' : 'none';
+        const mob = document.getElementById('mobileQuickSearchInput');
+        const codIn = document.getElementById('codAtencion');
+        const nomIn = document.getElementById('nomPaciente');
+        const apeIn = document.getElementById('apePaciente');
+        const dniIn = document.getElementById('dni');
+        const medIn = document.getElementById('medSolicitante');
 
-    const fab = document.getElementById('cortanaFabBtn');
+        // Limpiar filtros previos especificos antes de aplicar busqueda global
+        [codIn, nomIn, apeIn, dniIn, medIn].forEach(el => { if (el) el.value = ''; });
+        if (mob) {
+            mob.value = rawQuery || '';
+            mob.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (/^\d{7,8}$/.test(q) && dniIn) {
+            dniIn.value = q;
+        } else if (/^\d{2}[qci][-\s]?\d+/i.test(q) && codIn) {
+            codIn.value = rawQuery.trim();
+        }
+        if (typeof window.applyFilters === 'function') {
+            window.applyFilters(true);
+        }
 
+        // Filtro adicional instantaneo sobre filas renderizadas si busca por diagnostico/organo/estado
+        if (q && !/^\d{7,8}$/.test(q) && !/^\d{2}[qci]/i.test(q)) {
+            setTimeout(() => {
+                const rows = document.querySelectorAll('#tableBody tr');
+                if (rows.length > 1) {
+                    const tokens = q.split(/\s+/).filter(Boolean);
+                    rows.forEach(tr => {
+                        const txt = norm(tr.textContent);
+                        const matchRow = tokens.every(t => txt.includes(t));
+                        tr.style.display = matchRow ? '' : 'none';
+                    });
+                }
+            }, 60);
+        }
+    }
 
+    function buscarExpedientesInteligente(consulta) {
+        const pats = getAllPatients();
+        const q = norm(consulta)
+            .replace(/\b(buscame|buscar|busca|muestrame|mostrar|dame|casos|pacientes|informes|del|de|la|el|los|las|con|por|favor|cortana)\b/g, ' ')
+            .replace(/\s+/g, ' ').trim();
+        if (!q) return pats.slice(0, 8);
 
+        if (q.includes('pendiente') || q.includes('proceso') || q.includes('sin firmar')) {
+            return pats.filter(p => !p.firmado && norm(p.estado) !== 'completado');
+        }
+        if (q.includes('firmado') || q.includes('listo') || q.includes('completado')) {
+            return pats.filter(p => p.firmado || norm(p.estado) === 'completado');
+        }
+        const tokens = q.split(/\s+/).filter(t => t.length >= 2);
+        return pats.filter(p => {
+            const blob = norm([
+                p.codAtencion, p.codigo, p.dni, p.paciente, p.nombres, p.apellidos,
+                p.medSolicitante, p.clinica, p.especimen, p.muestra, p.diagnostico, p.diagFinal, p.fecRegistro, p.fecEntrega
+            ].join(' '));
+            return tokens.every(t => blob.includes(t));
+        });
+    }
 
+    function agregarMensajeCortana(html, rol) {
+        if (!msgBox) return;
+        const div = document.createElement('div');
+        div.className = 'cortana-msg ' + (rol === 'user' ? 'user' : 'ai');
+        div.innerHTML = html;
+        msgBox.appendChild(div);
+        msgBox.scrollTop = msgBox.scrollHeight;
+    }
 
-    if (fab) fab.click();
+    async function procesarConsultaCortana(texto) {
+        const clean = String(texto || '').trim();
+        if (!clean) return;
+        if (panel) panel.style.display = 'block';
+        agregarMensajeCortana(clean.replace(/</g, '&lt;'), 'user');
 
+        // 1. Comando directo abrir/imprimir informe
+        const mCod = clean.match(/\b(2\d[QCIqci][-\s]?\d{1,4})\b/);
+        if (mCod && /\b(abre|abrir|edita|editar)\b/i.test(clean)) {
+            const cod = mCod[1].toUpperCase().replace(/\s+/g, '-');
+            agregarMensajeCortana(`Abriendo ficha clínica <b>${cod}</b>...`, 'ai');
+            if (typeof window.handleAction === 'function') window.handleAction('editar', cod);
+            return;
+        }
+        if (mCod && /\b(pdf|imprim|descarg|vista previa)\b/i.test(clean)) {
+            const cod = mCod[1].toUpperCase().replace(/\s+/g, '-');
+            agregarMensajeCortana(`Abriendo informe A4 oficial de <b>${cod}</b>...`, 'ai');
+            window.open('imprimir.html?codAtencion=' + encodeURIComponent(cod), '_blank');
+            return;
+        }
 
+        // 2. Busqueda local multicriterio instantanea (<2ms)
+        const hallados = buscarExpedientesInteligente(clean);
+        if (searchInput) {
+            const qFiltro = mCod ? mCod[1] : clean.replace(/\b(buscame|buscar|busca|muestrame|casos|pacientes|del|de|con|cortana)\b/gi, '').trim();
+            if (qFiltro.length >= 2 && hallados.length > 0 && hallados.length <= 200) {
+                searchInput.value = qFiltro;
+                filtrarTablaMulticriterio(qFiltro);
+            }
+        }
 
+        let resumenLocal = '';
+        if (hallados.length > 0) {
+            const top = hallados.slice(0, 6).map(p => {
+                const cod = p.codAtencion || p.codigo || '';
+                const nom = p.paciente || ((p.apellidos || '') + ', ' + (p.nombres || ''));
+                const est = (p.firmado || norm(p.estado) === 'completado') ? '✅' : '⏳';
+                return `<a class="cortana-case-link" onclick="window.handleAction ? window.handleAction('editar','${cod}') : window.open('imprimir.html?codAtencion=${cod}','_blank')">${est} ${cod} • ${nom}</a>`;
+            }).join('');
+            resumenLocal = `Encontré <b>${hallados.length}</b> expediente(s) relacionados en JC PATH LAB:<br>${top}`;
+            agregarMensajeCortana(resumenLocal, 'ai');
+        }
 
+        // 3. Enlace en vivo con el Cerebro Gemini Carbon Duplex local (http://127.0.0.1:8799/api/conversar)
+        try {
+            const ctrl = new AbortController();
+            const tId = setTimeout(() => ctrl.abort(), 12000);
+            const ctxBreve = hallados.slice(0, 5).map(p => `${p.codAtencion||p.codigo}: ${p.paciente||''} | DNI:${p.dni||''} | Muestra:${p.especimen||''} | Entrega:${p.fecEntrega||''}`).join(' ; ');
+            const r = await fetch(DUPLEX_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mensaje: `[CORTANA WEB JC PATH LAB] Consulta del Dr. Castillo: "${clean}". Coincidencias en BD (${hallados.length}): ${ctxBreve || 'ninguna exacta'}. Responde breve y ejecutivo.`,
+                    modo_hibrido: true
+                }),
+                signal: ctrl.signal
+            });
+            clearTimeout(tId);
+            if (r.ok) {
+                const data = await r.json();
+                const respTxt = data.respuesta || data.resultado || data.mensaje || '';
+                if (respTxt) {
+                    agregarMensajeCortana(`<span style="color:#38bdf8;font-weight:700;">🧠 Carbon Duplex:</span> ` + String(respTxt).slice(0, 650).replace(/\n/g, '<br>'), 'ai');
+                    return;
+                }
+            }
+        } catch (eDuplex) {
+            if (hallados.length === 0) {
+                agregarMensajeCortana(`No hallé coincidencias directas para "<b>${clean.replace(/</g,'&lt;')}</b>" en la base cargada. Pruebe por apellido, DNI, código (ej. <code>26Q-394</code>), médico o muestra (ej. <code>próstata</code>).`, 'ai');
+            }
+        }
+    }
 
-    else if (typeof window.abrirChatCortanaModal === 'function') window.abrirChatCortanaModal();
+    // Construir UI interna del panel e inyectar boton de Voz + Chips
+    if (bar && searchInput) {
+        const searchBox = bar.querySelector('.cortana-search-box');
+        if (searchBox && !document.getElementById('cortanaVoiceBtn')) {
+            const vBtn = document.createElement('button');
+            vBtn.type = 'button';
+            vBtn.id = 'cortanaVoiceBtn';
+            vBtn.className = 'cortana-voice-btn';
+            vBtn.title = 'Comando o búsqueda por Voz (es-PE)';
+            vBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> <span>Voz</span>';
+            searchBox.insertBefore(vBtn, openChatBtn || null);
 
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SR) {
+                const rec = new SR();
+                rec.lang = 'es-PE';
+                rec.interimResults = false;
+                vBtn.addEventListener('click', () => {
+                    try { vBtn.classList.add('listening'); rec.start(); } catch(e) { vBtn.classList.remove('listening'); }
+                });
+                rec.onresult = (ev) => {
+                    vBtn.classList.remove('listening');
+                    const spoken = ev.results[0][0].transcript || '';
+                    searchInput.value = spoken;
+                    procesarConsultaCortana(spoken);
+                };
+                rec.onerror = () => vBtn.classList.remove('listening');
+                rec.onend = () => vBtn.classList.remove('listening');
+            } else {
+                vBtn.addEventListener('click', () => alert('Use Google Chrome o Edge para reconocimiento de voz directo.'));
+            }
+        }
 
+        if (!bar.querySelector('.cortana-duplex-chips')) {
+            const chips = document.createElement('div');
+            chips.className = 'cortana-duplex-chips';
+            chips.innerHTML = `
+              <span style="font-size:11px;color:#7dd3fc;font-weight:700;"><i class="fa-solid fa-bolt"></i> Filtros Rápidos Cortana:</span>
+              <button type="button" class="cortana-chip" data-q="">Todos</button>
+              <button type="button" class="cortana-chip" data-q="MORCELADO">Próstata / Morcelados</button>
+              <button type="button" class="cortana-chip" data-q="ESCALANTE">Dr. Escalante</button>
+              <button type="button" class="cortana-chip" data-q="BIOPSIA DE ESTÓMAGO">Gástricas</button>
+              <button type="button" class="cortana-chip" data-mode="proceso">En Proceso</button>
+              <button type="button" class="cortana-chip" data-mode="firmados">Firmados</button>
+            `;
+            bar.insertBefore(chips, panel || null);
+            chips.addEventListener('click', (ev) => {
+                const c = ev.target.closest('.cortana-chip');
+                if (!c) return;
+                chips.querySelectorAll('.cortana-chip').forEach(x => x.classList.remove('active'));
+                c.classList.add('active');
+                const mode = c.getAttribute('data-mode');
+                if (mode === 'proceso') { procesarConsultaCortana('mostrar casos en proceso'); return; }
+                if (mode === 'firmados') { procesarConsultaCortana('mostrar casos firmados'); return; }
+                const qVal = c.getAttribute('data-q') || '';
+                searchInput.value = qVal;
+                filtrarTablaMulticriterio(qVal);
+            });
+        }
 
+        searchInput.placeholder = "Buscar por paciente, DNI, código (26Q-394), médico, muestra o pregunte a Cortana y pulse Enter...";
+        let tDeb = null;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(tDeb);
+            tDeb = setTimeout(() => filtrarTablaMulticriterio(searchInput.value), 120);
+        });
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                procesarConsultaCortana(searchInput.value);
+            }
+        });
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filtrarTablaMulticriterio('');
+            });
+        }
+    }
 
+    if (panel && !panel.querySelector('.cortana-chat-compose')) {
+        if (msgBox && !msgBox.children.length) {
+            agregarMensajeCortana('Hola Dr. Castillo. Soy <b>Cortana IA</b> acoplada a su <b>Cerebro Gemini Carbon Duplex</b>. Puede buscar por paciente, DNI, código, médico, órgano o dar órdenes como <i>"abre 26Q-394"</i> o <i>"búscame morcelados del Dr. Escalante"</i> (por texto o micrófono).', 'ai');
+        }
+        const comp = document.createElement('div');
+        comp.className = 'cortana-chat-compose';
+        comp.innerHTML = `<input type="text" id="cortanaChatInput" placeholder="Converse con Cortana Carbon Duplex (ej. 'casos de próstata de octubre' o 'abrir 26Q-392')..." autocomplete="off"><button type="button" id="cortanaChatSendBtn"><i class="fa-solid fa-paper-plane"></i> Enviar</button>`;
+        panel.appendChild(comp);
+        const cIn = comp.querySelector('#cortanaChatInput');
+        const cBtn = comp.querySelector('#cortanaChatSendBtn');
+        cBtn.addEventListener('click', () => { const v = cIn.value; cIn.value = ''; procesarConsultaCortana(v); });
+        cIn.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); const v = cIn.value; cIn.value = ''; procesarConsultaCortana(v); } });
+    }
 
-};
-
-
-
-
-
+    window.cortanaAbrirChat = function() {
+        if (!panel) return;
+        const vis = panel.style.display !== 'none';
+        panel.style.display = vis ? 'none' : 'block';
+        if (!vis) {
+            const cIn = document.getElementById('cortanaChatInput');
+            if (cIn) cIn.focus();
+        }
+    };
+    if (openChatBtn) openChatBtn.addEventListener('click', window.cortanaAbrirChat);
+    if (closeBtn) closeBtn.addEventListener('click', () => { if (panel) panel.style.display = 'none'; });
+})();
 </script>
 
 

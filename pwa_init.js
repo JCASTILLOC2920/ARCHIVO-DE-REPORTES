@@ -17,9 +17,7 @@
         await Promise.all(toDelete.map(n => caches.delete(n)));
     }
 
-<<<<<<< HEAD
     /** Muestra u oculta los botones de instalación según el estado. */
-=======
     // Purgar cachés obsoletas del navegador cliente de inmediato
     if (typeof window !== 'undefined' && 'caches' in window) {
         caches.keys().then(function(cacheNames) {
@@ -79,10 +77,8 @@
     }
 
     // 3. Captura del Evento beforeinstallprompt para Instalación Nativa en Android
-    let deferredInstallPrompt = null;
     window.deferredInstallPrompt = null;
 
->>>>>>> 2d24bd85513a34eb0a43fa9470d2ab9e0abda2ff
     function updateInstallUi(show) {
         const installBtns = document.querySelectorAll('#btnInstallApp, .pwa-install-header-btn, .btn-pwa-install');
         installBtns.forEach(btn => {
