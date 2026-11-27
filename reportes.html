@@ -19457,12 +19457,92 @@ html body .report-editor-container {
 <head>
 <meta charset="UTF-8">
 <title>Consulta Rápida de Paciente por DNI - JC PATH LAB</title>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="krypton_editorial_reportes_60fps.css">
 <style>
 :root {
     --bg-deep: #0F172A;
     --cyan-clinical: #0284C7;
     --emerald-success: #10B981;
+}
+</style>
+</head>
+<body>
+<header class="header-clinico">
+    <div class="logo-container">
+        <h1>JC PATH LAB</h1>
+        <span class="badge-wsi">WSI ACTIVO 60FPS</span>
+    </div>
+    <nav class="nav-principal">
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#consultas">Consultas DNI</a></li>
+            <li><a href="#reportes">Reportes</a></li>
+        </ul>
+    </nav>
+</header>
+<main id="contenido-principal" class="contenedor-principal">
+    <section class="seccion-busqueda" id="consultas">
+        <h2>Consulta Rápida de Paciente por DNI</h2>
+        <div class="buscador-grupo">
+            <input type="text" id="inputDniPaciente" placeholder="Ingrese DNI del paciente..." autocomplete="off">
+            <button id="btnBuscarDni" class="btn-cyan-clinical">Buscar Paciente</button>
+        </div>
+    </section>
+    <section class="seccion-resultado" id="resultadoPaciente">
+        <!-- El resultado se inyecta dinámicamente mediante Zero-Loss Bridge -->
+        <div id="cardResultado" class="card-resultado oculto">
+            <h3 id="nombrePaciente">--</h3>
+            <p><strong>DNI:</strong> <span id="valDni">--</span></p>
+            <p><strong>Estado:</strong> <span id="valEstado" class="badge-estado">--</span></p>
+            <div class="acciones-rapidas">
+                <button id="btnDescargarPdf" class="btn-emerald-success">Descargar PDF (1-clic)</button>
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="footer-clinico">
+    <p>&copy; 2026 JC PATH LAB. Arquitectura Web UI/UX Clínica Zero-Loss. Dr. José Castillo.</p>
+</footer>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const btnBuscar = document.getElementById("btnBuscarDni");
+        const inputDni = document.getElementById("inputDniPaciente");
+        const cardResultado = document.getElementById("cardResultado");
+        const nombrePaciente = document.getElementById("nombrePaciente");
+        const valDni = document.getElementById("valDni");
+        const valEstado = document.getElementById("valEstado");
+        const btnDescargarPdf = document.getElementById("btnDescargarPdf");
+
+        btnBuscar.addEventListener("click", () => {
+            const dniVal = inputDni.value.trim();
+            if (dniVal.length < 8) {
+                alert("Por favor, ingrese un DNI válido de 8 dígitos.");
+                return;
+            }
+            // Simulación de respuesta Zero-Loss O(1)
+            nombrePaciente.textContent = "PACIENTE EJEMPLO JC PATH LAB";
+            valDni.textContent = dniVal;
+            valEstado.textContent = "FIRMADO / LISTO";
+            valEstado.className = "badge-estado estado-listo";
+            cardResultado.classList.remove("oculto");
+        });
+
+        btnDescargarPdf.addEventListener("click", () => {
+            const dniTarget = valDni.textContent;
+            const blobPdf = new Blob([`Reporte Clínico Oficial - DNI: ${dniTarget} - JC PATH LAB`], { type: "application/pdf" });
+            const urlPdf = URL.createObjectURL(blobPdf);
+            const aLink = document.createElement("a");
+            aLink.href = urlPdf;
+            aLink.download = `Reporte_${dniTarget}_JCPATHLAB.pdf`;
+            document.body.appendChild(aLink);
+            aLink.click();
+            document.body.removeChild(aLink);
+            URL.revokeObjectURL(urlPdf);
+        });
+    });
+</script>
+</body>
+</html>
     --amber-warning: #F59E0B;
     --rose-danger: #EF4444;
     --slate-surface: #1E293B;

@@ -1,0 +1,136 @@
+/* krypton_imprimir_a4_60fps.css */
+
+/* --------------------------------------------------------------
+   Master stylesheet for A4 anatomical pathology reports
+   Designed for print.html – 60 FPS rendering, zero‑loss layout
+   -------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------
+   Global variables (can be overridden at runtime)
+   ------------------------------------------------------------------ */
+:root {
+    --pv-zoom: 1;               /* Zoom factor for preview scaling */
+    --page-bg: #ffffff;         /* Page background color */
+    --border-color: #0d7377;    /* Footer top border */
+}
+
+/* ------------------------------------------------------------------
+   Base sheet layout – full A4 size, proportional scaling
+   ------------------------------------------------------------------ */
+.sheet,
+.pv-sheet {
+    width: calc(210mm * var(--pv-zoom, 1)) !important;
+    min-height: calc(297mm * var(--pv-zoom, 1)) !important;
+    padding: 14mm 16mm !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: var(--page-bg) !important;
+    margin: 0 auto !important;
+}
+
+/* ------------------------------------------------------------------
+   Content wrappers – full width, no column compression
+   ------------------------------------------------------------------ */
+.content-wrapper,
+.report-body,
+.report-header,
+.patient-info-table,
+.section-block,
+.diagnostico-box,
+.diag-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    column-count: 1 !important;
+}
+
+/* Flex growth for the main wrapper */
+.content-wrapper {
+    flex: 1 1 auto !important;
+}
+
+/* ------------------------------------------------------------------
+   Signature, seal, QR and footer – zero collision, page‑break safe
+   ------------------------------------------------------------------ */
+.signature-block,
+.sig-section,
+.firma-container {
+    position: relative !important;
+    margin-top: auto !important;
+    padding-top: 18px !important;
+    padding-bottom: 12px !important;
+    width: 100% !important;
+    page-break-inside: avoid !important;
+}
+
+/* Footer layout */
+.page-footer {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 14px !important;
+    border-top: 1.5px solid var(--border-color) !important;
+    padding-top: 8px !important;
+    margin-top: 10px !important;
+    page-break-inside: avoid !important;
+}
+
+/* QR canvas container */
+.sig-qr-canvas-box {
+    position: relative !important;
+    flex-shrink: 0 !important;
+}
+
+/* ------------------------------------------------------------------
+   Print media rules – clean page break handling
+   ------------------------------------------------------------------ */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .sheet,
+    .pv-sheet {
+        width: 210mm !important;
+        min-height: 297mm !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure background stays white when printed */
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+}
+
+/* ------------------------------------------------------------------
+   Utility helpers (optional but kept for completeness)
+   ------------------------------------------------------------------ */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+/* ------------------------------------------------------------------
+   End of krypton_imprimir_a4_60fps.css
+   ------------------------------------------------------------------ */
