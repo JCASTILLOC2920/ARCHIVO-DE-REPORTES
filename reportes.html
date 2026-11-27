@@ -39875,16 +39875,17 @@ window.cortanaFiltrar = function(tipo) {
   #cortanaFloatWindow {
     display: none;
     position: fixed;
-    right: 20px;
-    bottom: 74px;
-    width: 370px;
-    max-width: calc(100vw - 28px);
-    height: 460px;
-    max-height: calc(100vh - 100px);
-    background: #111827;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+    right: 18px;
+    bottom: 72px;
+    width: 245px;
+    max-width: calc(100vw - 24px);
+    height: auto;
+    max-height: 195px;
+    background: rgba(17, 24, 39, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(148, 163, 184, 0.45);
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
     z-index: 3600;
     flex-direction: column;
     overflow: hidden;
@@ -39892,22 +39893,22 @@ window.cortanaFiltrar = function(tipo) {
   #cortanaFloatWindow.open { display: flex; }
   .cf-head {
     background: #182234;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    padding: 10px 14px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+    padding: 7px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: move;
     user-select: none;
   }
-  .cf-title { font-size: 13px; font-weight: 600; color: #F1F5F9; display: flex; align-items: center; gap: 9px; }
+  .cf-title { font-size: 12px; font-weight: 600; color: #F1F5F9; display: flex; align-items: center; gap: 8px; }
   .cf-avatar {
-    width: 28px; height: 28px; border-radius: 50%;
+    width: 36px; height: 36px; border-radius: 50%;
     background: radial-gradient(circle at 35% 35%, #7dd3fc 0%, #0284c7 60%, #0f172a 100%);
     border: 2px solid #38BDF8;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.55);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.65);
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; color: #fff; flex-shrink: 0;
+    font-size: 15px; color: #fff; flex-shrink: 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .cf-avatar.speaking { animation: cortanaPulse 0.9s infinite alternate; }
@@ -39955,13 +39956,7 @@ window.cortanaFiltrar = function(tipo) {
   <div class="cf-msgs" id="cortanaFloatMsgs">
     <div class="cf-msg bot" id="cortanaGreetingMsg">Buenos días, Dr. Castillo. ¿En qué le puedo ayudar?</div>
   </div>
-  <div class="cf-chips">
-    <button type="button" class="cf-chip" onclick="window.cortanaEjecutarOrden('pasa a HE')">HE (Q)</button>
-    <button type="button" class="cf-chip" onclick="window.cortanaEjecutarOrden('pasa a citologia')">Citología (C)</button>
-    <button type="button" class="cf-chip" onclick="window.cortanaEjecutarOrden('duplicados')">Duplicados (D)</button>
-    <button type="button" class="cf-chip" onclick="window.cortanaEjecutarOrden('guarda')">Guardar</button>
-    <button type="button" class="cf-chip" onclick="window.cortanaEjecutarOrden('pdf')">PDF</button>
-  </div>
+  <!-- Mini-consola limpia sin chips redundantes -->
   <div class="cf-bar">
     <button type="button" id="cortanaFloatMicBtn" class="cf-mic-btn" title="Hablar con Cortana" onclick="window.cortanaDictarFloat && window.cortanaDictarFloat()"><i class="fa-solid fa-microphone"></i></button>
     <input type="text" id="cortanaFloatInput" placeholder="Escriba o hable una orden..." onkeydown="if(event.key==='Enter'){event.preventDefault();window.enviarOrdenCortanaFloat();}">

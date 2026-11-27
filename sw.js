@@ -1,6 +1,6 @@
 // sw.js - Service Worker Médico Ultra-Resiliente y Permisivo (Modo Quirófano)
 // Versión Médico-Quirúrgica 655.1 Futuristic - Sintonizado por Goliath Omega-Argón
-const CACHE_NAME = 'jcpathlab-informes-v20261127_2000_cortana_limpio';
+const CACHE_NAME = 'jcpathlab-informes-v20261127_2030_cortana_mini_avatar';
 
 const STATIC_ASSETS = [
     './',
