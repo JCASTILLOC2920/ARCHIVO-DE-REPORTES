@@ -172,7 +172,7 @@ function parseAtencionSortKey(cod) {
         sessionStorage.removeItem('patient_26Q-383');
 
 
-    } catch(e){}
+    } catch(e){ if (window.logError) window.logError('reportes.html:175 - Session Purge', e); }
 
 
 })();
@@ -2267,7 +2267,7 @@ function parseAtencionSortKey(cod) {
 
 
 
-    <script>(function(){ try { if (localStorage.getItem('app_data_version') !== '20261103_v660') { localStorage.setItem('app_data_version', '20261103_v660'); sessionStorage.removeItem('activeTablePage'); sessionStorage.removeItem('manualServiceSelected'); sessionStorage.removeItem('activePillFilter'); } } catch(e){} })();</script>
+    <script>(function(){ try { if (localStorage.getItem('app_data_version') !== '20261103_v660') { localStorage.setItem('app_data_version', '20261103_v660'); sessionStorage.removeItem('activeTablePage'); sessionStorage.removeItem('manualServiceSelected'); sessionStorage.removeItem('activePillFilter'); } } catch(e){ if (window.logError) window.logError('reportes.html:2270 - App Version Init', e); } })();</script>
 
 
 
@@ -13222,6 +13222,51 @@ html body .report-editor-container {
     }
   }
 </style>
+<style id="KRYPTON_EDITORIAL_SUIZO_OPT">
+  /* DISEÑO EDITORIAL SUIZO MÉDICO + OPTIMIZACIÓN VRAM/60FPS (GOLIATH 2) */
+  :root {
+    --color-bg-master: #0B1120;
+    --color-surface: #0F172A;
+    --color-text-clinical: #F8FAFC;
+    --color-cobalt: #0284C7;
+    --color-emerald: #10B981;
+  }
+  /* Reducción de coste VRAM por backdrop-filter en paneles y modales */
+  .modal-overlay, .glass-panel, [class*="backdrop"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* Aislamiento de layout para mantener 60 FPS en editor clínico */
+  .editor-section, .report-editor-panel, .patient-data-panel {
+    contain: layout style;
+  }
+  /* Contraste WCAG AAA (>= 7:1) para lectura clínica en DATOS DEL PACIENTE, MACROSCOPÍA, MICROSCOPÍA y DIAGNÓSTICO */
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea, [contenteditable="true"] {
+    color: #F8FAFC !important;
+    border-color: rgba(2, 132, 199, 0.45) !important;
+  }
+  input:focus, select:focus, textarea:focus, [contenteditable="true"]:focus {
+    border-color: #10B981 !important;
+    outline: none !important;
+  }
+</style>
+<script id="KRYPTON_OBSERVABILIDAD_CORE">
+  window.logError = function(context, err) {
+    try {
+      var payload = {
+        context: context,
+        message: err && err.message ? err.message : String(err),
+        timestamp: new Date().toISOString()
+      };
+      console.error('[GOLIATH-OBS] ' + context + ':', err);
+      var logs = JSON.parse(localStorage.getItem('goliath_error_logs') || '[]');
+      logs.push(payload);
+      localStorage.setItem('goliath_error_logs', JSON.stringify(logs.slice(-50)));
+    } catch (eFallback) {
+      console.error('[GOLIATH-OBS-FALLBACK]', context, err);
+    }
+  };
+</script>
 </head>
 
 
