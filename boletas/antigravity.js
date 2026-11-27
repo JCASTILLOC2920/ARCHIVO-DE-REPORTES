@@ -2039,20 +2039,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.key === 'Escape' && typeof cerrarModalQR === 'function') cerrarModalQR();
     });
 });
-===
 
-<<<BUSCAR
-// Registro de Service Worker para PWA 100% Offline
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js').then(() => {
-            console.log('✅ ServiceWorker Soberano Registrado.');
-        }).catch(err => {
-            console.warn('ServiceWorker no disponible:', err);
-        });
-    });
-}
-===
 /* ------------------------------------------------------------------
    Registro de Service Worker para PWA 100% Offline
    ------------------------------------------------------------------ */
@@ -2061,16 +2048,5 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js')
             .then(() => console.log('✅ ServiceWorker Soberano Registrado.'))
             .catch(err => console.warn('ServiceWorker no disponible:', err));
-    });
-}
-
-// Registro de Service Worker para PWA 100% Offline
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js').then(() => {
-            console.log('✅ ServiceWorker Soberano Registrado.');
-        }).catch(err => {
-            console.warn('ServiceWorker no disponible:', err);
-        });
     });
 }

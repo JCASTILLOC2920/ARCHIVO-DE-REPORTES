@@ -320,10 +320,10 @@
         }
 
         function validarYEmitirProtocolo() {
-            const loc = document.getElementById('capLocalizacion').value;
-            const hall = document.getElementById('capHallazgo').value;
-            const hp = document.getElementById('capHpylori').value;
-            const cod = document.getElementById('capCodigoAtencion').value.trim();
+            const loc = document.getElementById('capLocalizacion')?.value || '';
+            const hall = document.getElementById('capHallazgo')?.value || '';
+            const hp = document.getElementById('capHpylori')?.value || '';
+            const cod = (document.getElementById('capCodigoAtencion')?.value || '').trim();
 
             if (!loc || !hall || !hp || !cod) {
                 alert("Advertencia: Todos los campos del Protocolo CAP son obligatorios para la emisión.");
