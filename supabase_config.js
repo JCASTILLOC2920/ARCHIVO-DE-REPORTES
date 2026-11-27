@@ -4,9 +4,10 @@
 // Si deja los campos vacíos, la aplicación seguirá funcionando en modo local.
 // ==========================================================================
 
+// BASE UNICA SOBERANA JC PATH LAB - 100% LOCAL DETERMINISTA (0 CREDITO / 0 NUBE)
 const SUPABASE_CONFIG = Object.freeze({
-    url: "https://yyylfrnynlgwaxxocixa.supabase.co",      // Ejemplo: "https://xxxx.supabase.co"
-    anonKey: "sb_publishable_Xlrt1FyJMNxL-XIap15MOA_YOkDe4dK" // Clave anónima pública.
+    url: "",      // Modo Soberano Local Activo (Supabase desconectado)
+    anonKey: ""
 });
 
 window.SUPABASE_CONFIG = SUPABASE_CONFIG;

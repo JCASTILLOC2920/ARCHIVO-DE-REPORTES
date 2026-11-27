@@ -5822,7 +5822,7 @@ if (typeof window !== 'undefined') {
 // ============================================================================
 export const N8N_SOVEREIGN_CONFIG = {
     baseUrl: 'http://localhost:5678',
-    enabled: true,
+    enabled: false, // Base de Datos Unica Soberana activa (n8n desacoplado)
     timeoutMs: 1200, // Timeout estricto para red local
     webhooks: {
         guardarPaciente: 'http://localhost:5678/webhook/guardar-paciente',
