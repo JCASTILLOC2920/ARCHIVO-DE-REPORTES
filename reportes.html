@@ -14076,25 +14076,7 @@ html body .report-editor-container {
 
 
 
-                    <button type="button" class="groq-ai-btn" id="btnHeaderGroqAI" onclick="(window.cortanaAbrirChat ? window.cortanaAbrirChat() : (window.openGroqCopilotModal && window.openGroqCopilotModal()))" title="Cortana IA • Asistente y Copiloto de Patología JC PATH LAB" style="display: inline-flex !important; align-items: center; gap: 6px;">
 
-
-
-
-
-                        <i class="fa-solid fa-wand-magic-sparkles" style="color: #38bdf8;"></i>
-
-
-
-
-
-                        <span>Cortana IA</span>
-
-
-
-
-
-                    </button>
 
 
 
@@ -39630,32 +39612,7 @@ window.cortanaFiltrar = function(tipo) {
             }
         }
 
-        if (!bar.querySelector('.cortana-duplex-chips')) {
-            const chips = document.createElement('div');
-            chips.className = 'cortana-duplex-chips';
-            chips.innerHTML = `
-              <span style="font-size:11px;color:#7dd3fc;font-weight:700;"><i class="fa-solid fa-bolt"></i> Filtros Rápidos Cortana:</span>
-              <button type="button" class="cortana-chip" data-q="">Todos</button>
-              <button type="button" class="cortana-chip" data-q="MORCELADO">Próstata / Morcelados</button>
-              <button type="button" class="cortana-chip" data-q="ESCALANTE">Dr. Escalante</button>
-              <button type="button" class="cortana-chip" data-q="BIOPSIA DE ESTÓMAGO">Gástricas</button>
-              <button type="button" class="cortana-chip" data-mode="proceso">En Proceso</button>
-              <button type="button" class="cortana-chip" data-mode="firmados">Firmados</button>
-            `;
-            bar.insertBefore(chips, panel || null);
-            chips.addEventListener('click', (ev) => {
-                const c = ev.target.closest('.cortana-chip');
-                if (!c) return;
-                chips.querySelectorAll('.cortana-chip').forEach(x => x.classList.remove('active'));
-                c.classList.add('active');
-                const mode = c.getAttribute('data-mode');
-                if (mode === 'proceso') { procesarConsultaCortana('mostrar casos en proceso'); return; }
-                if (mode === 'firmados') { procesarConsultaCortana('mostrar casos firmados'); return; }
-                const qVal = c.getAttribute('data-q') || '';
-                searchInput.value = qVal;
-                filtrarTablaMulticriterio(qVal);
-            });
-        }
+
 
         searchInput.placeholder = "Buscar por paciente, DNI, código (26Q-394), médico, muestra o pregunte a Cortana y pulse Enter...";
         let tDeb = null;
