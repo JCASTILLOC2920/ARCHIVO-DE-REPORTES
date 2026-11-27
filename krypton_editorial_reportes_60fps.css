@@ -1,0 +1,427 @@
+/**
+ * -----------------------------------------------------------------------------
+ * GOLIATH OMEGA-ARGÓN / JC PATH LAB — KRYPTON EDITORIAL REPORTES 60FPS CSS
+ * AUTORIDAD: DR. JOSÉ CASTILLO
+ * ESPECIFICACIÓN: Paleta Neuro-Ergonómica Médica, Zero-Loss UI, 60 FPS Table Virtualization.
+ * -----------------------------------------------------------------------------
+ */
+
+:root {
+  --phi: 1.61803398875;
+  --jc-bg-master: #0B1120;
+  --jc-surface: #0F172A;
+  --jc-surface-elevated: #1E293B;
+  --jc-surface-hover: #334155;
+  --jc-surface-glass: rgba(15, 23, 42, 0.88);
+  --jc-text-clinical: #F8FAFC;
+  --jc-text-muted: #CBD5E1;
+  --jc-text-subtle: #94A3B8;
+  --jc-border-subtle: rgba(148, 163, 184, 0.22);
+  --jc-border-focus: rgba(2, 132, 199, 0.65);
+  --jc-cobalt: #0284C7;
+  --jc-cobalt-hover: #0369A1;
+  --jc-emerald: #10B981;
+  --jc-emerald-bg: rgba(16, 185, 129, 0.12);
+  --jc-emerald-glow: rgba(16, 185, 129, 0.25);
+  --jc-amber: #F59E0B;
+  --jc-amber-bg: rgba(245, 158, 11, 0.12);
+  --jc-rose: #EF4444;
+  --jc-rose-bg: rgba(239, 68, 68, 0.12);
+  --jc-crimson: #EF4444;
+  --jc-violet: #7C3AED;
+  --jc-focus-ring: 0 0 0 2px rgba(2, 132, 199, 0.45);
+  --jc-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --jc-transition-gpu: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms ease, border-color 150ms ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--jc-bg-master);
+  color: var(--jc-text-clinical);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =============================================================================
+   MODAL DE REGISTRO DE PACIENTE (MODAL EDITORIAL SUIZO-MÉDICO)
+   ============================================================================= */
+
+.modal-content, 
+.modalOverlay, 
+.backupModalOverlay,
+#advancedFiltersDrawer {
+  background-color: var(--jc-surface);
+  border: 1px solid var(--jc-border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+@supports (backdrop-filter: blur(12px)) {
+  .modal-content, 
+  .modalOverlay,
+  .backupModalOverlay {
+    backdrop-filter: blur(12px);
+    background-color: var(--jc-surface-glass);
+  }
+}
+
+.modal-overlay,
+.backupModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(11, 17, 32, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 1.5rem;
+  overflow-y: auto;
+  will-change: opacity;
+}
+
+.modal-header {
+  padding: 1.25rem 1.75rem;
+  background-color: var(--jc-surface-elevated);
+  border-bottom: 1px solid var(--jc-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title, h3.modal-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--jc-text-clinical);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.modal-body {
+  padding: calc(1rem * var(--phi));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-label, label {
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: var(--jc-text-muted);
+  letter-spacing: 0.01em;
+}
+
+.form-input, 
+select.form-input, 
+textarea.form-input,
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  background-color: var(--jc-surface-elevated);
+  border: 1px solid var(--jc-border-subtle);
+  border-radius: 8px;
+  color: var(--jc-text-clinical);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: var(--jc-transition-gpu);
+}
+
+.form-input:hover, 
+select.form-input:hover, 
+textarea.form-input:hover,
+input[type="text"]:hover,
+select:hover,
+textarea:hover {
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+.form-input:focus, 
+select.form-input:focus, 
+textarea.form-input:focus,
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--jc-cobalt);
+  box-shadow: var(--jc-focus-ring);
+  background-color: var(--jc-surface);
+}
+
+textarea.form-input,
+textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem calc(1rem * var(--phi));
+  border-top: 1px solid var(--jc-border-subtle);
+  background-color: var(--jc-surface-elevated);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.btn-primary,
+button.btn-primary {
+  background-color: var(--jc-cobalt);
+  color: var(--jc-text-clinical);
+  border: 1px solid rgba(2, 132, 199, 0.4);
+  border-radius: 8px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--jc-transition-gpu);
+}
+
+.btn-primary:hover {
+  background-color: var(--jc-cobalt-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary,
+button.btn-secondary {
+  background-color: var(--jc-surface-elevated);
+  color: var(--jc-text-muted);
+  border: 1px solid var(--jc-border-subtle);
+  border-radius: 8px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--jc-transition-gpu);
+}
+
+.btn-secondary:hover {
+  background-color: var(--jc-surface-hover);
+  color: var(--jc-text-clinical);
+  border-color: var(--jc-text-subtle);
+}
+
+/* =============================================================================
+   TABLA PRINCIPAL DE PACIENTES — OPTIMIZACIÓN 60 FPS REALES
+   ============================================================================= */
+
+.table-container,
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--jc-surface);
+  border: 1px solid var(--jc-border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background-color: var(--jc-surface);
+}
+
+thead th {
+  background-color: var(--jc-surface-elevated);
+  color: var(--jc-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--jc-border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+#tableBody tr,
+tbody tr {
+  content-visibility: auto;
+  contain-intrinsic-size: 48px;
+  border-bottom: 1px solid var(--jc-border-subtle);
+  transition: background-color 75ms ease-out;
+}
+
+#tableBody tr:hover,
+tbody tr:hover {
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
+#tableBody td,
+tbody td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  font-size: 0.9rem;
+  color: var(--jc-text-clinical);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td.tabular-nums, 
+td.tabular-data,
+.font-mono-clinical,
+.font-mono-tabular,
+#tableBody td:nth-child(1), 
+#tableBody td:nth-child(2),
+tbody td:nth-child(1),
+tbody td:nth-child(2),
+tbody td:nth-child(5) {
+  font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+}
+
+.action-btn,
+button.action-btn {
+  background: var(--jc-surface-elevated);
+  border: 1px solid var(--jc-border-subtle);
+  color: var(--jc-text-muted);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--jc-transition-gpu);
+}
+
+.action-btn:hover,
+button.action-btn:hover {
+  border-color: var(--jc-cobalt);
+  color: var(--jc-text-clinical);
+  background-color: var(--jc-cobalt);
+  transform: translateY(-1px);
+}
+
+/* Estados de SLA Clínico para Filas e Indicadores */
+.status-indicator-red,
+.badge-sla-inconcluso,
+.status-red,
+.badge-pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--jc-rose-bg);
+  color: var(--jc-rose);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.status-indicator-red::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--jc-crimson);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.status-indicator-green,
+.badge-sla-firmado,
+.status-green,
+.badge-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--jc-emerald-bg);
+  color: var(--jc-emerald);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-indicator-green::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--jc-emerald);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--jc-emerald-glow);
+}
+
+.status-indicator-amber,
+.badge-sla-proceso,
+.status-amber {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--jc-amber-bg);
+  color: var(--jc-amber);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.status-indicator-amber::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--jc-amber);
+  border-radius: 50%;
+}
+
+@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
+  .modal-content, 
+  .modalOverlay, 
+  .backupModalOverlay,
+  #advancedFiltersDrawer {
+    backdrop-filter: none;
+    background-color: var(--jc-surface);
+  }
+  
+  #tableBody tr,
+  tbody tr {
+    transition: none;
+  }
+}
