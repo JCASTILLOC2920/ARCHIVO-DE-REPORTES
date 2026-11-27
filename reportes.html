@@ -13138,19 +13138,81 @@ html body .report-editor-container {
   }
 </style>
 <style id="KRYPTON_EDITORIAL_SUIZO_OPT">
-  /* DISEÑO EDITORIAL SUIZO MÉDICO + OPTIMIZACIÓN VRAM/60FPS (GOLIATH 2) */
+  /* DISEÑO EDITORIAL CLÍNICO EN CAPAS — PASO 1 (PALETA, SUPERFICIES Y BORDES SUTILES) */
   :root {
-    --color-bg-master: #0B1120;
-    --color-surface: #0F172A;
-    --color-text-clinical: #F8FAFC;
-    --color-cobalt: #0284C7;
+    /* Sistema de superficies oscuras en capas */
+    --bg-canvas: #0B0F17;
+    --bg-surface: #111827;
+    --bg-elevated: #182234;
+    --bg-input: #0E1522;
+    /* Bordes sutiles */
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-focus: rgba(56, 189, 248, 0.45);
+    /* Jerarquía de texto y acento controlado */
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --accent-primary: #0EA5E9;
+    /* Variables heredadas sincronizadas */
+    --color-bg-master: #0B0F17;
+    --color-surface: #111827;
+    --color-text-clinical: #F1F5F9;
+    --color-cobalt: #0EA5E9;
     --color-emerald: #10B981;
   }
+
   /* Reducción de coste VRAM por backdrop-filter en paneles y modales */
   .modal-overlay, .glass-panel, [class*="backdrop"] {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
+
+  /* Superficies en capas en el Editor Clínico (#reportEditorModalOverlay) */
+  #reportEditorModalOverlay .report-editor-container,
+  #reportEditorModalOverlay .report-editor-body,
+  #reportEditorModalOverlay .report-editor-left-col,
+  #reportEditorModalOverlay .report-editor-right-col {
+    background-color: var(--bg-canvas) !important;
+    color: var(--text-primary) !important;
+  }
+
+  /* Contenedores y cajas principales sin bordes de colores chillones */
+  #reportEditorModalOverlay .editor-panel,
+  #reportEditorModalOverlay .patient-info-panel,
+  #reportEditorModalOverlay .editor-box-card,
+  #reportEditorModalOverlay .macro-box,
+  #reportEditorModalOverlay .micro-box,
+  #reportEditorModalOverlay .diag-box,
+  #reportEditorModalOverlay .editor-box,
+  #reportEditorModalOverlay .cockpit-card {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-subtle) !important;
+    box-shadow: none !important;
+  }
+
+  /* Cabeceras de sección, barras internas y footer elevados */
+  #reportEditorModalOverlay .panel-header,
+  #reportEditorModalOverlay .editor-box-header,
+  #reportEditorModalOverlay .patient-panel-header,
+  #reportEditorModalOverlay .report-editor-footer,
+  #reportEditorModalOverlay .cockpit-flow-bar,
+  #reportEditorModalOverlay .editor-toolbar,
+  #reportEditorModalOverlay .rich-toolbar {
+    background-color: var(--bg-elevated) !important;
+    border-color: var(--border-subtle) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+    color: var(--text-primary) !important;
+    box-shadow: none !important;
+  }
+
+  /* Badges de sección clínicos sobrios */
+  #reportEditorModalOverlay .box-badge,
+  #reportEditorModalOverlay .patient-header-title {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--border-subtle) !important;
+    color: var(--text-primary) !important;
+  }
+
   /* Garantía absoluta de clicabilidad en el footer real del editor */
   #reportEditorModalOverlay .report-editor-footer,
   #reportEditorModalOverlay .report-editor-footer .footer-right,
@@ -13160,13 +13222,27 @@ html body .report-editor-container {
     position: relative !important;
     z-index: 2050 !important;
   }
-  /* Contraste WCAG AAA (>= 7:1) para lectura clínica en DATOS DEL PACIENTE, MACROSCOPÍA, MICROSCOPÍA y DIAGNÓSTICO */
-  input:not([type="checkbox"]):not([type="radio"]), select, textarea, [contenteditable="true"] {
-    color: #F8FAFC !important;
-    border-color: rgba(2, 132, 199, 0.45) !important;
+
+  /* Jerarquía de texto y campos de entrada oscuros sobrios */
+  #reportEditorModalOverlay label,
+  #reportEditorModalOverlay .field-label,
+  #reportEditorModalOverlay .form-group label {
+    color: var(--text-secondary) !important;
   }
+
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea, [contenteditable="true"] {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-subtle) !important;
+  }
+
+  ::placeholder {
+    color: var(--text-muted) !important;
+  }
+
   input:focus, select:focus, textarea:focus, [contenteditable="true"]:focus {
-    border-color: #10B981 !important;
+    border-color: var(--border-focus) !important;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.14) !important;
     outline: none !important;
   }
 </style>
