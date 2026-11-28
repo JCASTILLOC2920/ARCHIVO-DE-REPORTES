@@ -39877,10 +39877,10 @@ window.cortanaFiltrar = function(tipo) {
     position: fixed;
     right: 18px;
     bottom: 72px;
-    width: 245px;
+    width: 368px;
     max-width: calc(100vw - 24px);
     height: auto;
-    max-height: 195px;
+    max-height: 292px;
     background: rgba(17, 24, 39, 0.94);
     backdrop-filter: blur(10px);
     border: 1.5px solid rgba(148, 163, 184, 0.45);
@@ -39942,7 +39942,7 @@ window.cortanaFiltrar = function(tipo) {
 <div id="cortanaFloatWindow" role="dialog" aria-label="Chat Flotante Cortana">
   <div class="cf-head" id="cortanaFloatHeader">
     <div class="cf-title">
-      <div class="cf-avatar" id="cortanaAvatarOrb"><i class="fa-solid fa-wave-square"></i></div>
+      <div class="cf-avatar" id="cortanaAvatarOrb" style="overflow:hidden;padding:0;"><img src="assets/cortana/cortana_avatar_face.jpg" alt="Cortana" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
       <div>
         <div>Cortana • Control Total</div>
         <div style="font-size:10px;color:#94A3B8;font-weight:400;">Arrastre aquí para mover</div>
@@ -39966,6 +39966,18 @@ window.cortanaFiltrar = function(tipo) {
 
 <script>
 (function initCortanaControlTotal() {
+  try {
+    var cu = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (cu && cu.perfil === 'Usuario') {
+      var bT = document.getElementById('cortanaFloatToggleBtn');
+      var wF = document.getElementById('cortanaFloatWindow');
+      var bC = document.getElementById('cortanaOpenChatBtn');
+      if (bT) bT.style.display = 'none';
+      if (wF) wF.style.display = 'none';
+      if (bC) bC.style.display = 'none';
+      return;
+    }
+  } catch (eRole) {}
   var cortanaVozActiva = true;
   (function ajustarSaludo() {
     var g = document.getElementById('cortanaGreetingMsg');
@@ -40176,25 +40188,53 @@ window.cortanaFiltrar = function(tipo) {
       return 'OK';
     }
 
-    // 6. Fallback: filtrar tabla en vivo + consultar servidor local si existe
-    var sIn = document.getElementById('cortanaSearchInput');
-    if (sIn) {
-      sIn.value = raw;
-      sIn.dispatchEvent(new Event('input', { bubbles: true }));
+    // 6. Filtrado explicito de tabla solo si el medico pide buscar/filtrar
+    var mBus = raw.match(/^(?:buscar|filtrar|encuentra|busca)\s+(.+)$/i);
+    if (mBus) {
+      var term = mBus[1].trim();
+      var sIn = document.getElementById('cortanaSearchInput');
+      if (sIn) {
+        sIn.value = term;
+        sIn.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      addMsg('Filtro aplicado en la tabla para: <b>' + term + '</b>.', 'bot');
+      return 'OK';
     }
-    addMsg('Filtro aplicado en la tabla para: <b>' + raw + '</b>.', 'bot');
+
+    // 7. Conexion con KRYPTON (127.0.0.1:8799) con contexto del caso abierto e indicador Pensando...
+    var esLocal = (location.protocol === 'file:' || location.hostname === '127.0.0.1' || location.hostname === 'localhost' || location.hostname.startsWith('192.168.'));
+    if (!esLocal && location.protocol === 'https:') {
+      addMsg('KRYPTON local solo está disponible desde su PC en JC PATH LAB (por seguridad, los navegadores bloquean conexiones locales desde internet).', 'bot');
+      return 'BLOCKED_HTTPS';
+    }
+
+    var codAbierto = (document.getElementById('re_codAtencion') || {}).value || '';
+    var boxMsgs = document.getElementById('cortanaFloatMsgs');
+    var loadEl = document.createElement('div');
+    loadEl.className = 'cf-msg bot';
+    loadEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Pensando con KRYPTON...';
+    if (boxMsgs) { boxMsgs.appendChild(loadEl); boxMsgs.scrollTop = boxMsgs.scrollHeight; }
+
     try {
+      var msgEnvio = codAbierto ? ('[Caso abierto: ' + codAbierto + '] ' + raw) : raw;
       var resp = await fetch('http://127.0.0.1:8799/api/conversar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mensaje: raw, sesion_id: 'web_reportes' })
+        body: JSON.stringify({ mensaje: msgEnvio, sesion_id: 'web_reportes' })
       });
+      if (loadEl && loadEl.parentNode) loadEl.parentNode.removeChild(loadEl);
       if (resp.ok) {
         var j = await resp.json();
         var msgK = j && (j.respuesta || j.respuesta_directa || j.mensaje);
         if (msgK) addMsg(msgK, 'bot');
+        else addMsg('KRYPTON no devolvió respuesta.', 'bot');
+      } else {
+        addMsg('KRYPTON respondió con estado HTTP ' + resp.status + '.', 'bot');
       }
-    } catch (errSrv) {}
+    } catch (errSrv) {
+      if (loadEl && loadEl.parentNode) loadEl.parentNode.removeChild(loadEl);
+      addMsg('No se pudo conectar con KRYPTON en esta PC (verifique que la Consola KRYPTON esté encendida).', 'bot');
+    }
     return 'OK';
   };
 
