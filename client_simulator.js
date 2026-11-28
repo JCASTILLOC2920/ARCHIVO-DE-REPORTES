@@ -324,7 +324,7 @@ function openExitSheet() {
     let current = null;
     try {
         current = JSON.parse(localStorage.getItem('currentUser'));
-    } catch (e) {}
+    } catch (e) { console.warn('[ClientSim] openExitSheet: JSON.parse currentUser falló:', e.message); }
 
     const titleEl = document.getElementById('cssCurrentClientTitle');
     const subEl = document.getElementById('cssCurrentClientSub');
@@ -364,7 +364,7 @@ function filterAndRenderCards() {
     let current = null;
     try {
         current = JSON.parse(localStorage.getItem('currentUser'));
-    } catch (e) {}
+    } catch (e) { console.warn('[ClientSim] filterAndRenderCards: JSON.parse currentUser falló:', e.message); }
     const activeUsername = current ? (current.usuario || '').toLowerCase() : '';
 
     const clientUsers = usersDatabase.filter(u => u.perfil === 'Usuario');
@@ -535,7 +535,7 @@ export function initClientSimulator() {
     let currentUser = null;
     try {
         currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    } catch (e) {}
+    } catch (e) { console.warn('[ClientSim] initClientSimulator: JSON.parse currentUser falló:', e.message); }
 
     if (isReturnAvailable && currentUser && currentUser.perfil === 'Usuario') {
         ensureExitSheetDOM();

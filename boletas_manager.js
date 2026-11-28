@@ -377,11 +377,11 @@ function recomputeTotal() {
     const totalSub = document.getElementById('boletaSubtotalCalculado');
     if (totalSub) totalSub.textContent = `S/ ${(total / 1.18).toFixed(2)}`;
 
-    const totalGeneral = document.getElementById('boletaTotalGeneral');
+    const totalGeneral = document.getElementById('boletaTotalDisplay');
     if (totalGeneral) totalGeneral.textContent = `S/ ${total.toFixed(2)}`;
 
-    const totalCalc = document.getElementById('boletaTotalCalculado');
-    if (totalCalc) totalCalc.textContent = `S/ ${total.toFixed(2)}`;
+    const totalCalc = document.getElementById('boletaSubtotalCalculado');
+    if (totalCalc) totalCalc.textContent = `S/ ${(total / 1.18).toFixed(2)}`;
 }
 
 function setupBoletasEventListeners() {
@@ -409,19 +409,26 @@ function setupBoletasEventListeners() {
 
     safeListen('btnAddMuestraModal', 'click', () => {
         const modal = document.getElementById('modalAddMuestra');
-        if (modal) modal.style.display = 'flex';
+        if (!modal) { console.error('[Boletas] modalAddMuestra no encontrado en el DOM. Verifica que el HTML incluya este modal.'); return; }
+        modal.style.display = 'flex';
     });
 
     safeListen('btnCancelAddMuestraModal', 'click', () => {
         const modal = document.getElementById('modalAddMuestra');
-        if (modal) modal.style.display = 'none';
+        if (!modal) return;
+        modal.style.display = 'none';
     });
 
     safeListen('btnGuardarNuevaEmpresa', 'click', () => {
-        const razon = document.getElementById('nuevaEmpresaRazon')?.value?.trim();
-        const ruc = document.getElementById('nuevaEmpresaRuc')?.value?.trim();
-        const direccion = document.getElementById('nuevaEmpresaDir')?.value?.trim();
-        const telefono = document.getElementById('nuevaEmpresaTel')?.value?.trim();
+        const razon = document.getElementById('nuevaEmpresaRazon')?.value?.trim() ?? '';
+        const ruc = document.getElementById('nuevaEmpresaRuc')?.value?.trim() ?? '';
+        const direccion = document.getElementById('nuevaEmpresaDir')?.value?.trim() ?? '';
+        const telefono = document.getElementById('nuevaEmpresaTel')?.value?.trim() ?? '';
+
+        if (!razon && !ruc && !direccion && !telefono) {
+            console.error('[Boletas] Formulario nueva empresa: campos DOM no encontrados. El modal modalAddMuestra debe existir en el HTML.');
+            return;
+        }
 
         if (!razon || !ruc) {
             alert('Ingrese al menos la Razón Social y el RUC de la empresa.');
