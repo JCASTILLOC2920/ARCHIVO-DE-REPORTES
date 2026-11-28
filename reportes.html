@@ -15485,19 +15485,7 @@ html body .report-editor-container {
 
 
 
-                                <button type="button" class="cortana-btn-chat" id="cortanaOpenChatBtn" title="Conversar con Cortana en este lugar">
 
-
-
-
-
-                                    <i class="fa-solid fa-comments"></i> <span>Chat Cortana</span>
-
-
-
-
-
-                                </button>
 
 
 
@@ -39574,35 +39562,6 @@ window.cortanaFiltrar = function(tipo) {
     // Construir UI interna del panel e inyectar boton de Voz + Chips
     if (bar && searchInput) {
         const searchBox = bar.querySelector('.cortana-search-box');
-        if (searchBox && !document.getElementById('cortanaVoiceBtn')) {
-            const vBtn = document.createElement('button');
-            vBtn.type = 'button';
-            vBtn.id = 'cortanaVoiceBtn';
-            vBtn.className = 'cortana-voice-btn';
-            vBtn.title = 'Comando o búsqueda por Voz (es-PE)';
-            vBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> <span>Voz</span>';
-            searchBox.insertBefore(vBtn, openChatBtn || null);
-
-            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (SR) {
-                const rec = new SR();
-                rec.lang = 'es-PE';
-                rec.interimResults = false;
-                vBtn.addEventListener('click', () => {
-                    try { vBtn.classList.add('listening'); rec.start(); } catch(e) { vBtn.classList.remove('listening'); }
-                });
-                rec.onresult = (ev) => {
-                    vBtn.classList.remove('listening');
-                    const spoken = ev.results[0][0].transcript || '';
-                    searchInput.value = spoken;
-                    procesarConsultaCortana(spoken);
-                };
-                rec.onerror = () => vBtn.classList.remove('listening');
-                rec.onend = () => vBtn.classList.remove('listening');
-            } else {
-                vBtn.addEventListener('click', () => alert('Use Google Chrome o Edge para reconocimiento de voz directo.'));
-            }
-        }
 
 
 
@@ -40225,7 +40184,9 @@ window.cortanaFiltrar = function(tipo) {
       if (loadEl && loadEl.parentNode) loadEl.parentNode.removeChild(loadEl);
       if (resp.ok) {
         var j = await resp.json();
-        var msgK = j && (j.respuesta || j.respuesta_directa || j.mensaje);
+        var rRaw = j && (j.respuesta || j.respuesta_directa || j.mensaje);
+        var pHumano = j && j.meta && j.meta.pensamiento_pase1;
+        var msgK = (rRaw && String(rRaw).indexOf('[RAZONAMIENTO_CARBON_4.0_EJECUTADO]') !== -1 && pHumano) ? pHumano : (rRaw || pHumano);
         if (msgK) addMsg(msgK, 'bot');
         else addMsg('KRYPTON no devolvió respuesta.', 'bot');
       } else {
