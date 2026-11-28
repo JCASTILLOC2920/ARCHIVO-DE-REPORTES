@@ -693,6 +693,7 @@ export function renderTable(data = patientDatabase) {
         if (codeUpper.startsWith('26Q-189') && pacUpper.includes('DESCONOCIDO')) return false;
         if (pacUpper.includes('SIN NOMBRE') && (String(item.clinica || '').toUpperCase().includes('SIN CLINICA') || !item.clinica)) return false;
         const especimenUpper = String(item.especimen || '').toUpperCase();
+        if (codeUpper === '26Q-398') { item._isDuplicate = false; item.service = 'Q'; }
         let s = (item._isDuplicate || item.service === 'D') ? 'D' : item.service;
         if (currentService === 'D') {
             return s === 'D';
