@@ -27680,7 +27680,7 @@ html body .report-editor-container {
 
 
 
-    <script src="real_supabase_backup.js?v=20261127_v1310"></script>
+    <script src="real_supabase_backup.js?v=20261128_v0527_soberano"></script>
 
 
 
@@ -27864,29 +27864,22 @@ html body .report-editor-container {
 
 
                       var s = item.service;
-
-
-                      if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
-
-
-                          if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG')) {
-
-
+                      if (codeUpper.includes('Q-') || /\dQ[-_\s]?\d/.test(codeUpper)) {
+                          s = 'Q';
+                          item.service = 'Q';
+                      } else if (codeUpper.includes('C-') || /\dC[-_\s]?\d/.test(codeUpper)) {
+                          s = 'C';
+                          item.service = 'C';
+                      } else if (codeUpper.includes('I-') || /\dI[-_\s]?\d/.test(codeUpper)) {
+                          s = 'I';
+                          item.service = 'I';
+                      } else if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+                          if (codeUpper.endsWith('C') || espUpper.includes('PAPANICOLAOU') || espUpper.includes('CITOLOG')) {
                               s = 'C';
-
-
                           } else {
-
-
                               s = 'Q';
-
-
                           }
-
-
                           item.service = s;
-
-
                       }
 
 

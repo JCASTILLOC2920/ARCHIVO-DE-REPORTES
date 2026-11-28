@@ -79407,8 +79407,8 @@ window.REAL_SUPABASE_BACKUP = [
     let rawCod = String(r.codAtencion || r.codigo || r.cod_atencion || '').trim().toUpperCase().replace(/\s+/g, '');
     if (!rawCod || rawCod === 'TEST-SYNC-003') continue;
     const pacName = String(r.paciente || r.paciente_nombre || ((r.apellidos || '') + ' ' + (r.nombres || ''))).replace(/[,\-\s]/g, '');
-    // Descartar fantasmas sin paciente cuando existe su par real con cero (26Q-037, 26Q-032) o ficha vacia 26Q-415
-    if ((rawCod === '26Q-37' || rawCod === '26Q-32' || rawCod === '26Q-415') && !pacName) continue;
+    // Descartar fantasmas sin paciente cuando existe su par real con cero (26Q-037, 26Q-032) o ficha vacia/fantasma 26Q-415
+    if (rawCod === '26Q-415' || ((rawCod === '26Q-37' || rawCod === '26Q-32') && !pacName)) continue;
     if (rawCod === '25031') rawCod = '25C-031';
     const m = rawCod.match(/^(\d{2})([A-Z]+)-(\d+)$/);
     let canonicalKey = rawCod;
@@ -79430,7 +79430,7 @@ window.REAL_SUPABASE_BACKUP = [
     const clinKey = (clinName.length > 5 && !clinName.includes('SIN NOMBRE') && !clinName.includes('POR IDENTIFICAR') && clinEsp.length > 3)
       ? `CLIN_${clinName}|${clinEsp}|${clinFec}`
       : '';
-    if (seen.has(canonicalKey) || (clinKey && seen.has(clinKey))) {
+    if (seen.has(canonicalKey)) { // Solo mismo codigo canonico es duplicado; 26Q-398 visible y correlativo en su servicio original
       r._originalService = r.service || r._sortType || 'Q';
       r.service = 'D';
       r._sortType = 'D';

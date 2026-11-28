@@ -41,7 +41,7 @@
                         var c = String((p && (p.codAtencion || p.codigo || p.cod_atencion)) || '').trim();
                         var nom = String((p && (p.paciente || p.nombres || p.apellidos)) || '').replace(/[,\-\s]/g, '');
                         if (!c || c === 'TEST-SYNC-003' || c === '26Q- 218' || c === '26Q- 214' || p.cmd) return false;
-                        if (c === '26Q-415' && !nom) return false;
+                        if (c === '26Q-415') return false;
                         return true;
                     });
                     localStorage.setItem(k, JSON.stringify(clean));

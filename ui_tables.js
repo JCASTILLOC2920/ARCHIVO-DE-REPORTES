@@ -700,17 +700,20 @@ export function renderTable(data = patientDatabase) {
         if (s === 'D') {
             return false;
         }
-        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+        if (codeUpper.includes('Q-') || /\dQ[-_\s]?\d/.test(codeUpper)) {
+            s = 'Q';
+            item.service = 'Q';
+        } else if (codeUpper.includes('C-') || /\dC[-_\s]?\d/.test(codeUpper)) {
+            s = 'C';
+            item.service = 'C';
+        } else if (codeUpper.includes('I-') || /\dI[-_\s]?\d/.test(codeUpper)) {
+            s = 'I';
+            item.service = 'I';
+        } else if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
             // 1. Detección por patrón de código (24C-, 25C-, 26C-, C-01, 24C01, etc.)
-            if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper)) {
+            if (codeUpper.endsWith('C') || especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
                 s = 'C';
-            } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper)) {
-                s = 'I';
-            } else if (codeUpper.includes('Q-') || /Q[-_\s0-9]|^Q\d|\dQ\d/.test(codeUpper)) {
-                s = 'Q';
-            } else if (especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
-                s = 'C';
-            } else if (especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
+            } else if (codeUpper.endsWith('I') || especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
                 s = 'I';
             } else {
                 s = 'Q';
@@ -785,10 +788,19 @@ export function renderTable(data = patientDatabase) {
         const codeUpper = String(item.codAtencion || item.cod_atencion || '').toUpperCase();
         const especimenUpper = String(item.especimen || '').toUpperCase();
         let s = item.service;
-        if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
-            if (codeUpper.includes('C-') || codeUpper.endsWith('C') || /C[-_\s0-9]|^C\d|\dC\d/.test(codeUpper) || especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
+        if (codeUpper.includes('Q-') || /\dQ[-_\s]?\d/.test(codeUpper)) {
+            s = 'Q';
+            item.service = 'Q';
+        } else if (codeUpper.includes('C-') || /\dC[-_\s]?\d/.test(codeUpper)) {
+            s = 'C';
+            item.service = 'C';
+        } else if (codeUpper.includes('I-') || /\dI[-_\s]?\d/.test(codeUpper)) {
+            s = 'I';
+            item.service = 'I';
+        } else if (!s || (s !== 'C' && s !== 'Q' && s !== 'I')) {
+            if (codeUpper.endsWith('C') || especimenUpper.includes('PAPANICOLAOU') || especimenUpper.includes('CITOLOG') || especimenUpper.includes('CERVICOVAGINAL')) {
                 s = 'C';
-            } else if (codeUpper.includes('I-') || codeUpper.endsWith('I') || /I[-_\s0-9]|^I\d|\dI\d/.test(codeUpper) || especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
+            } else if (codeUpper.endsWith('I') || especimenUpper.includes('INMUNO') || especimenUpper.includes('IHQ')) {
                 s = 'I';
             } else {
                 s = 'Q';
