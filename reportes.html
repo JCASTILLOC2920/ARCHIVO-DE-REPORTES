@@ -39939,13 +39939,33 @@ window.cortanaFiltrar = function(tipo) {
     g.textContent = sal + ', Dr. Castillo. ¿En qué le puedo ayudar?';
   })();
 
+  var _cortanaAudioActual = null;
   function hablarCortana(htmlTxt) {
-    if (!cortanaVozActiva || !('speechSynthesis' in window)) return;
+    if (!cortanaVozActiva) return;
+    var limpio = String(htmlTxt || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!limpio) return;
+    var orb = document.getElementById('cortanaAvatarOrb');
     try {
-      window.speechSynthesis.cancel();
-      var limpio = String(htmlTxt || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-      if (!limpio) return;
-      var u = new SpeechSynthesisUtterance(limpio);
+      if (_cortanaAudioActual) { _cortanaAudioActual.pause(); _cortanaAudioActual = null; }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (orb) orb.classList.add('speaking');
+      fetch('http://127.0.0.1:8799/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto: limpio })
+      }).then(function(r) {
+        if (!r.ok) throw new Error('TTS HTTP ' + r.status);
+        return r.blob();
+      }).then(function(blob) {
+        var url = URL.createObjectURL(blob);
+        var au = new Audio(url);
+        _cortanaAudioActual = au;
+        au.onended = function() { if (orb) orb.classList.remove('speaking'); URL.revokeObjectURL(url); };
+        au.onerror = function() { if (orb) orb.classList.remove('speaking'); };
+        au.play().catch(function() { if (orb) orb.classList.remove('speaking'); });
+      }).catch(function() {
+        if (!('speechSynthesis' in window)) { if (orb) orb.classList.remove('speaking'); return; }
+        var u = new SpeechSynthesisUtterance(limpio);
       u.lang = 'es-PE';
       u.rate = 1.02;
       u.pitch = 1.04;
@@ -39969,12 +39989,12 @@ window.cortanaFiltrar = function(tipo) {
         vozJoven = voces.find(function(v) { return (v.lang || '').toLowerCase().startsWith('es') && (v.name || '').toLowerCase().includes('google'); });
       }
       if (vozJoven) { u.voice = vozJoven; u.lang = vozJoven.lang; }
-      var orb = document.getElementById('cortanaAvatarOrb');
-      u.onstart = function() { if (orb) orb.classList.add('speaking'); };
-      u.onend = function() { if (orb) orb.classList.remove('speaking'); };
-      u.onerror = function() { if (orb) orb.classList.remove('speaking'); };
-      window.speechSynthesis.speak(u);
-    } catch (e) {}
+        u.onstart = function() { if (orb) orb.classList.add('speaking'); };
+        u.onend = function() { if (orb) orb.classList.remove('speaking'); };
+        u.onerror = function() { if (orb) orb.classList.remove('speaking'); };
+        window.speechSynthesis.speak(u);
+      });
+    } catch (e) { if (orb) orb.classList.remove('speaking'); }
   }
 
   window.toggleCortanaVoz = function() {
