@@ -39831,8 +39831,8 @@ window.cortanaFiltrar = function(tipo) {
     bottom: 72px;
     width: 368px;
     max-width: calc(100vw - 24px);
-    height: auto;
-    max-height: 292px;
+    height: 438px;
+    max-height: 438px;
     background: rgba(17, 24, 39, 0.94);
     backdrop-filter: blur(10px);
     border: 1.5px solid rgba(148, 163, 184, 0.45);
@@ -39947,7 +39947,28 @@ window.cortanaFiltrar = function(tipo) {
       if (!limpio) return;
       var u = new SpeechSynthesisUtterance(limpio);
       u.lang = 'es-PE';
-      u.rate = 1.05;
+      u.rate = 1.02;
+      u.pitch = 1.04;
+      var voces = window.speechSynthesis.getVoices() || [];
+      var pref = ['camila', 'dalia', 'elvira', 'paloma', 'salome', 'andrea', 'catalina', 'sofia', 'helena', 'sabina', 'laura'];
+      var vozJoven = null;
+      for (var p = 0; p < pref.length && !vozJoven; p++) {
+        vozJoven = voces.find(function(v) {
+          var n = (v.name || '').toLowerCase();
+          return (v.lang || '').toLowerCase().startsWith('es') && n.includes(pref[p]) && (n.includes('natural') || n.includes('online') || n.includes('neural'));
+        });
+      }
+      if (!vozJoven) {
+        for (var p2 = 0; p2 < pref.length && !vozJoven; p2++) {
+          vozJoven = voces.find(function(v) {
+            return (v.lang || '').toLowerCase().startsWith('es') && (v.name || '').toLowerCase().includes(pref[p2]);
+          });
+        }
+      }
+      if (!vozJoven) {
+        vozJoven = voces.find(function(v) { return (v.lang || '').toLowerCase().startsWith('es') && (v.name || '').toLowerCase().includes('google'); });
+      }
+      if (vozJoven) { u.voice = vozJoven; u.lang = vozJoven.lang; }
       var orb = document.getElementById('cortanaAvatarOrb');
       u.onstart = function() { if (orb) orb.classList.add('speaking'); };
       u.onend = function() { if (orb) orb.classList.remove('speaking'); };
@@ -40153,12 +40174,7 @@ window.cortanaFiltrar = function(tipo) {
       return 'OK';
     }
 
-    // 7. Conexion con KRYPTON (127.0.0.1:8799) con contexto del caso abierto e indicador Pensando...
-    var esLocal = (location.protocol === 'file:' || location.hostname === '127.0.0.1' || location.hostname === 'localhost' || location.hostname.startsWith('192.168.'));
-    if (!esLocal && location.protocol === 'https:') {
-      addMsg('KRYPTON local solo está disponible desde su PC en JC PATH LAB (por seguridad, los navegadores bloquean conexiones locales desde internet).', 'bot');
-      return 'BLOCKED_HTTPS';
-    }
+    // 7. Conexion directa con KRYPTON (127.0.0.1:8799) con contexto del caso abierto e indicador Pensando...
 
     var codAbierto = (document.getElementById('re_codAtencion') || {}).value || '';
     var boxMsgs = document.getElementById('cortanaFloatMsgs');
