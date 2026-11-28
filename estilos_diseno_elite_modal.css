@@ -1,27 +1,24 @@
 /* ==========================================================================
    ESTILOS DE DISEÑO ÉLITE - MODAL REGISTRO PACIENTE (JC PATH LAB)
    Arquitectura Front-End Goliath Omega-Argón v12.0
-   Autoridad: Dr. José Castillo / Protocolo Dark Glassmorphism Médico
+   Autoridad: Dr. José Castillo / Protocolo Luxury Dark Minimalist Médico
    ========================================================================== */
 
 :root {
-  --c-bg-dark: rgba(15, 23, 42, 0.85);          /* #0f172a 85% */
-  --c-bg-glass: rgba(15, 23, 42, 0.65);
+  /* Paleta Luxury Dark Minimalist */
+  --c-obsidian: #0b0f19;
+  --c-surface: #111827;
+  --c-border-subtle: #1e293b;
+  --c-border-input: #1f2937;
+  --c-ice-blue: #38bdf8;
+  --c-slate-soft: #94a3b8;
+  --c-slate-muted: #64748b;
+  --c-emerald-start: #047857;
+  --c-emerald-end: #065f46;
+  --c-dictado-bg: #182234;
+  --c-dictado-border: #0ea5e9;
+  --c-blanco: #f8fafc;
   --c-blur: 12px;
-
-  /* Gradientes */
-  --c-gradient-border: linear-gradient(135deg, #0284c7, #7c3aed);
-
-  /* Acciones y Paleta Neuro-Ergonómica */
-  --c-primary: #0284c7;        /* Cian Clínico */
-  --c-primary-dark: #0369a1;
-  --c-primary-light: #38bdf8;
-  --c-success: #10b981;        /* Verde Esmeralda */
-  --c-warning: #f59e0b;        /* Ámbar */
-  --c-danger: #ef4444;         /* Rojo Carmesí */
-  --c-violeta: #7c3aed;        /* Violeta Hematoxilina IA */
-  --c-blanco: #f8fafc;         /* Blanco Clínico */
-  --c-texto-muted: #94a3b8;
 
   /* Tipografía y Transiciones */
   --font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -45,7 +42,7 @@
 #backupModalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(3, 7, 18, 0.75);
+  background: rgba(3, 7, 18, 0.85);
   backdrop-filter: blur(var(--c-blur));
   -webkit-backdrop-filter: blur(var(--c-blur));
   display: flex;
@@ -72,9 +69,10 @@
   width: 92%;
   max-width: 620px;
   max-height: 90vh;
-  background: var(--c-bg-glass);
+  background: var(--c-obsidian);
+  border: 1px solid var(--c-border-subtle);
   border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
   overflow-y: auto;
   backdrop-filter: blur(var(--c-blur));
   -webkit-backdrop-filter: blur(var(--c-blur));
@@ -92,19 +90,6 @@
   transform: translateY(0);
 }
 
-/* Border gradient – pseudo‑element */
-#registroPacienteModal::before,
-.modal-container::before,
-.modal-registro-paciente::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 1.1rem;
-  background: var(--c-gradient-border);
-  z-index: -1;
-  opacity: 0.8;
-}
-
 /* --------------------------- HEADER --------------------------- */
 #registroPacienteModal .modal-header,
 .modal-header {
@@ -113,9 +98,9 @@
   justify-content: space-between;
   padding-bottom: 1.2rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--c-border-subtle);
   background: transparent;
-  color: var(--c-blanco);
+  color: var(--c-slate-soft);
   font-family: var(--font-family);
   font-size: 1.25rem;
   font-weight: 700;
@@ -126,21 +111,22 @@
   align-items: center;
   gap: 0.75rem;
   letter-spacing: -0.025em;
+  color: var(--c-slate-soft);
 }
 
 .modal-title::before {
   content: '';
   display: inline-block;
-  width: 6px;
-  height: 22px;
-  background: var(--c-primary);
-  border-radius: 3px;
+  width: 4px;
+  height: 20px;
+  background: var(--c-ice-blue);
+  border-radius: 2px;
 }
 
 .modal-close-btn {
   background: transparent;
   border: none;
-  color: var(--c-texto-muted);
+  color: var(--c-slate-muted);
   cursor: pointer;
   padding: 0.4rem;
   border-radius: 0.5rem;
@@ -148,7 +134,7 @@
 }
 
 .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--c-blanco);
 }
 
@@ -156,7 +142,7 @@
 #registroPacienteModal .modal-body,
 .modal-body {
   font-family: var(--font-family);
-  color: #e2e8f0;
+  color: var(--c-blanco);
 }
 
 .modal-form-grid {
@@ -183,7 +169,7 @@
 .modal-body .form-group label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #cbd5e1;
+  color: var(--c-slate-muted);
   transition: var(--transition-smooth);
 }
 
@@ -195,8 +181,8 @@
 .modal-body .form-group select {
   width: 100%;
   padding: 0.8rem 1rem;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-input);
   border-radius: 0.5rem;
   color: var(--c-blanco);
   font-size: var(--font-size-base);
@@ -205,25 +191,25 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-/* Focus state – cyan glow resplandeciente */
+/* Focus state – Ice Blue elegante, sin brillo exagerado */
 .modal-input:focus,
 .modal-select:focus,
 .modal-body .form-group input:focus,
 .modal-body .form-group textarea:focus,
 .modal-body .form-group select:focus {
   outline: none;
-  border-color: var(--c-primary);
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.35);
-  background: rgba(15, 23, 42, 0.9);
+  border-color: var(--c-ice-blue);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.2);
+  background: var(--c-surface);
 }
 
 .modal-input::placeholder,
 .modal-body .form-group input::placeholder {
-  color: #64748b;
+  color: var(--c-slate-muted);
 }
 
 .modal-form-group:focus-within .modal-label {
-  color: var(--c-primary);
+  color: var(--c-ice-blue);
 }
 
 /* --------------------------- BOTONES Y ACCIONES --------------------------- */
@@ -234,7 +220,7 @@
   gap: 1rem;
   margin-top: 1.75rem;
   padding-top: 1.2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--c-border-subtle);
 }
 
 .modal-btn,
@@ -260,59 +246,51 @@
   font-size: 0.94rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-/* Primary – Guardar Paciente */
+/* Primary – Guardar Paciente (Gradiente Esmeralda Sobrio) */
 .btn-primary,
 .modal-btn-primary {
-  background: linear-gradient(135deg, #0284c7, #0369a1);
-  color: var(--c-blanco);
-  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+  background: linear-gradient(135deg, var(--c-emerald-start), var(--c-emerald-end));
+  color: #ffffff;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
 }
 
 .btn-primary:hover,
 .modal-btn-primary:hover {
-  background: linear-gradient(135deg, #0369a1, #0284c7);
-  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+  background: linear-gradient(135deg, #059669, #047857);
+  box-shadow: 0 6px 16px rgba(4, 120, 87, 0.35);
   transform: translateY(-1px);
 }
 
-/* Secondary – Validar / Buscar DNI / Cancelar */
+/* Secondary – Validar / Buscar DNI / Cancelar (Fondo Oscuro con Borde Ice Blue) */
 .btn-secondary,
-.modal-btn-secondary {
-  background: rgba(255, 255, 255, 0.06);
-  color: #cbd5e1;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.modal-btn-secondary,
+.modal-btn-action {
+  background: #0f172a;
+  color: var(--c-ice-blue);
+  border: 1px solid var(--c-ice-blue);
 }
 
 .btn-secondary:hover,
-.modal-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--c-blanco);
-  transform: translateY(-1px);
-}
-
-/* Action / DNI Search */
-.modal-btn-action {
-  background: rgba(124, 58, 237, 0.18);
-  color: #c4b5fd;
-  border: 1px solid rgba(124, 58, 237, 0.35);
-}
-
+.modal-btn-secondary:hover,
 .modal-btn-action:hover {
-  background: rgba(124, 58, 237, 0.28);
-  color: #ddd6fe;
-  box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
+  background: #1e293b;
+  color: #7dd3fc;
+  border-color: #7dd3fc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
 }
 
-/* Accent – Llenado por Dictado (Cyber-Medical Sofisticado) */
+/* Accent – Llenado por Dictado (Fondo #182234 con Borde #0ea5e9) */
 .btn-accent,
 .modal-btn-dictado {
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  color: #f8fafc;
-  border: 1px solid rgba(6, 182, 212, 0.4);
+  background: var(--c-dictado-bg);
+  color: var(--c-blanco);
+  border: 1px solid var(--c-dictado-border);
   font-weight: 600;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -320,30 +298,30 @@
 
 .btn-accent:hover,
 .modal-btn-dictado:hover {
-  background: linear-gradient(135deg, #334155, #1e293b);
-  border-color: rgba(6, 182, 212, 0.7);
+  background: #1e293b;
+  border-color: #38bdf8;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.25);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
   transform: translateY(-1px);
 }
 
-/* Ícono de micrófono / Estado activo con glow pulsante cian/teal */
+/* Ícono de micrófono / Estado activo con pulso discreto */
 .btn-accent.active,
 .modal-btn-dictado.active,
 .btn-accent[aria-pressed="true"],
 .modal-btn-dictado[aria-pressed="true"] {
-  background: linear-gradient(135deg, #0e7490, #155e75);
-  border-color: #06b6d4;
-  color: #f8fafc;
-  animation: pulseDictadoCyber 2s infinite ease-in-out;
+  background: #0f172a;
+  border-color: #38bdf8;
+  color: #38bdf8;
+  animation: pulseDictadoDiscreto 2s infinite ease-in-out;
 }
 
-@keyframes pulseDictadoCyber {
+@keyframes pulseDictadoDiscreto {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.6), 0 4px 14px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.3);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(6, 182, 212, 0), 0 6px 20px rgba(6, 182, 212, 0.5);
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
   }
 }
 
@@ -369,30 +347,30 @@
   border-radius: 0.4rem;
   font-size: 0.78rem;
   font-weight: 600;
-  background: rgba(16, 185, 129, 0.12);
-  color: var(--c-success);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
   letter-spacing: 0.02em;
 }
 
 .badge-status.ok,
 .modal-badge-reniec.ok {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--c-success);
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
 }
 
 .badge-status.warn,
 .modal-badge-reniec.warn {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--c-warning);
-  border-color: rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.2);
 }
 
 .badge-status.error,
 .modal-badge-reniec.error {
-  background: rgba(239, 68, 68, 0.15);
-  color: var(--c-danger);
-  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
 }
 
 .badge-status svg,
@@ -421,14 +399,14 @@
 .modal-container::-webkit-scrollbar-thumb,
 .modal-registro-paciente::-webkit-scrollbar-thumb,
 .modal-body::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 }
 
 #registroPacienteModal::-webkit-scrollbar-thumb:hover,
 .modal-container::-webkit-scrollbar-thumb:hover,
 .modal-registro-paciente::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* --------------------------- RESPONSIVE --------------------------- */
