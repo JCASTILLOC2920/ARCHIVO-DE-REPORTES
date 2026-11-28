@@ -145,7 +145,7 @@
                 await _putIDB(db, STORE_PACIENTES, recFinal);
             } catch (_) {}
 
-            // Guardado seguro en localStorage sin desbordar la cuota de 5 MB
+            // Guardado seguro en localStorage sin truncar registros (Zero-Data-Loss)
             try {
                 if (Array.isArray(allPatients) && allPatients.length > 0) {
                     const listaLigera = allPatients.map(_aligerarRegistroParaLocalStorage);
@@ -153,11 +153,8 @@
                     localStorage.setItem("patientDatabaseLocal", jsonLigero);
                     localStorage.setItem("patientDatabase", jsonLigero);
                 }
-            } catch (_) {
-                try {
-                    const recientes = (allPatients || [recFinal]).slice(0, 400).map(_aligerarRegistroParaLocalStorage);
-                    localStorage.setItem("patientDatabaseLocal", JSON.stringify(recientes));
-                } catch (__) {}
+            } catch (errQuota) {
+                console.warn('[n8nSyncBlindado] localStorage lleno; registros completos protegidos en IndexedDB sin truncar:', errQuota && errQuota.message);
             }
 
             // Despacho con garantía antepérdida a Docker n8n (localhost:5678)
